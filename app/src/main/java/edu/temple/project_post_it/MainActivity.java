@@ -12,11 +12,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //If login success: Render the Navigation User BAR
+        //user_navigation();
     }
 
 
     public void user_navigation() {
         Intent intent = new Intent(this, user_navigation.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
 }
