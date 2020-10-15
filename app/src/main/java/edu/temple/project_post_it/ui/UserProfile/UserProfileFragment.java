@@ -1,4 +1,4 @@
-package edu.temple.project_post_it.ui.notifications;
+package edu.temple.project_post_it.ui.UserProfile;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,17 +14,17 @@ import androidx.lifecycle.ViewModelProvider;
 
 import edu.temple.project_post_it.R;
 
-public class NotificationsFragment extends Fragment {
+public class UserProfileFragment extends Fragment {
 
-    private NotificationsViewModel notificationsViewModel;
+    private UserProfileViewModel userProfileViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        notificationsViewModel =
-                new ViewModelProvider(this).get(NotificationsViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_notifications, container, false);
-        final TextView textView = root.findViewById(R.id.text_notifications);
-        notificationsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        userProfileViewModel =
+                new ViewModelProvider(this).get(UserProfileViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_userprofile, container, false);
+        final TextView textView = root.findViewById(R.id.text_userprofile);
+        userProfileViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);

@@ -18,8 +18,8 @@
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="edu.temple.project_post_it.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_userprofile"
+        android:name="edu.temple.project_post_it.ui.UserProfile.UserProfileFragment"
+        android:label="@string/userprofile"
+        tools:layout="@layout/fragment_userprofile" />
 </navigation>
