@@ -2,9 +2,11 @@ package edu.temple.project_post_it.user;
 
 import java.util.ArrayList;
 
+import edu.temple.project_post_it.post.Post;
+
 public class User {
     public String user_id;
-    public ArrayList<Object> user_posts;
+    public ArrayList<Post> user_posts;
 
     public User() {
 
@@ -22,5 +24,12 @@ public class User {
 
     }
 
+    public boolean delete_post() {
+        return false;
+    }
+
+    public boolean add_post() {
+        return false;
+    }
 
 }
