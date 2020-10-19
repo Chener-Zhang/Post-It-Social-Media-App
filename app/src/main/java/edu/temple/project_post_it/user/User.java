@@ -15,7 +15,7 @@ public class User {
     }
 
     public void get_user_post() {
-        
+
     }
 
     public void get_user_group() {
