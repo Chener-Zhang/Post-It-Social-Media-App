@@ -5,10 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
 import android.content.Intent;
+import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.io.File;
@@ -19,7 +21,9 @@ import java.util.Date;
 public class MainActivity extends AppCompatActivity {
 
     String currentPhotoPath;
+    String currentAudioPath;
     Uri photoURI;
+    MediaRecorder recorder;
     static final int REQUEST_TAKE_PHOTO = 71311;
 
     @Override
@@ -37,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
-
+    // This method asks the user to use their camera application to take a photo, which is saved in the photo file.
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
@@ -59,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
+    // This method creates the image file in the app's storage directory.
     private File createImageFile() throws IOException {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "PNG_" + timeStamp + "_";
@@ -73,6 +77,18 @@ public class MainActivity extends AppCompatActivity {
         return image;
     }
 
+    private File createAudioFile() throws IOException {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "MP3_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_MUSIC);
+        File audio = File.createTempFile(
+                imageFileName,
+                ".mp3",
+                storageDir
+        );
+        currentAudioPath = audio.getAbsolutePath();
+        return audio;
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -80,4 +96,26 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Photo Taken!", Toast.LENGTH_SHORT).show();
         }
     }
+
+    private void startRecording() {
+        recorder = new MediaRecorder();
+        recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        recorder.setOutputFile(currentAudioPath);
+        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+        try {
+            recorder.prepare();
+        } catch (IOException e) {
+            Log.v("ERROR", "prepare() failed");
+        }
+
+        recorder.start();
+    }
+
+    private void stopRecording() {
+        recorder.stop();
+        recorder.release();
+        recorder = null;
+    }
+
 }
