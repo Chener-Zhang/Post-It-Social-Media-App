@@ -80,4 +80,5 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Photo Taken!", Toast.LENGTH_SHORT).show();
         }
     }
+
 }
