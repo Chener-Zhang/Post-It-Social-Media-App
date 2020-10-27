@@ -4,19 +4,20 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class DataBase_Management {
-    FirebaseDatabase database;
-    DatabaseReference myRef;
+    FirebaseDatabase rootNode;
+    DatabaseReference databaseReference;
 
     DataBase_Management() {
-        database = FirebaseDatabase.getInstance();
+        rootNode = FirebaseDatabase.getInstance();
     }
 
     public void write_data(String reference, String data) {
-        myRef = database.getReference(reference);
-        myRef.setValue(data);
+        databaseReference = rootNode.getReference(reference);
+        databaseReference.setValue(data);
     }
 
-    public void get_data() {
+    public void get_data(String reference) {
+        databaseReference = rootNode.getReference(reference);
 
     }
 }
