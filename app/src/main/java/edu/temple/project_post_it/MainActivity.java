@@ -21,7 +21,6 @@ import java.util.Date;
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.util.Arrays;
 
 import static java.util.Arrays.*;
 
@@ -39,10 +38,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         FirebaseAuth auth = FirebaseAuth.getInstance();
+
         if (auth.getCurrentUser() != null) {
             // already signed in
+            user_navigation();
         } else {
             startActivityForResult(
                     AuthUI.getInstance()
@@ -52,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
                                     new AuthUI.IdpConfig.EmailBuilder().build()))
                             .build(),
                     RC_SIGN_IN);
+            user_navigation();
+
         }
 
         startActivityForResult(
@@ -144,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK){
+        if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
             Toast.makeText(this, "Photo Taken!", Toast.LENGTH_SHORT).show();
         }
     }
