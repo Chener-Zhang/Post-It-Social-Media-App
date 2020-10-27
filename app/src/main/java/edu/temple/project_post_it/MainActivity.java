@@ -1,5 +1,6 @@
 package edu.temple.project_post_it;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
@@ -22,6 +23,7 @@ import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 
 
+
 import static java.util.Arrays.*;
 
 public class MainActivity extends AppCompatActivity {
@@ -39,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
+
 
         if (auth.getCurrentUser() != null) {
             // already signed in
@@ -64,9 +67,12 @@ public class MainActivity extends AppCompatActivity {
                                 new AuthUI.IdpConfig.EmailBuilder().build()))
                         .build(),
                 RC_SIGN_IN);
+
+
+
     }
 
-    //tests
+
     public void user_navigation() {
         Intent intent = new Intent(this, user_navigation.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
