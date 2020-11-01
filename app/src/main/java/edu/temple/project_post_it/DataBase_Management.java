@@ -14,13 +14,18 @@ public class DataBase_Management {
     FirebaseDatabase rootNode;
     DatabaseReference databaseReference;
 
-    DataBase_Management() {
+    public DataBase_Management() {
         rootNode = FirebaseDatabase.getInstance();
     }
 
-    public void write_data(String reference, String data) {
+    public void write_data_child(String child_table, String child_reference, Object object) {
+        databaseReference = rootNode.getReference().child(child_table);
+        databaseReference.child(child_reference).setValue(object);
+    }
+
+    public void write_data(String reference, Object object) {
         databaseReference = rootNode.getReference(reference);
-        databaseReference.setValue(data);
+        databaseReference.push().setValue(object);
     }
 
     public void get_data(String reference) {
