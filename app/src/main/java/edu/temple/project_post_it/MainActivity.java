@@ -1,10 +1,5 @@
 package edu.temple.project_post_it;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.FileProvider;
-
 import android.content.Intent;
 import android.media.MediaRecorder;
 import android.net.Uri;
@@ -14,17 +9,19 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
+
+import com.firebase.ui.auth.AuthUI;
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.firebase.ui.auth.AuthUI;
-import com.google.firebase.auth.FirebaseAuth;
-
-
-
-import static java.util.Arrays.*;
+import static java.util.Arrays.asList;
 
 public class MainActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 123;
@@ -45,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
 
         if (auth.getCurrentUser() != null) {
             // already signed in
-            user_navigation();
         } else {
             startActivityForResult(
                     AuthUI.getInstance()
@@ -55,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
                                     new AuthUI.IdpConfig.EmailBuilder().build()))
                             .build(),
                     RC_SIGN_IN);
-            user_navigation();
+
 
         }
 
@@ -67,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
                                 new AuthUI.IdpConfig.EmailBuilder().build()))
                         .build(),
                 RC_SIGN_IN);
-
 
 
     }
