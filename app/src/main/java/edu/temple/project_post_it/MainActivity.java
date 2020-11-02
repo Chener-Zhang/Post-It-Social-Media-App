@@ -55,15 +55,6 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-        startActivityForResult(
-                AuthUI.getInstance()
-                        .createSignInIntentBuilder()
-                        .setAvailableProviders(asList(
-                                new AuthUI.IdpConfig.GoogleBuilder().build(),
-                                new AuthUI.IdpConfig.EmailBuilder().build()))
-                        .build(),
-                RC_SIGN_IN);
-
 
     }
 
