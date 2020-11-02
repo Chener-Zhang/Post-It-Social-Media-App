@@ -33,7 +33,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.example.android.fileprovider"
+            android:authorities="edu.temple.project_post_it.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
