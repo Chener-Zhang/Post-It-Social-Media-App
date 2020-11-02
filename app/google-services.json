@@ -15,6 +15,30 @@
       },
       "oauth_client": [
         {
+          "client_id": "256104353555-gj6nf9821luclsdq1b38qs948c2n0kbk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edu.temple.project_post_it",
+            "certificate_hash": "de9ca99ab05bd03f6dc7979ccaefad81a435603b"
+          }
+        },
+        {
+          "client_id": "256104353555-6nsbusvv3jjv1cmt1ljd3caggcf76iq7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edu.temple.project_post_it",
+            "certificate_hash": "adf184d190da0c588bc83584c2ec31ef5624d493"
+          }
+        },
+        {
+          "client_id": "256104353555-q74ldf1l9h7lf59plcjqjsd3uhv21rsd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edu.temple.project_post_it",
+            "certificate_hash": "84ed02a23826ab5df455318f83287122b2756fba"
+          }
+        },
+        {
           "client_id": "256104353555-jg2au171tt3l4rp2n3c9hklh3g5jgsnc.apps.googleusercontent.com",
           "client_type": 3
         }
