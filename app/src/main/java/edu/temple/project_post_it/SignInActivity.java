@@ -41,7 +41,7 @@ public class SignInActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                setContentView(R.layout.activity_user_navigation);
+                user_navigation();
             } else {
                 // Sign in failed. If response is null the user canceled the
                 // sign-in flow using the back button. Otherwise check
@@ -50,4 +50,10 @@ public class SignInActivity extends AppCompatActivity {
             }
         }
     }
+    public void user_navigation() {
+        Intent intent = new Intent(this, user_navigation.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+
 }
