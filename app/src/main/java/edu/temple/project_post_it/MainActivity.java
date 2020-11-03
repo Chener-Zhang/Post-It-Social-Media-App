@@ -13,7 +13,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
-import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.File;
@@ -21,11 +20,8 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static java.util.Arrays.asList;
 
 public class MainActivity extends AppCompatActivity {
-    private static final int RC_SIGN_IN = 123;
-
     String currentPhotoPath;
     String currentAudioPath;
     Uri photoURI;
@@ -41,23 +37,11 @@ public class MainActivity extends AppCompatActivity {
 
 
         if (auth.getCurrentUser() != null) {
-            // already signed in
+            user_navigation();
         } else {
-            startActivityForResult(
-                    AuthUI.getInstance()
-                            .createSignInIntentBuilder()
-                            .setAvailableProviders(asList(
-                                    new AuthUI.IdpConfig.GoogleBuilder().build(),
-                                    new AuthUI.IdpConfig.EmailBuilder().build()))
-                            .build(),
-                    RC_SIGN_IN);
-
-
+            startActivity(new Intent(this, SignInActivity.class));
         }
-
-
     }
-
 
     public void user_navigation() {
         Intent intent = new Intent(this, user_navigation.class);
