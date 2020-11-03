@@ -38,17 +38,18 @@ public class MainActivity extends AppCompatActivity {
 
         if (auth.getCurrentUser() != null) {
             setContentView(R.layout.activity_user_navigation);
+            user_navigation();
         } else {
             startActivity(new Intent(this, SignInActivity.class));
         }
     }
-
 
     public void user_navigation() {
         Intent intent = new Intent(this, user_navigation.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
+
 
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
