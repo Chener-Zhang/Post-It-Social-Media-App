@@ -43,7 +43,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
+    public void user_navigation() {
+        Intent intent = new Intent(this, user_navigation.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
 
 
     private void dispatchTakePictureIntent() {
