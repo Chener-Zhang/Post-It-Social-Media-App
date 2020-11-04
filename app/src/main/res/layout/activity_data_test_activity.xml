@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:orientation="vertical"
+    android:padding="@dimen/box_inset_layout_padding"
+    tools:context=".data_test_activity"
+    tools:deviceIds="wear">
+
+
+    <EditText
+        android:id="@+id/myname"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:hint="name" />
+
+    <EditText
+        android:id="@+id/mycolor"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:hint="color" />
+
+    <EditText
+        android:id="@+id/myhobby"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:hint="hobby" />
+
+    <EditText
+        android:id="@+id/myage"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:hint="age" />
+
+    <EditText
+        android:id="@+id/mysex"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:hint="sex" />
+
+    <Button
+        android:id="@+id/mysubmit"
+        android:layout_width="match_parent"
+        android:layout_height="200px"
+        android:text="submit" />
+
+
+</LinearLayout>

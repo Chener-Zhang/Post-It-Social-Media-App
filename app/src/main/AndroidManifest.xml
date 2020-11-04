@@ -22,7 +22,13 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".user_navigation"
-            android:label="@string/title_activity_user_navigation"> </activity>
+            android:label="@string/title_activity_user_navigation"></activity>
+
+        //delete here
+        <activity
+            android:name=".test.data_test_activity"
+            android:label="@string/title_activity_data_test_activity"></activity>
+        //delete here
 
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -30,7 +36,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SignInActivity"> </activity>
+        <activity android:name=".SignInActivity"></activity>
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -39,7 +45,7 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"> </meta-data>
+                android:resource="@xml/file_paths"></meta-data>
         </provider>
 
     </application>
