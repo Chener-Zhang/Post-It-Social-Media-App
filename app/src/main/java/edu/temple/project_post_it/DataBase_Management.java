@@ -73,8 +73,11 @@ public class DataBase_Management {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
+    }
+
+    public void update_data(String reference) {
+        
     }
 }
