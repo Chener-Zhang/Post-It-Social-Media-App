@@ -29,11 +29,11 @@ import edu.temple.project_post_it.ui.dashboard.DashboardFragment;
 import static edu.temple.project_post_it.CONSTANT.LOCATION_BROADCAST;
 import static edu.temple.project_post_it.CONSTANT.LOCATION_KEY;
 
-public class user_navigation extends AppCompatActivity implements UserProfileFragment.OnDataPass_UserProfileFragment, DashboardFragment.MapInterface {
+public class user_navigation extends AppCompatActivity implements UserProfileFragment.OnDataPass_UserProfileFragment {
     Intent mapserviceIntent;
     IntentFilter broadcastFilter;
     Location location;
-    LatLng loc;
+    public static LatLng loc;
 
 
     BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
@@ -99,10 +99,6 @@ public class user_navigation extends AppCompatActivity implements UserProfileFra
         Log.d("Reach", "user_navigation activity");
     }
 
-    @Override
-    public void setLocation(LatLng loc) {
-
-    }
 
     @Override
     protected void onDestroy() {

@@ -30,6 +30,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import edu.temple.project_post_it.R;
+import edu.temple.project_post_it.user_navigation;
 
 import static edu.temple.project_post_it.CONSTANT.LOCATION_BROADCAST;
 import static edu.temple.project_post_it.CONSTANT.LOCATION_KEY;
@@ -38,26 +39,8 @@ import static edu.temple.project_post_it.CONSTANT.LOCATION_KEY;
 public class DashboardFragment extends Fragment implements OnMapReadyCallback {
     private Marker marker;
     private MapView mapView;
-    Location location;
-    LatLng loc;
-    IntentFilter broadcastFilter;
     GoogleMap googleMap;
 
-    BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(LOCATION_BROADCAST)) {
-                location = intent.getParcelableExtra(LOCATION_KEY);
-                loc = new LatLng(location.getLatitude(), location.getLongitude());
-                Log.i("Location in Dashboard", loc.toString());
-
-                //Update the location on the Map
-                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 15));
-                marker = googleMap.addMarker((new MarkerOptions()).position(loc));
-
-            }
-        }
-    };
 
     private DashboardViewModel dashboardViewModel;
 
@@ -74,11 +57,6 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
             }
         });
 
-
-        //Init the broadcastFilter
-        broadcastFilter = new IntentFilter();
-        broadcastFilter.addAction(LOCATION_BROADCAST);
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(broadcastReceiver, broadcastFilter);
 
         //Init the map
         MapsInitializer.initialize(getActivity());
@@ -111,7 +89,6 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
     public void onPause() {
         super.onPause();
         mapView.onPause();
-        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(broadcastReceiver);
     }
 
     @Override
@@ -129,9 +106,7 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
-    }
-
-    public interface MapInterface {
-        void setLocation(LatLng loc);
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(user_navigation.loc, 15));
+        marker = googleMap.addMarker((new MarkerOptions()).position(user_navigation.loc));
     }
 }
