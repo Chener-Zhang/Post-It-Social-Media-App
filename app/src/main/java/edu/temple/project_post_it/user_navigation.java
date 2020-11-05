@@ -1,7 +1,6 @@
 package edu.temple.project_post_it;
 
 import android.Manifest;
-import android.app.Fragment;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
@@ -13,7 +12,6 @@ import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.google.android.gms.maps.model.Dash;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,10 +25,12 @@ import androidx.navigation.ui.NavigationUI;
 
 import edu.temple.project_post_it.ui.UserProfile.UserProfileFragment;
 import edu.temple.project_post_it.ui.dashboard.DashboardFragment;
-import edu.temple.project_post_it.MapService;
+
+import static edu.temple.project_post_it.CONSTANT.LOCATION_BROADCAST;
+import static edu.temple.project_post_it.CONSTANT.LOCATION_KEY;
 
 public class user_navigation extends AppCompatActivity implements UserProfileFragment.OnDataPass_UserProfileFragment, DashboardFragment.MapInterface {
-    Intent serviceIntent;
+    Intent mapserviceIntent;
     IntentFilter broadcastFilter;
     Location location;
     LatLng loc;
@@ -39,12 +39,13 @@ public class user_navigation extends AppCompatActivity implements UserProfileFra
     BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals("Location Broadcast")) {
-                location = intent.getParcelableExtra("Location Key");
+            //Get the data from the MapService
+            if (intent.getAction().equals(LOCATION_BROADCAST)) {
+                location = intent.getParcelableExtra(LOCATION_KEY);
                 loc = new LatLng(location.getLatitude(), location.getLongitude());
-
-                }
+                Log.i("MainActivity: RECEIVED NEW LOC", loc.toString());
             }
+        }
     };
 
 
@@ -62,22 +63,25 @@ public class user_navigation extends AppCompatActivity implements UserProfileFra
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 
+
+        //Create notification channel
         NotificationChannel defaultChannel = new NotificationChannel("default",
                 "Default",
                 NotificationManager.IMPORTANCE_DEFAULT
         );
-
         getSystemService(NotificationManager.class).createNotificationChannel(defaultChannel);
 
-
+        //Check user permission for the ACCESS_FINE_LOCATION
         if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
 
-        serviceIntent = new Intent(this, MapService.class);
+        //Init the mapserviceIntent
+        mapserviceIntent = new Intent(this, MapService.class);
+        startService(mapserviceIntent);
 
         broadcastFilter = new IntentFilter();
-        broadcastFilter.addAction("Location Broadcast");
+        broadcastFilter.addAction(LOCATION_BROADCAST);
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(broadcastReceiver, broadcastFilter);
     }
 
@@ -98,5 +102,12 @@ public class user_navigation extends AppCompatActivity implements UserProfileFra
     @Override
     public void setLocation(LatLng loc) {
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        System.out.println("Map Service is stopped");
+        stopService(mapserviceIntent);
     }
 }

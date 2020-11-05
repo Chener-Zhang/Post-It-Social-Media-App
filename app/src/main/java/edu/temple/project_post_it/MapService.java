@@ -19,6 +19,9 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import static edu.temple.project_post_it.CONSTANT.LOCATION_BROADCAST;
+import static edu.temple.project_post_it.CONSTANT.LOCATION_KEY;
+
 public class MapService extends Service {
     LocationManager lm;
     LocationListener ll;
@@ -57,8 +60,8 @@ public class MapService extends Service {
         ll = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                locationIntent = new Intent("Location Broadcast");
-                locationIntent.putExtra("Location Key", location);
+                locationIntent = new Intent(LOCATION_BROADCAST);
+                locationIntent.putExtra(LOCATION_KEY, location);
                 LocalBroadcastManager.getInstance(MapService.this).sendBroadcast(locationIntent);
                 Log.i("Service sending Location", location.toString());
             }
@@ -80,7 +83,7 @@ public class MapService extends Service {
             }
         };
         if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
+            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 1, ll);
         }
 
         return START_STICKY;
