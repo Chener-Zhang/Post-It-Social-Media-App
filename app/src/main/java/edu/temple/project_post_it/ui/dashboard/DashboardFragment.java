@@ -52,7 +52,7 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
                 Log.i("Location in Dashboard", loc.toString());
 
                 //Update the location on the Map
-                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 20));
+                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 15));
                 marker = googleMap.addMarker((new MarkerOptions()).position(loc));
 
             }
