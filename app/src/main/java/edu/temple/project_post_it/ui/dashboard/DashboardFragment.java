@@ -29,10 +29,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.util.Date;
-
 import edu.temple.project_post_it.R;
-import edu.temple.project_post_it.user_navigation;
+
+import static edu.temple.project_post_it.CONSTANT.LOCATION_BROADCAST;
+import static edu.temple.project_post_it.CONSTANT.LOCATION_KEY;
+
 
 public class DashboardFragment extends Fragment implements OnMapReadyCallback {
     private Marker marker;
@@ -40,14 +41,19 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
     Location location;
     LatLng loc;
     IntentFilter broadcastFilter;
+    GoogleMap googleMap;
 
     BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals("Location Broadcast")) {
-                location = intent.getParcelableExtra("Location Key");
+            if (intent.getAction().equals(LOCATION_BROADCAST)) {
+                location = intent.getParcelableExtra(LOCATION_KEY);
                 loc = new LatLng(location.getLatitude(), location.getLongitude());
                 Log.i("Location in Dashboard", loc.toString());
+
+                //Update the location on the Map
+                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 20));
+                marker = googleMap.addMarker((new MarkerOptions()).position(loc));
 
             }
         }
@@ -68,64 +74,64 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
             }
         });
 
-//        broadcastFilter = new IntentFilter();
-//        broadcastFilter.addAction("Location Broadcast");
-//        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(broadcastReceiver, broadcastFilter);
 
-        if (loc != null) {
-            MapsInitializer.initialize(getActivity());
-            mapView = root.findViewById(R.id.mapView);
-            mapView.getMapAsync(this);
-            mapView.onCreate(savedInstanceState);
-        }
+        //Init the broadcastFilter
+        broadcastFilter = new IntentFilter();
+        broadcastFilter.addAction(LOCATION_BROADCAST);
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(broadcastReceiver, broadcastFilter);
 
-            return root;
+        //Init the map
+        MapsInitializer.initialize(getActivity());
+        mapView = root.findViewById(R.id.mapView);
+        mapView.getMapAsync(this);
+        mapView.onCreate(savedInstanceState);
+
+        return root;
     }
 
-        @Override
-        public void onResume () {
-            super.onResume();
-            mapView.onResume();
-        }
+    @Override
+    public void onResume() {
+        super.onResume();
+        mapView.onResume();
+    }
 
-        @Override
-        public void onStart () {
-            super.onStart();
-            mapView.onStart();
-        }
+    @Override
+    public void onStart() {
+        super.onStart();
+        mapView.onStart();
+    }
 
-        @Override
-        public void onSaveInstanceState (@NonNull Bundle outState){
-            super.onSaveInstanceState(outState);
-            mapView.onSaveInstanceState(outState);
-        }
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mapView.onSaveInstanceState(outState);
+    }
 
-        @Override
-        public void onPause () {
-            super.onPause();
-            mapView.onPause();
-            LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(broadcastReceiver);
-        }
+    @Override
+    public void onPause() {
+        super.onPause();
+        mapView.onPause();
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(broadcastReceiver);
+    }
 
-        @Override
-        public void onStop () {
-            super.onStop();
-            mapView.onStart();
-        }
+    @Override
+    public void onStop() {
+        super.onStop();
+        mapView.onStart();
+    }
 
-        @Override
-        public void onDestroy () {
-            super.onDestroy();
-            mapView.onStart();
-        }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mapView.onStart();
+    }
 
-        @Override
-        public void onMapReady (GoogleMap googleMap){
-            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 20));
-            marker = googleMap.addMarker((new MarkerOptions()).position(loc));
-        }
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        this.googleMap = googleMap;
+    }
 
-        public interface MapInterface{
+    public interface MapInterface {
         void setLocation(LatLng loc);
-        }
+    }
 }
