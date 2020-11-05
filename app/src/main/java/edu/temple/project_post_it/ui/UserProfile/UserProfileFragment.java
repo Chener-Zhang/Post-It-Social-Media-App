@@ -20,7 +20,7 @@ import edu.temple.project_post_it.R;
 
 public class UserProfileFragment extends Fragment {
 
-    private UserProfileViewModel userProfileViewModel;
+
 
     //Sign out
     public OnDataPass_UserProfileFragment main_activity;
@@ -35,16 +35,10 @@ public class UserProfileFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        userProfileViewModel =
-                new ViewModelProvider(this).get(UserProfileViewModel.class);
+
         View root = inflater.inflate(R.layout.fragment_userprofile, container, false);
         final TextView textView = root.findViewById(R.id.text_userprofile);
-        userProfileViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+
 
         sign_out_button = root.findViewById(R.id.logout_button);
         sign_out_button.setOnClickListener(new View.OnClickListener() {
