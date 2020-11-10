@@ -77,7 +77,9 @@ public class DataBase_Management {
         });
     }
 
-    public void update_data(String reference) {
-        
+    public void update_data(String reference, String data) {
+        String key = databaseReference.child(reference).push().getKey();
+
+
     }
 }
