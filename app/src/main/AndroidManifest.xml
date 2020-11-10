@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="edu.temple.project_post_it">
 
-
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -38,6 +38,12 @@
         </activity>
         <activity android:name=".SignInActivity"></activity>
 
+        <service
+            android:name=".MapService"
+            android:enabled="true"
+            android:exported="true"
+            android:foregroundServiceType="location" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="edu.temple.project_post_it.fileprovider"
@@ -47,6 +53,10 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths"></meta-data>
         </provider>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCmt11pwv6MWEzND7lKUUYrWhR5m9zUS40" />
 
     </application>
 
