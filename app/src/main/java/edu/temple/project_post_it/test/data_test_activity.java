@@ -53,7 +53,8 @@ public class data_test_activity extends AppCompatActivity {
                 test.setHobby(hobby.getText().toString());
                 test.setAge(age.getText().toString());
 
-                dataBase_management.update_data("sometable/thechild", test, "-MLmtCXJtplg1g2GkpTE");
+//                dataBase_management.write_data_child("sometable/thechild", "memeber1", test);
+                dataBase_management.update_data("sometable/thechild", test, "memeber1");
 
             }
         });
