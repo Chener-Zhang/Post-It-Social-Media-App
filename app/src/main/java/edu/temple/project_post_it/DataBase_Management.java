@@ -10,6 +10,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import edu.temple.project_post_it.post.Post;
 import edu.temple.project_post_it.test.test;
 
 public class DataBase_Management {
@@ -77,9 +81,21 @@ public class DataBase_Management {
         });
     }
 
-    public void update_data(String reference, String data) {
-        String key = databaseReference.child(reference).push().getKey();
 
+    /*
+    Update data will update the exist data in the firebase
+    Reference is the root
+    Update_object wil be the object which assignment by the developer, which will be the Post
+    Key: will be the user id or the key generate by the firebase
+    Example usage:
+    DataBase_management.update_data("sometable/thechild", test, "-MLmtCXJtplg1g2GkpTE");
+     */
+    public void update_data(String reference, test update_object, String key) {
+        databaseReference = rootNode.getReference(reference);
+        Map<String, Object> postValues = update_object.toMap();
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put(key, postValues);
+        databaseReference.updateChildren(childUpdates);
 
     }
 }

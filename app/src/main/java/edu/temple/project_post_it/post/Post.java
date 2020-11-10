@@ -7,6 +7,13 @@ import com.google.firebase.database.Exclude;
 import java.util.HashMap;
 import java.util.Map;
 
+import static edu.temple.project_post_it.CONSTANT.GROUP_ID;
+import static edu.temple.project_post_it.CONSTANT.LOCATION;
+import static edu.temple.project_post_it.CONSTANT.POST_ID;
+import static edu.temple.project_post_it.CONSTANT.PRIVACY;
+import static edu.temple.project_post_it.CONSTANT.TEXT;
+import static edu.temple.project_post_it.CONSTANT.TYPE;
+
 public class Post {
     long Post_ID;
     Location location;
@@ -73,7 +80,12 @@ public class Post {
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
-
+        result.put(POST_ID, getPost_ID());
+        result.put(LOCATION, getLocation());
+        result.put(GROUP_ID, getGroup_ID());
+        result.put(PRIVACY, getPrivacy());
+        result.put(TEXT, getText());
+        result.put(TYPE, getType());
         return result;
     }
 
