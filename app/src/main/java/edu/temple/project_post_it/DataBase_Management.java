@@ -26,21 +26,6 @@ public class DataBase_Management {
     }
 
 
-    public void sign_in_profile(String UID) {
-        databaseReference = rootNode.getReference();
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
-
     public void set_direction(String reference) {
         databaseReference = rootNode.getReference(reference);
         Log.i("Direction: ", reference);
