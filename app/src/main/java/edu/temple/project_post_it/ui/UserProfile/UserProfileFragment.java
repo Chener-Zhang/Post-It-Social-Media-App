@@ -1,6 +1,6 @@
 package edu.temple.project_post_it.ui.UserProfile;
 
-import android.app.Activity;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,20 +11,20 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
+
 
 import edu.temple.project_post_it.R;
 
 public class UserProfileFragment extends Fragment {
 
 
-
     //Sign out
     public OnDataPass_UserProfileFragment main_activity;
     public Button sign_out_button;
+
+    //Text view elements
+    public TextView User_UID;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -37,9 +37,6 @@ public class UserProfileFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_userprofile, container, false);
-        final TextView textView = root.findViewById(R.id.text_userprofile);
-
-
         sign_out_button = root.findViewById(R.id.logout_button);
         sign_out_button.setOnClickListener(new View.OnClickListener() {
             @Override

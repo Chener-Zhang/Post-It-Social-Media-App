@@ -8,8 +8,8 @@ public class User {
     public String user_id;
     public ArrayList<Post> user_posts;
 
-    public User() {
-
+    public User(String user_id) {
+        this.user_id = user_id;
     }
 
     public String get_user_id() {

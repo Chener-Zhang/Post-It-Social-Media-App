@@ -18,9 +18,10 @@ public class test {
     String hobby;
     String age;
     String sex;
+    String email;
 
-    public test() {
-
+    public test(String email) {
+        this.email = email;
     }
 
     public String getName() {

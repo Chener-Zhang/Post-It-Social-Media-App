@@ -26,26 +26,47 @@ public class DataBase_Management {
     }
 
 
+    public void sign_in_profile(String UID) {
+        databaseReference = rootNode.getReference();
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void set_direction(String reference) {
+        databaseReference = rootNode.getReference(reference);
+        Log.i("Direction: ", reference);
+    }
+
+    public void write_table(String table_name) {
+        databaseReference = rootNode.getReference();
+        databaseReference.child("Members").setValue("test");
+        databaseReference.child("Groups").setValue("test");
+    }
     /*
     Write_data_child:
     Child_parent_reference is the target directory
     Child_reference is the new directory
     Object wil be the post
     */
+
     public void write_data_child(String childs_parent_reference, String child_reference, Object object) {
         databaseReference = rootNode.getReference().child(childs_parent_reference);
         databaseReference.child(child_reference).setValue(object);
     }
-
     /*
     Write date:
     Reference: directory
     Object: post
     */
-    public void write_data(String reference, Object object) {
-        databaseReference = rootNode.getReference(reference);
-        databaseReference.push().setValue(object);
-    }
 
     /*
     Get data

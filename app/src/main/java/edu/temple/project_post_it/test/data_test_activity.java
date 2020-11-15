@@ -24,6 +24,7 @@ public class data_test_activity extends AppCompatActivity {
     EditText age;
     EditText sex;
     Button submit;
+    String email;
     DataBase_Management dataBase_management;
 
     @Override
@@ -38,7 +39,7 @@ public class data_test_activity extends AppCompatActivity {
         sex = findViewById(R.id.mysex);
         submit = findViewById(R.id.mysubmit);
         dataBase_management = new DataBase_Management();
-
+        email = getIntent().getStringExtra("email");
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -47,14 +48,15 @@ public class data_test_activity extends AppCompatActivity {
                 Log.d("hobby", hobby.getText().toString());
                 Log.d("age", age.getText().toString());
                 Log.d("submit", sex.getText().toString());
-                test test = new test();
-                test.setName(name.getText().toString());
-                test.setColor(color.getText().toString());
-                test.setHobby(hobby.getText().toString());
-                test.setAge(age.getText().toString());
 
-//                dataBase_management.write_data_child("sometable/thechild", "memeber1", test);
-                dataBase_management.update_data("sometable/thechild", test, "memeber1");
+//                test test = new test();
+//                test.setName(name.getText().toString());
+//                test.setColor(color.getText().toString());
+//                test.setHobby(hobby.getText().toString());
+//                test.setAge(age.getText().toString());
+//
+//                dataBase_management.write_data("members", null);
+////                dataBase_management.update_data("members/thechild", test, "memeber1");
 
             }
         });
