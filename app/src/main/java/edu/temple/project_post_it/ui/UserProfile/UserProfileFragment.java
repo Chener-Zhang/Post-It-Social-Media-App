@@ -14,6 +14,9 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import edu.temple.project_post_it.R;
 
 public class UserProfileFragment extends Fragment {
@@ -26,6 +29,9 @@ public class UserProfileFragment extends Fragment {
     //Text view elements
     public TextView User_UID;
 
+    //Firebase
+    FirebaseUser user;
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -37,7 +43,12 @@ public class UserProfileFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_userprofile, container, false);
+        //Set the xml element
         sign_out_button = root.findViewById(R.id.logout_button);
+        User_UID = root.findViewById(R.id.user_uid);
+
+        set_data();
+
         sign_out_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -45,7 +56,13 @@ public class UserProfileFragment extends Fragment {
                 main_activity.sign_out();
             }
         });
+
         return root;
+    }
+
+    public void set_data() {
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        User_UID.setText(user.getUid());
     }
 
     public interface OnDataPass_UserProfileFragment {

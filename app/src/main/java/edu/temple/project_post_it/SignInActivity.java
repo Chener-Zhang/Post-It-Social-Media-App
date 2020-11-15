@@ -15,7 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import edu.temple.project_post_it.test.data_test_activity;
-import edu.temple.project_post_it.user.User;
+
 
 public class SignInActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 123;
