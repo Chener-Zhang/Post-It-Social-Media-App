@@ -50,6 +50,7 @@ public class SignInActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                dataBase_management.add_user(user.getUid());
                 user_navigation();
             } else {
                 // Sign in failed. If response is null the user canceled the

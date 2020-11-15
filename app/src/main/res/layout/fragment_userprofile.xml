@@ -35,10 +35,10 @@
 
         <TextView
             android:id="@+id/user_uid_text"
-            android:layout_width="147dp"
+            android:layout_width="118dp"
             android:layout_height="match_parent"
             android:text="USER UID"
-            android:textAlignment="center"/>
+            android:textAlignment="center" />
 
         <TextView
             android:id="@+id/user_uid"

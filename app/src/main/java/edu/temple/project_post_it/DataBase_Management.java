@@ -10,11 +10,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import edu.temple.project_post_it.post.Post;
 import edu.temple.project_post_it.test.test;
+import edu.temple.project_post_it.user.User;
 
 public class DataBase_Management {
     //RootNode = postit-8d9a4
@@ -31,10 +34,23 @@ public class DataBase_Management {
         Log.i("Direction: ", reference);
     }
 
-    public void write_table(String table_name) {
-        databaseReference = rootNode.getReference();
-        databaseReference.child("Members").setValue("test");
-        databaseReference.child("Groups").setValue("test");
+//    public void write_table(String table_name) {
+//        databaseReference = rootNode.getReference();
+//        databaseReference.child("Members").setValue("test");
+//        databaseReference.child("Groups").setValue("test");
+//    }
+
+    //Mock data require debug
+    public void add_user(String user_id) {
+        databaseReference = rootNode.getReference().child("Members");
+        User user = new User();
+        user.setUser_id(user_id);
+        user.setNumber_posts(0);
+        user.setUser_groud_id("test_group_id");
+        ArrayList<Post> test = new ArrayList<Post>();
+        test.add(null);
+        user.setUser_posts(test);
+        databaseReference.child(user_id).setValue(user);
     }
     /*
     Write_data_child:
@@ -47,11 +63,6 @@ public class DataBase_Management {
         databaseReference = rootNode.getReference().child(childs_parent_reference);
         databaseReference.child(child_reference).setValue(object);
     }
-    /*
-    Write date:
-    Reference: directory
-    Object: post
-    */
 
     /*
     Get data
