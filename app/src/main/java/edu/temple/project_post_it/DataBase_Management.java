@@ -10,7 +10,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,11 +32,6 @@ public class DataBase_Management {
         Log.i("Direction: ", reference);
     }
 
-//    public void write_table(String table_name) {
-//        databaseReference = rootNode.getReference();
-//        databaseReference.child("Members").setValue("test");
-//        databaseReference.child("Groups").setValue("test");
-//    }
 
     //Mock data require debug
     public void add_user(String user_id) {
@@ -51,17 +45,19 @@ public class DataBase_Management {
         user.setUser_posts(test);
         databaseReference.child(user_id).setValue(user);
     }
+
+
     /*
     Write_data_child:
     Child_parent_reference is the target directory
     Child_reference is the new directory
     Object wil be the post
     */
-
     public void write_data_child(String childs_parent_reference, String child_reference, Object object) {
         databaseReference = rootNode.getReference().child(childs_parent_reference);
         databaseReference.child(child_reference).setValue(object);
     }
+
 
     /*
     Get data
@@ -85,7 +81,6 @@ public class DataBase_Management {
         });
     }
 
-
     /*
     Remove data
     Reference: directory
@@ -106,7 +101,6 @@ public class DataBase_Management {
             }
         });
     }
-
 
     /*
     Update_data:

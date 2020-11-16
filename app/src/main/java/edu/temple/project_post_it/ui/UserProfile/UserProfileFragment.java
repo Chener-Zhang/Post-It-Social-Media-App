@@ -43,12 +43,12 @@ public class UserProfileFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_userprofile, container, false);
+
         //Set the xml element
         sign_out_button = root.findViewById(R.id.logout_button);
         User_UID = root.findViewById(R.id.user_uid);
 
-        set_data();
-
+        set_UID();
         sign_out_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,7 +60,7 @@ public class UserProfileFragment extends Fragment {
         return root;
     }
 
-    public void set_data() {
+    public void set_UID() {
         user = FirebaseAuth.getInstance().getCurrentUser();
         User_UID.setText(user.getUid());
     }

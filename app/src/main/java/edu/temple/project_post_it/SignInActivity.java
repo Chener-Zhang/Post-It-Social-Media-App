@@ -15,11 +15,8 @@ import java.util.Arrays;
 import java.util.List;
 
 
-
-
 public class SignInActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 123;
-    private DataBase_Management dataBase_management;
 
 
     @Override
@@ -43,14 +40,12 @@ public class SignInActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        dataBase_management = new DataBase_Management();
         if (requestCode == RC_SIGN_IN) {
             IdpResponse response = IdpResponse.fromResultIntent(data);
 
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                dataBase_management.add_user(user.getUid());
                 user_navigation();
             } else {
                 // Sign in failed. If response is null the user canceled the
@@ -66,7 +61,6 @@ public class SignInActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
-
 
 
 }
