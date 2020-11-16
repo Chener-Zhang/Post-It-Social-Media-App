@@ -16,7 +16,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import edu.temple.project_post_it.post.Post;
-import edu.temple.project_post_it.test.test;
 import edu.temple.project_post_it.user.User;
 
 public class DataBase_Management {
@@ -74,9 +73,9 @@ public class DataBase_Management {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 //Class of object, exp : Post place here
-                test object = snapshot.getValue(test.class);
+                Post object = snapshot.getValue(Post.class);
                 //Access the attribute inside the object. Example: object.name, object.image_url
-                Log.d("TAG", "Value is: " + object.getAge());
+                Log.d("TAG", "Value is: " + object);
             }
 
             @Override
@@ -117,7 +116,7 @@ public class DataBase_Management {
     Example usage:
     DataBase_management.update_data("sometable/thechild", test, "-MLmtCXJtplg1g2GkpTE");
     */
-    public void update_data(String reference, test update_object, String key) {
+    public void update_data(String reference, Post update_object, String key) {
         databaseReference = rootNode.getReference(reference);
         Map<String, Object> postValues = update_object.toMap();
         Map<String, Object> childUpdates = new HashMap<>();
