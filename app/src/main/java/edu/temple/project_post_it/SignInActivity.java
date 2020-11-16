@@ -14,7 +14,7 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.Arrays;
 import java.util.List;
 
-import edu.temple.project_post_it.test.data_test_activity;
+
 
 
 public class SignInActivity extends AppCompatActivity {
@@ -68,10 +68,5 @@ public class SignInActivity extends AppCompatActivity {
     }
 
 
-    public void test_activity(String email) {
-        Intent intent = new Intent(this, data_test_activity.class);
-        intent.putExtra("email", email);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-    }
+
 }

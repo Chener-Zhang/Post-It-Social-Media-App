@@ -24,11 +24,6 @@
             android:name=".user_navigation"
             android:label="@string/title_activity_user_navigation"></activity>
 
-        //delete here
-        <activity
-            android:name=".test.data_test_activity"
-            android:label="@string/title_activity_data_test_activity"></activity>
-        //delete here
 
         <activity android:name=".MainActivity">
             <intent-filter>
