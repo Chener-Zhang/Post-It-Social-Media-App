@@ -50,6 +50,8 @@ public class user_navigation extends AppCompatActivity implements UserProfileFra
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         //Default navigation --------------------------------------------->
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_navigation);
@@ -63,6 +65,12 @@ public class user_navigation extends AppCompatActivity implements UserProfileFra
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
         //Default navigation --------------------------------------------->
+
+
+
+
+
+
 
 
         //Create notification channel
