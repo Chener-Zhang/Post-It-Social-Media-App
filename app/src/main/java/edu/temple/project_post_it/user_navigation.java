@@ -24,13 +24,12 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import edu.temple.project_post_it.ui.UserProfile.UserProfileFragment;
-import edu.temple.project_post_it.ui.dashboard.DashboardFragment;
 
 import static edu.temple.project_post_it.CONSTANT.LOCATION_BROADCAST;
 import static edu.temple.project_post_it.CONSTANT.LOCATION_KEY;
 
 public class user_navigation extends AppCompatActivity implements UserProfileFragment.OnDataPass_UserProfileFragment {
-    Intent mapServiceIntent;
+    Intent mapserviceIntent;
     IntentFilter broadcastFilter;
     Location location;
     public static LatLng loc;
@@ -51,6 +50,9 @@ public class user_navigation extends AppCompatActivity implements UserProfileFra
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
+        //Default navigation --------------------------------------------->
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_navigation);
         BottomNavigationView navView = findViewById(R.id.nav_view);
@@ -62,6 +64,13 @@ public class user_navigation extends AppCompatActivity implements UserProfileFra
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
+        //Default navigation --------------------------------------------->
+
+
+
+
+
+
 
 
         //Create notification channel
@@ -70,22 +79,19 @@ public class user_navigation extends AppCompatActivity implements UserProfileFra
                 NotificationManager.IMPORTANCE_DEFAULT
         );
         getSystemService(NotificationManager.class).createNotificationChannel(defaultChannel);
-        broadcastFilter = new IntentFilter();
-        broadcastFilter.addAction(LOCATION_BROADCAST);
-        LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(broadcastReceiver, broadcastFilter);
 
         //Check user permission for the ACCESS_FINE_LOCATION
         if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
-                mapServiceIntent = new Intent(this, MapService.class);
-                startService(mapServiceIntent);
-        } else {
-            //Init the mapServiceIntent
-            mapServiceIntent = new Intent(this, MapService.class);
-            startService(mapServiceIntent);
         }
 
+        //Init the mapserviceIntent
+        mapserviceIntent = new Intent(this, MapService.class);
+        startService(mapserviceIntent);
+
+        broadcastFilter = new IntentFilter();
+        broadcastFilter.addAction(LOCATION_BROADCAST);
+        LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(broadcastReceiver, broadcastFilter);
     }
 
     public void back_to_sign_activity() {
@@ -107,6 +113,6 @@ public class user_navigation extends AppCompatActivity implements UserProfileFra
     protected void onDestroy() {
         super.onDestroy();
         System.out.println("Map Service is stopped");
-        stopService(mapServiceIntent);
+        stopService(mapserviceIntent);
     }
 }
