@@ -16,6 +16,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.NavController;
@@ -24,12 +25,13 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import edu.temple.project_post_it.ui.UserProfile.UserProfileFragment;
+import edu.temple.project_post_it.ui.dashboard.DashboardFragment;
 
 import static edu.temple.project_post_it.CONSTANT.LOCATION_BROADCAST;
 import static edu.temple.project_post_it.CONSTANT.LOCATION_KEY;
 
 public class user_navigation extends AppCompatActivity implements UserProfileFragment.OnDataPass_UserProfileFragment {
-    Intent mapserviceIntent;
+    Intent mapServiceIntent;
     IntentFilter broadcastFilter;
     Location location;
     public static LatLng loc;
@@ -50,9 +52,6 @@ public class user_navigation extends AppCompatActivity implements UserProfileFra
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
-        //Default navigation --------------------------------------------->
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_navigation);
         BottomNavigationView navView = findViewById(R.id.nav_view);
@@ -64,13 +63,6 @@ public class user_navigation extends AppCompatActivity implements UserProfileFra
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
-        //Default navigation --------------------------------------------->
-
-
-
-
-
-
 
 
         //Create notification channel
@@ -79,20 +71,22 @@ public class user_navigation extends AppCompatActivity implements UserProfileFra
                 NotificationManager.IMPORTANCE_DEFAULT
         );
         getSystemService(NotificationManager.class).createNotificationChannel(defaultChannel);
-
-        //Check user permission for the ACCESS_FINE_LOCATION
-        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-        }
-
-        //Init the mapserviceIntent
-        mapserviceIntent = new Intent(this, MapService.class);
-        startService(mapserviceIntent);
-
         broadcastFilter = new IntentFilter();
         broadcastFilter.addAction(LOCATION_BROADCAST);
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(broadcastReceiver, broadcastFilter);
+        mapServiceIntent = new Intent(this, MapService.class);
+        startService(mapServiceIntent);
+
+        //Check user permission for the ACCESS_FINE_LOCATION
+        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        else {
+            //If user signed in with correct permissions
+            mapServiceIntent = new Intent(this, MapService.class);
+            startService(mapServiceIntent);
+        }
     }
+
 
     public void back_to_sign_activity() {
         Intent intent = new Intent(this, MainActivity.class);
@@ -113,6 +107,13 @@ public class user_navigation extends AppCompatActivity implements UserProfileFra
     protected void onDestroy() {
         super.onDestroy();
         System.out.println("Map Service is stopped");
-        stopService(mapserviceIntent);
+        stopService(mapServiceIntent);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        mapServiceIntent = new Intent(this, MapService.class);
+        startService(mapServiceIntent);
     }
 }
