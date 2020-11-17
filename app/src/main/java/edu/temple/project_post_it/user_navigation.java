@@ -24,6 +24,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import edu.temple.project_post_it.ui.UserProfile.UserProfileFragment;
+import edu.temple.project_post_it.ui.dashboard.DashboardFragment;
 
 import static edu.temple.project_post_it.CONSTANT.LOCATION_BROADCAST;
 import static edu.temple.project_post_it.CONSTANT.LOCATION_KEY;
@@ -50,9 +51,6 @@ public class user_navigation extends AppCompatActivity implements UserProfileFra
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
-        //Default navigation --------------------------------------------->
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_navigation);
         BottomNavigationView navView = findViewById(R.id.nav_view);
@@ -64,13 +62,6 @@ public class user_navigation extends AppCompatActivity implements UserProfileFra
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
-        //Default navigation --------------------------------------------->
-
-
-
-
-
-
 
 
         //Create notification channel
