@@ -2,6 +2,18 @@ package edu.temple.project_post_it.post;
 
 import android.location.Location;
 
+import com.google.firebase.database.Exclude;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static edu.temple.project_post_it.CONSTANT.GROUP_ID;
+import static edu.temple.project_post_it.CONSTANT.LOCATION;
+import static edu.temple.project_post_it.CONSTANT.POST_ID;
+import static edu.temple.project_post_it.CONSTANT.PRIVACY;
+import static edu.temple.project_post_it.CONSTANT.TEXT;
+import static edu.temple.project_post_it.CONSTANT.TYPE;
+
 public class Post {
     long Post_ID;
     Location location;
@@ -10,7 +22,7 @@ public class Post {
     String Text;
     int type;
 
-    public Post(long Post_ID, Location location, int Privacy, int type){
+    public Post(long Post_ID, Location location, int Privacy, int type) {
         this.Post_ID = Post_ID;
         this.location = location;
         this.privacy = Privacy;
@@ -64,4 +76,17 @@ public class Post {
     public void setType(int type) {
         this.type = type;
     }
+
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put(POST_ID, getPost_ID());
+        result.put(LOCATION, getLocation());
+        result.put(GROUP_ID, getGroup_ID());
+        result.put(PRIVACY, getPrivacy());
+        result.put(TEXT, getText());
+        result.put(TYPE, getType());
+        return result;
+    }
+
 }
