@@ -18,6 +18,9 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -26,11 +29,13 @@ import androidx.navigation.ui.NavigationUI;
 
 import edu.temple.project_post_it.ui.UserProfile.UserProfileFragment;
 import edu.temple.project_post_it.ui.dashboard.DashboardFragment;
+import edu.temple.project_post_it.ui.home.HomeFragment;
+import edu.temple.project_post_it.ui.home.PostCreationFragment;
 
 import static edu.temple.project_post_it.CONSTANT.LOCATION_BROADCAST;
 import static edu.temple.project_post_it.CONSTANT.LOCATION_KEY;
 
-public class user_navigation extends AppCompatActivity implements UserProfileFragment.OnDataPass_UserProfileFragment {
+public class user_navigation extends AppCompatActivity implements UserProfileFragment.OnDataPass_UserProfileFragment, HomeFragment.PostCreationInterface {
     Intent mapServiceIntent;
     IntentFilter broadcastFilter;
     Location location;
@@ -115,5 +120,35 @@ public class user_navigation extends AppCompatActivity implements UserProfileFra
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         mapServiceIntent = new Intent(this, MapService.class);
         startService(mapServiceIntent);
+    }
+
+    @Override
+    public void createTextPost() {
+        Fragment postFragment = PostCreationFragment.newInstance(0);
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(R.id.nav_host_fragment, postFragment);
+        ft.addToBackStack("Replacement");
+        ft.commit();
+    }
+
+    @Override
+    public void createPhotoPost() {
+        Fragment postFragment = PostCreationFragment.newInstance(1);
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(R.id.nav_host_fragment, postFragment);
+        ft.addToBackStack("Replacement");
+        ft.commit();
+    }
+
+    @Override
+    public void createAudioPost() {
+        Fragment postFragment = PostCreationFragment.newInstance(2);
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(R.id.nav_host_fragment, postFragment);
+        ft.addToBackStack("Replacement");
+        ft.commit();
     }
 }

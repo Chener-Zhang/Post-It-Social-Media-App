@@ -50,7 +50,7 @@ public class MapService extends Service {
 
         Notification notification = new NotificationCompat.Builder(this, "MapService")
                 .setSmallIcon(R.drawable.ic_launcher_background)
-                .setContentTitle("Contact Tracing")
+                .setContentTitle("Post-It")
                 .setContentText("Currently Tracing location")
                 .setContentIntent(pi)
                 .build();
