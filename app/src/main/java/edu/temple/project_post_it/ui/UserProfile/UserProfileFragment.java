@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -47,6 +48,7 @@ public class UserProfileFragment extends Fragment {
         //Set the xml element
         sign_out_button = root.findViewById(R.id.logout_button);
         User_UID = root.findViewById(R.id.user_uid);
+        Button settingsButton = root.findViewById(R.id.settings_button);
 
         set_UID();
         sign_out_button.setOnClickListener(new View.OnClickListener() {
@@ -56,6 +58,8 @@ public class UserProfileFragment extends Fragment {
                 main_activity.sign_out();
             }
         });
+
+        settingsButton.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_navigation_userprofile_to_settingsFragment, null));
 
         return root;
     }

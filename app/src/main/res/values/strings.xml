@@ -20,4 +20,12 @@
     values-round/strings.xml for round devices.
     -->
     <string name="hello_world">Hello Square World!</string>
+    <!-- Preference Titles -->
+    <string name="map_display">Map Display</string>
+
+    <!-- Map Display Preferences -->
+    <string name="show_group">Show Posts From Group</string>
+    <string name="show_anon">Show Anonymous Posts</string>
+    <string name="show_all">Show All Posts</string>
+
 </resources>
