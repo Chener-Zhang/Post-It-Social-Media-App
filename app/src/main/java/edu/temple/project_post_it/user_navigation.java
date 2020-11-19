@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -23,6 +24,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
@@ -39,6 +41,7 @@ public class user_navigation extends AppCompatActivity implements UserProfileFra
     Intent mapServiceIntent;
     IntentFilter broadcastFilter;
     Location location;
+    NavController navController;
     public static LatLng loc;
 
 
@@ -65,7 +68,7 @@ public class user_navigation extends AppCompatActivity implements UserProfileFra
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_userprofile)
                 .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 
@@ -90,6 +93,7 @@ public class user_navigation extends AppCompatActivity implements UserProfileFra
             mapServiceIntent = new Intent(this, MapService.class);
             startService(mapServiceIntent);
         }
+        
     }
 
 
@@ -124,31 +128,14 @@ public class user_navigation extends AppCompatActivity implements UserProfileFra
 
     @Override
     public void createTextPost() {
-        Fragment postFragment = PostCreationFragment.newInstance(0);
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(R.id.nav_host_fragment, postFragment);
-        ft.addToBackStack("Replacement");
-        ft.commit();
     }
 
     @Override
     public void createPhotoPost() {
-        Fragment postFragment = PostCreationFragment.newInstance(1);
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(R.id.nav_host_fragment, postFragment);
-        ft.addToBackStack("Replacement");
-        ft.commit();
     }
 
     @Override
     public void createAudioPost() {
-        Fragment postFragment = PostCreationFragment.newInstance(2);
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(R.id.nav_host_fragment, postFragment);
-        ft.addToBackStack("Replacement");
-        ft.commit();
+
     }
 }

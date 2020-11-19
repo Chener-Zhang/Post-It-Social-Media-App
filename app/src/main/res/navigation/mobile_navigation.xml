@@ -9,7 +9,17 @@
         android:id="@+id/navigation_home"
         android:name="edu.temple.project_post_it.ui.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_navigation_home_to_postCreationFragment"
+            app:destination="@id/textPostCreation" />
+        <action
+            android:id="@+id/action_navigation_home_to_imageCreationFragment"
+            app:destination="@id/imageCreationFragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_audioCreationFragment"
+            app:destination="@id/audioCreationFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_dashboard"
@@ -22,4 +32,19 @@
         android:name="edu.temple.project_post_it.ui.UserProfile.UserProfileFragment"
         android:label="@string/userprofile"
         tools:layout="@layout/fragment_userprofile" />
+    <fragment
+        android:id="@+id/textPostCreation"
+        android:name="edu.temple.project_post_it.ui.home.PostCreationFragment"
+        android:label="@string/title_post_creation"
+        tools:layout="@layout/fragment_post_creation" />
+    <fragment
+        android:id="@+id/imageCreationFragment"
+        android:name="edu.temple.project_post_it.ui.home.ImageCreationFragment"
+        android:label="fragment_image_creation"
+        tools:layout="@layout/fragment_image_creation" />
+    <fragment
+        android:id="@+id/audioCreationFragment"
+        android:name="edu.temple.project_post_it.ui.home.AudioCreationFragment"
+        android:label="fragment_audio_creation"
+        tools:layout="@layout/fragment_audio_creation" />
 </navigation>
