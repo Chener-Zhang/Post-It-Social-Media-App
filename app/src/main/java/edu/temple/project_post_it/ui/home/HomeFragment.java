@@ -1,6 +1,5 @@
 package edu.temple.project_post_it.ui.home;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +10,11 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import com.google.firebase.auth.FirebaseAuth;
+
+import edu.temple.project_post_it.DataBase_Management;
 import edu.temple.project_post_it.R;
+import edu.temple.project_post_it.post.Post;
 
 public class HomeFragment extends Fragment {
 
@@ -33,7 +36,16 @@ public class HomeFragment extends Fragment {
         photoButton = root.findViewById(R.id.photoButton);
         photoButton.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_navigation_home_to_imageCreationFragment, null));
 
+        data_test();
 
         return root;
+    }
+
+    public void data_test() {
+        //post test----------------------->
+        Post post = new Post(0, null, 0, 0);
+        DataBase_Management dataBase_management = new DataBase_Management();
+        dataBase_management.add_post(post, FirebaseAuth.getInstance().getUid());
+        //post test----------------------->
     }
 }

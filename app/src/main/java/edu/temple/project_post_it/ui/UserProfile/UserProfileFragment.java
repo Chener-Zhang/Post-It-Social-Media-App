@@ -21,7 +21,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import edu.temple.project_post_it.DataBase_Management;
 import edu.temple.project_post_it.R;
-import edu.temple.project_post_it.post.Post;
 
 public class UserProfileFragment extends Fragment {
 
@@ -59,10 +58,6 @@ public class UserProfileFragment extends Fragment {
 
         set_UID();
 
-        //post test----------------------->
-        Post post = new Post(0, null, 0, 0);
-        dataBase_management.add_post(post, FirebaseAuth.getInstance().getUid());
-//        //post test----------------------->
 
         sign_out_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,6 +73,7 @@ public class UserProfileFragment extends Fragment {
     public void set_UID() {
         //check if the user already exit
         dataBase_management.databaseReference = dataBase_management.rootNode.getReference().child("Members");
+
         dataBase_management.databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -86,6 +82,7 @@ public class UserProfileFragment extends Fragment {
 
                 if (!snapshot.hasChild(user_id)) {
                     //If the user not exit
+                    System.out.println("the code goes here------------------------------------>");
                     dataBase_management.add_user(user_id);
                 }
             }

@@ -34,21 +34,21 @@ public class DataBase_Management {
 
 
     //Mock data require debug
-    public void add_user(String user_id) {
-        databaseReference = rootNode.getReference().child("Members");
+    public void add_user(String Uid) {
+        databaseReference = rootNode.getReference().child("Members/" + Uid + "/Info");
         User user = new User();
-        user.setUser_id(user_id);
+        user.setUser_id(Uid);
         user.setNumber_posts(0);
         user.setUser_groud_id("test_group_id");
         ArrayList<Post> post = new ArrayList<Post>();
         post.add(null);
         user.setUser_posts(post);
-        databaseReference.child(user_id).setValue(user);
+        databaseReference.setValue(user);
     }
 
     public void add_post(Post post, String Uid) {
-        databaseReference = rootNode.getReference().child("Members/" + Uid);
-        databaseReference.child("Post").setValue(post);
+        databaseReference = rootNode.getReference().child("Members/" + Uid + "/Post");
+        databaseReference.setValue(post);
     }
 
 
