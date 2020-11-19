@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_navigation_home_to_postCreationFragment"
-            app:destination="@id/textPostCreation" />
+            app:destination="@id/textPostCreationLayout" />
         <action
             android:id="@+id/action_navigation_home_to_imageCreationFragment"
             app:destination="@id/imageCreationFragment" />
@@ -33,7 +33,7 @@
         android:label="@string/userprofile"
         tools:layout="@layout/fragment_userprofile" />
     <fragment
-        android:id="@+id/textPostCreation"
+        android:id="@+id/textPostCreationLayout"
         android:name="edu.temple.project_post_it.ui.home.PostCreationFragment"
         android:label="@string/title_post_creation"
         tools:layout="@layout/fragment_post_creation" />
