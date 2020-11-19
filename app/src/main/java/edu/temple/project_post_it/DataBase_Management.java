@@ -19,8 +19,8 @@ import edu.temple.project_post_it.user.User;
 
 public class DataBase_Management {
     //RootNode = postit-8d9a4
-    FirebaseDatabase rootNode;
-    DatabaseReference databaseReference;
+    public FirebaseDatabase rootNode;
+    public DatabaseReference databaseReference;
 
     public DataBase_Management() {
         rootNode = FirebaseDatabase.getInstance();
