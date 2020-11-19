@@ -23,6 +23,7 @@ import java.util.Calendar;
 
 import edu.temple.project_post_it.R;
 import edu.temple.project_post_it.post.Post;
+import edu.temple.project_post_it.user_navigation;
 
 import static edu.temple.project_post_it.CONSTANT.LOCATION_BROADCAST;
 import static edu.temple.project_post_it.CONSTANT.LOCATION_KEY;
@@ -75,16 +76,10 @@ public class PostCreationFragment extends Fragment {
         privacySwitch = view.findViewById(R.id.privacyCheckBox);
         createPostButton = view.findViewById(R.id.createPostButton);
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                //Get the data from the MapService
-                if (intent.getAction().equals(LOCATION_BROADCAST)) {
-                    location = intent.getParcelableExtra(LOCATION_KEY);
-                    latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                }
-            }
-        };
+        if (user_navigation.loc != null){
+            latLng = user_navigation.loc;
+        }
+
 
         createPostButton.setOnClickListener(new View.OnClickListener() {
             @Override
