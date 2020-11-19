@@ -37,7 +37,7 @@ import edu.temple.project_post_it.ui.home.PostCreationFragment;
 import static edu.temple.project_post_it.CONSTANT.LOCATION_BROADCAST;
 import static edu.temple.project_post_it.CONSTANT.LOCATION_KEY;
 
-public class user_navigation extends AppCompatActivity implements UserProfileFragment.OnDataPass_UserProfileFragment, HomeFragment.PostCreationInterface {
+public class user_navigation extends AppCompatActivity implements UserProfileFragment.OnDataPass_UserProfileFragment {
     Intent mapServiceIntent;
     IntentFilter broadcastFilter;
     Location location;
@@ -124,18 +124,5 @@ public class user_navigation extends AppCompatActivity implements UserProfileFra
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         mapServiceIntent = new Intent(this, MapService.class);
         startService(mapServiceIntent);
-    }
-
-    @Override
-    public void createTextPost() {
-    }
-
-    @Override
-    public void createPhotoPost() {
-    }
-
-    @Override
-    public void createAudioPost() {
-
     }
 }

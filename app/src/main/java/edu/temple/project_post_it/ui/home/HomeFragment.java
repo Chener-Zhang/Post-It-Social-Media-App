@@ -15,7 +15,6 @@ import edu.temple.project_post_it.R;
 
 public class HomeFragment extends Fragment {
 
-    PostCreationInterface mListener;
     Button textButton;
     Button photoButton;
     Button audioButton;
@@ -36,19 +35,5 @@ public class HomeFragment extends Fragment {
 
 
         return root;
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        if (context instanceof PostCreationInterface){
-            mListener = (PostCreationInterface) context;
-        }
-    }
-
-    public interface PostCreationInterface {
-        public void createTextPost();
-        public void createAudioPost();
-        public void createPhotoPost();
     }
 }
