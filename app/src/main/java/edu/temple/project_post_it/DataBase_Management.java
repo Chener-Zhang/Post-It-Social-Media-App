@@ -98,6 +98,7 @@ public class DataBase_Management {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                //        if (!snapshot.hasChild(user_id)) check user exist
                 snapshot.getRef().removeValue();
             }
 
@@ -124,3 +125,5 @@ public class DataBase_Management {
 
     }
 }
+
+
