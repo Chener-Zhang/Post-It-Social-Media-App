@@ -40,10 +40,15 @@ public class DataBase_Management {
         user.setUser_id(user_id);
         user.setNumber_posts(0);
         user.setUser_groud_id("test_group_id");
-        ArrayList<Post> test = new ArrayList<Post>();
-        test.add(null);
-        user.setUser_posts(test);
+        ArrayList<Post> post = new ArrayList<Post>();
+        post.add(null);
+        user.setUser_posts(post);
         databaseReference.child(user_id).setValue(user);
+    }
+
+    public void add_post(Post post, String Uid) {
+        databaseReference = rootNode.getReference().child("Members/" + Uid);
+        databaseReference.child("Post").setValue(post);
     }
 
 

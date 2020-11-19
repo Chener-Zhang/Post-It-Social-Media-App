@@ -14,6 +14,15 @@ public class User {
 
     }
 
+
+    public boolean add_post() {
+        return false;
+    }
+
+    public boolean delete_post() {
+        return false;
+    }
+
     public String getUser_id() {
         return user_id;
     }
@@ -44,14 +53,6 @@ public class User {
 
     public void setUser_posts(ArrayList<Post> user_posts) {
         this.user_posts = user_posts;
-    }
-
-    public boolean delete_post() {
-        return false;
-    }
-
-    public boolean add_post() {
-        return false;
     }
 
 }

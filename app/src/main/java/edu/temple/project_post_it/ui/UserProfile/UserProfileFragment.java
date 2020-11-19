@@ -19,12 +19,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-
 import edu.temple.project_post_it.DataBase_Management;
 import edu.temple.project_post_it.R;
 import edu.temple.project_post_it.post.Post;
-import edu.temple.project_post_it.user.User;
 
 public class UserProfileFragment extends Fragment {
 
@@ -61,6 +58,12 @@ public class UserProfileFragment extends Fragment {
         User_UID = root.findViewById(R.id.user_uid);
 
         set_UID();
+
+        //post test----------------------->
+        Post post = new Post(0, null, 0, 0);
+        dataBase_management.add_post(post, FirebaseAuth.getInstance().getUid());
+//        //post test----------------------->
+
         sign_out_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,16 +83,10 @@ public class UserProfileFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 //If the user already exit
                 String user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
                 if (!snapshot.hasChild(user_id)) {
                     //If the user not exit
-                    User user = new User();
-                    user.setUser_id(user_id);
-                    user.setNumber_posts(0);
-                    user.setUser_groud_id("test_group_id");
-                    ArrayList<Post> test = new ArrayList<Post>();
-                    test.add(null);
-                    user.setUser_posts(test);
-                    dataBase_management.databaseReference.child(user_id).setValue(user);
+                    dataBase_management.add_user(user_id);
                 }
             }
 
@@ -102,6 +99,7 @@ public class UserProfileFragment extends Fragment {
         //Set the user information
         user = FirebaseAuth.getInstance().getCurrentUser();
         User_UID.setText(user.getUid());
+
 
     }
 
