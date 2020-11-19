@@ -28,4 +28,9 @@
     <string name="show_anon">Show Anonymous Posts</string>
     <string name="show_all">Show All Posts</string>
 
+    <!-- Settings Keys -->
+    <string name="anon_key">ANON KEY</string>
+    <string name="group_key">GROUP KEY</string>
+    <string name="all_key">ALL KEY</string>
+
 </resources>
