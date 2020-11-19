@@ -9,7 +9,11 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="title_post_creation">Post</string>
+    <string name="title_audio_creation">Post Audio</string>
+    <string name="title_image_creation">Post Image</string>
     <string name="userprofile">UserProfile</string>
+
     <string name="title_activity_data_test_activity">data_test_activity</string>
     <!--
     This string is used for square devices and overridden by hello_world in
