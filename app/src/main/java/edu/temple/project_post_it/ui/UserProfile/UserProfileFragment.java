@@ -16,9 +16,8 @@ import androidx.fragment.app.Fragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import edu.temple.project_post_it.DataBase_Management;
+import edu.temple.project_post_it.dataBaseManagement;
 import edu.temple.project_post_it.R;
-import edu.temple.project_post_it.user.User;
 
 public class UserProfileFragment extends Fragment {
 
@@ -32,7 +31,7 @@ public class UserProfileFragment extends Fragment {
 
     //Firebase
     FirebaseUser user;
-    DataBase_Management dataBase_management;
+    dataBaseManagement dataBase_management;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -47,7 +46,7 @@ public class UserProfileFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_userprofile, container, false);
 
         //Setup the database management
-        dataBase_management = new DataBase_Management();
+        dataBase_management = new dataBaseManagement();
 
 
         //Set the xml element
@@ -55,7 +54,6 @@ public class UserProfileFragment extends Fragment {
         User_UID = root.findViewById(R.id.user_uid);
 
         set_UID();
-
 
         sign_out_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,7 +69,7 @@ public class UserProfileFragment extends Fragment {
     public void set_UID() {
         //Set the user information
         user = FirebaseAuth.getInstance().getCurrentUser();
-        dataBase_management.add_user(user.getUid());
+        dataBase_management.dataBaseAddUser(user.getUid());
         User_UID.setText(user.getUid());
 
     }
