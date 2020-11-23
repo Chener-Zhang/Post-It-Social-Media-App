@@ -31,6 +31,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import edu.temple.project_post_it.R;
+import edu.temple.project_post_it.post.ImagePost;
 import edu.temple.project_post_it.post.Post;
 import edu.temple.project_post_it.user_navigation;
 
@@ -101,7 +102,7 @@ public class ImageCreationFragment extends Fragment {
             latLng = user_navigation.loc;
         }
         activity = getActivity();
-        takePhotoButton = view.findViewById(R.id.takePictureButton);
+        takePhotoButton = view.findViewById(R.id.recordButton);
 
 
         takePhotoButton.setOnClickListener(new View.OnClickListener() {
@@ -132,7 +133,7 @@ public class ImageCreationFragment extends Fragment {
                     isPublic = false;
                 }
                 String post_id = Calendar.getInstance().getTime().toString() + currentUser.getUid();
-                Post post = new Post(post_id, isPublic, 0);
+                Post post = new ImagePost(post_id, isPublic, 1, imageUri);
                 post.setTitle(title);
                 post.setText(descritpion);
                 if (latLng != null){

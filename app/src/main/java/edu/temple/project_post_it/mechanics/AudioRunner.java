@@ -12,11 +12,13 @@ import java.util.Date;
 
 public class AudioRunner {
     MediaRecorder recorder;
+    boolean isRecording;
     String currentAudioPath;
     Activity activity;
 
     public AudioRunner(Activity activity){
         this.activity = activity;
+        isRecording = false;
     }
 
     public File createAudioFile() throws IOException {
@@ -32,7 +34,7 @@ public class AudioRunner {
         return audio;
     }
 
-    private void startRecording() {
+    public void startRecording() {
         recorder = new MediaRecorder();
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
@@ -46,11 +48,21 @@ public class AudioRunner {
         }
 
         recorder.start();
+        isRecording = true;
     }
 
-    private void stopRecording() {
+    public void stopRecording() {
         recorder.stop();
         recorder.release();
         recorder = null;
+        isRecording = true;
+    }
+
+    public String getCurrentAudioPath() {
+        return currentAudioPath;
+    }
+
+    public boolean isRecording() {
+        return isRecording;
     }
 }

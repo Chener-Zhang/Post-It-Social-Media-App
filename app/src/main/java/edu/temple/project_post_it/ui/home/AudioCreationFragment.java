@@ -1,5 +1,7 @@
 package edu.temple.project_post_it.ui.home;
 
+import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,8 +9,23 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.TextView;
+
+import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Calendar;
 
 import edu.temple.project_post_it.R;
+import edu.temple.project_post_it.mechanics.AudioRunner;
+import edu.temple.project_post_it.post.AudioPost;
+import edu.temple.project_post_it.post.Post;
+import edu.temple.project_post_it.user_navigation;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -17,33 +34,28 @@ import edu.temple.project_post_it.R;
  */
 public class AudioCreationFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private static final String MODE = "MODE";
+    private int mode;
+    TextView titleView;
+    String title;
+    TextView descriptionView;
+    String descritpion;
+    CheckBox privacySwitch;
+    boolean isPublic;
+    Button createPostButton;
+    Button recordButton;
+    Location location;
+    LatLng latLng;
+    FirebaseUser currentUser;
+    AudioRunner audioRunner;
 
     public AudioCreationFragment() {
         // Required empty public constructor
     }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment AudioCreationFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static AudioCreationFragment newInstance(String param1, String param2) {
-        AudioCreationFragment fragment = new AudioCreationFragment();
+    public static PostCreationFragment newInstance(int mode) {
+        PostCreationFragment fragment = new PostCreationFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putInt(MODE, mode);
         fragment.setArguments(args);
         return fragment;
     }
@@ -52,15 +64,87 @@ public class AudioCreationFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mode = getArguments().getInt(MODE);
         }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_audio_creation, container, false);
+        View view = inflater.inflate(R.layout.fragment_audio_creation, container, false);
+        title = "Untitled";
+        descritpion = "No Description";
+        isPublic = true;
+        titleView = view.findViewById(R.id.titleEditText);
+        descriptionView = view.findViewById(R.id.descriptionEditText);
+        privacySwitch = view.findViewById(R.id.privacyCheckBox);
+        createPostButton = view.findViewById(R.id.createPostButton);
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        audioRunner = new AudioRunner(getActivity());
+        if (user_navigation.loc != null){
+            latLng = user_navigation.loc;
+        }
+
+        recordButton = view.findViewById(R.id.recordButton);
+        recordButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!(audioRunner.isRecording())){
+                    recordButton.setText("Stop Recording");
+                    try {
+                        audioRunner.createAudioFile();
+                        audioRunner.startRecording();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                } else {
+                    recordButton.setText("Record");
+                    audioRunner.stopRecording();
+                }
+            }
+        });
+
+
+
+
+        createPostButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String titleTest = titleView.getText().toString();
+                String descriptionTest = (String) descriptionView.getText().toString();
+                if (titleTest.length() > 0){
+                    title = titleTest;
+                }
+                if (descriptionTest.length() > 0){
+                    descritpion = descriptionTest;
+                }
+                if (privacySwitch.isChecked()){
+                    isPublic = false;
+                }
+                File audioFile = new File(audioRunner.getCurrentAudioPath());
+                String post_id = Calendar.getInstance().getTime().toString() + currentUser.getUid();
+                Post post = new AudioPost(post_id, isPublic, 2, audioFile);
+                post.setTitle(title);
+                post.setText(descritpion);
+                if (latLng != null){
+                    post.setLocation(latLng);
+                }
+                savePost();
+
+            }
+        });
+
+
+
+        return view;
     }
+
+    public static void savePost(){
+        //This method is where the new post will be saved to the database. This method, when called, will also return the user back to the homepage.
+
+    }
+
 }
