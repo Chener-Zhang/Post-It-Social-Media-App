@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import edu.temple.project_post_it.post.ImagePost;
 import edu.temple.project_post_it.post.Post;
 import edu.temple.project_post_it.user.User;
 
@@ -37,12 +38,22 @@ public class DataBase_Management {
     public void add_user(String Uid) {
         databaseReference = rootNode.getReference().child("Members/" + Uid + "/Info");
         User user = new User();
+
+
+        //Mocking data --------------------->
+        Post post1 = new Post(123, null, 1, 1);
+        Post post2 = new Post(666, null, 4, 2);
+        Post post3 = new Post(897, null, 5, 3);
+        Post post4 = new ImagePost(78,null,0,6,null);
+        user.add_post(post1);
+        user.add_post(post2);
+        user.add_post(post3);
+        user.add_post(post4);
         user.setUser_id(Uid);
-        user.setNumber_posts(0);
+        user.setNumber_posts(user.getNumber_posts());
         user.setUser_groud_id("test_group_id");
-        ArrayList<Post> post = new ArrayList<Post>();
-        post.add(null);
-        user.setUser_posts(post);
+        //Mocking data --------------------->
+
         databaseReference.setValue(user);
     }
 

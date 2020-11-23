@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import edu.temple.project_post_it.DataBase_Management;
 import edu.temple.project_post_it.R;
+import edu.temple.project_post_it.user.User;
 
 public class UserProfileFragment extends Fragment {
 
@@ -72,7 +73,6 @@ public class UserProfileFragment extends Fragment {
         user = FirebaseAuth.getInstance().getCurrentUser();
         dataBase_management.add_user(user.getUid());
         User_UID.setText(user.getUid());
-
 
     }
 

@@ -11,16 +11,16 @@ public class User {
     public ArrayList<Post> user_posts;
 
     public User() {
-
+        user_posts = new ArrayList<Post>();
     }
 
 
-    public boolean add_post() {
-        return false;
+    public void add_post(Post post) {
+        user_posts.add(post);
     }
 
-    public boolean delete_post() {
-        return false;
+    public void delete_post() {
+
     }
 
     public String getUser_id() {
@@ -40,7 +40,7 @@ public class User {
     }
 
     public int getNumber_posts() {
-        return number_posts;
+        return user_posts.size();
     }
 
     public void setNumber_posts(int number_posts) {

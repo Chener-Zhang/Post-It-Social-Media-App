@@ -36,16 +36,15 @@ public class HomeFragment extends Fragment {
         photoButton = root.findViewById(R.id.photoButton);
         photoButton.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_navigation_home_to_imageCreationFragment, null));
 
-        data_test();
-
         return root;
     }
 
-    public void data_test() {
-        //post test----------------------->
-        Post post = new Post(0, null, 0, 0);
-        DataBase_Management dataBase_management = new DataBase_Management();
-        dataBase_management.add_post(post, FirebaseAuth.getInstance().getUid());
-        //post test----------------------->
-    }
+//    //Will detele later, for now just for testing
+//    public void data_test() {
+//        //post test----------------------->
+//        Post post = new Post(0, null, 0, 0);
+//        DataBase_Management dataBase_management = new DataBase_Management();
+//        dataBase_management.add_post(post, FirebaseAuth.getInstance().getUid());
+//        //post test----------------------->
+//    }
 }
