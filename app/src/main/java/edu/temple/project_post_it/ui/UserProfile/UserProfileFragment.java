@@ -15,6 +15,9 @@ import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 import edu.temple.project_post_it.dataBaseManagement;
 import edu.temple.project_post_it.R;
@@ -72,7 +75,24 @@ public class UserProfileFragment extends Fragment {
     public void set_UID() {
         //Set the user information
         user = FirebaseAuth.getInstance().getCurrentUser();
-        dataBase_management.dataBaseAddUser(user.getUid());
+        dataBase_management.databaseReference = dataBase_management.rootNode.getReference("Members");
+        dataBase_management.databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                if (!snapshot.hasChild(user.getUid())) {
+                    dataBase_management.dataBaseAddUser(user.getUid());
+                } else {
+                    Log.i("USER", "ALREADY EXIST");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
         User_UID.setText(user.getUid());
     }
 

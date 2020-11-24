@@ -17,6 +17,7 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
 
 import edu.temple.project_post_it.R;
 import edu.temple.project_post_it.dataBaseManagement;
@@ -49,8 +50,8 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onClick(View v) {
                 dataBaseManagement dataBaseManagement = new dataBaseManagement();
-                Post mypost = new Post(0, null, 555, 555);
-                dataBaseManagement.dataBaseSavePost("5su5tQCb1OM9acBbx1m4tRaPdZf1", mypost);
+                Post mypost = new Post("test", true, 555);
+                dataBaseManagement.dataBaseSavePost(FirebaseAuth.getInstance().getUid(), mypost);
             }
         });
 
