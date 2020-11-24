@@ -31,7 +31,11 @@
         android:id="@+id/navigation_userprofile"
         android:name="edu.temple.project_post_it.ui.UserProfile.UserProfileFragment"
         android:label="@string/userprofile"
-        tools:layout="@layout/fragment_userprofile" />
+        tools:layout="@layout/fragment_userprofile" >
+        <action
+            android:id="@+id/action_navigation_userprofile_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/textPostCreation"
         android:name="edu.temple.project_post_it.ui.home.PostCreationFragment"
@@ -47,4 +51,8 @@
         android:name="edu.temple.project_post_it.ui.home.AudioCreationFragment"
         android:label="fragment_audio_creation"
         tools:layout="@layout/fragment_audio_creation" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="edu.temple.project_post_it.ui.UserProfile.SettingsFragment"
+        android:label="SettingsFragment" />
 </navigation>
