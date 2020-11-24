@@ -108,7 +108,10 @@ public class PostCreationFragment extends Fragment {
                 post.setTitle(title);
                 post.setText(descritpion);
                 post.setPrivacy(isPublic);
+
+                //Set is Public back to true
                 isPublic = true;
+
                 if (latLng != null) {
                     post.setLocation(latLng);
                 }
