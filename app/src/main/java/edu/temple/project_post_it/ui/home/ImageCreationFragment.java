@@ -31,6 +31,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import edu.temple.project_post_it.R;
+import edu.temple.project_post_it.dataBaseManagement;
 import edu.temple.project_post_it.post.ImagePost;
 import edu.temple.project_post_it.post.Post;
 import edu.temple.project_post_it.user_navigation;
@@ -64,6 +65,7 @@ public class ImageCreationFragment extends Fragment {
     String currentPhotoPath;
     static Uri photoURI;
     static final int REQUEST_TAKE_PHOTO = 713;
+    edu.temple.project_post_it.dataBaseManagement dataBaseManagement;
 
     public ImageCreationFragment() {
         // Required empty public constructor
@@ -89,7 +91,8 @@ public class ImageCreationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_image_creation, container, false);
+        final View view = inflater.inflate(R.layout.fragment_image_creation, container, false);
+        dataBaseManagement = new dataBaseManagement();
         title = "Untitled";
         descritpion = "No Description";
         isPublic = true;
@@ -121,25 +124,30 @@ public class ImageCreationFragment extends Fragment {
         createPostButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (imageUri == null) {
+                    Toast.makeText(view.getContext(), "You must take a photo first!", Toast.LENGTH_SHORT).show();
+                } else {
+
                 String titleTest = titleView.getText().toString();
                 String descriptionTest = (String) descriptionView.getText().toString();
-                if (titleTest.length() > 0){
+                if (titleTest.length() > 0) {
                     title = titleTest;
                 }
-                if (descriptionTest.length() > 0){
+                if (descriptionTest.length() > 0) {
                     descritpion = descriptionTest;
                 }
-                if (privacySwitch.isChecked()){
+                if (privacySwitch.isChecked()) {
                     isPublic = false;
                 }
                 String post_id = Calendar.getInstance().getTime().toString() + currentUser.getUid();
-                Post post = new ImagePost(post_id, isPublic, 1, imageUri);
+                ImagePost post = new ImagePost(post_id, isPublic, 1, imageUri);
                 post.setTitle(title);
                 post.setText(descritpion);
-                if (latLng != null){
+                if (latLng != null) {
                     post.setLocation(latLng);
                 }
-                savePost();
+                savePost(post);
+            }
 
             }
         });
@@ -149,8 +157,10 @@ public class ImageCreationFragment extends Fragment {
         return view;
     }
 
-    public static void savePost(){
+    public void savePost(ImagePost post){
         //This method is where the new post will be saved to the database. This method, when called, will also return the user back to the homepage.
+        dataBaseManagement.dataBaseSavePost(FirebaseAuth.getInstance().getUid(), post);
+        Toast.makeText(this.getContext(), "Post Saved!", Toast.LENGTH_SHORT).show();
 
     }
 

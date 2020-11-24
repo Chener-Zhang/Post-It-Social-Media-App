@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
@@ -128,6 +129,7 @@ public class PostCreationFragment extends Fragment {
     public void savePost(Post post) {
         //This method is where the new post will be saved to the database. This method, when called, will also return the user back to the homepage.
         this.dataBaseManagement.dataBaseSavePost(FirebaseAuth.getInstance().getUid(), post);
+        Toast.makeText(this.getContext(), "Post Saved!", Toast.LENGTH_SHORT).show();
     }
 
 }
