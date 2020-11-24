@@ -52,7 +52,7 @@ public class dataBaseManagement {
 
     public void dataBaseSavePost(String Uid, Post post) {
         databaseReference = rootNode.getReference().child("Members/" + Uid + "/Info");
-        databaseReference.child("user_posts").push().setValue(post);
+        databaseReference.child("user_posts").child(post.getPost_ID()).push().setValue(post);
     }
 
 

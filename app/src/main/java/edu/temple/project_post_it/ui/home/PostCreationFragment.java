@@ -46,6 +46,7 @@ public class PostCreationFragment extends Fragment {
     public PostCreationFragment() {
         // Required empty public constructor
     }
+
     public static PostCreationFragment newInstance(int mode) {
         PostCreationFragment fragment = new PostCreationFragment();
         Bundle args = new Bundle();
@@ -76,7 +77,7 @@ public class PostCreationFragment extends Fragment {
         privacySwitch = view.findViewById(R.id.privacyCheckBox);
         createPostButton = view.findViewById(R.id.createPostButton);
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (user_navigation.loc != null){
+        if (user_navigation.loc != null) {
             latLng = user_navigation.loc;
         }
 
@@ -86,20 +87,21 @@ public class PostCreationFragment extends Fragment {
             public void onClick(View v) {
                 String titleTest = titleView.getText().toString();
                 String descriptionTest = (String) descriptionView.getText().toString();
-                if (titleTest.length() > 0){
+
+                if (titleTest.length() > 0) {
                     title = titleTest;
                 }
-                if (descriptionTest.length() > 0){
+                if (descriptionTest.length() > 0) {
                     descritpion = descriptionTest;
                 }
-                if (privacySwitch.isChecked()){
+                if (privacySwitch.isChecked()) {
                     isPublic = false;
                 }
                 String post_id = Calendar.getInstance().getTime().toString() + currentUser.getUid();
                 Post post = new Post(post_id, isPublic, 0);
                 post.setTitle(title);
                 post.setText(descritpion);
-                if (latLng != null){
+                if (latLng != null) {
                     post.setLocation(latLng);
                 }
                 savePost();
@@ -108,11 +110,10 @@ public class PostCreationFragment extends Fragment {
         });
 
 
-
         return view;
     }
 
-    public static void savePost(){
+    public static void savePost() {
         //This method is where the new post will be saved to the database. This method, when called, will also return the user back to the homepage.
 
     }
