@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,11 +23,9 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.Calendar;
 
 import edu.temple.project_post_it.R;
+import edu.temple.project_post_it.dataBaseManagement;
 import edu.temple.project_post_it.post.Post;
 import edu.temple.project_post_it.user_navigation;
-
-import static edu.temple.project_post_it.CONSTANT.LOCATION_BROADCAST;
-import static edu.temple.project_post_it.CONSTANT.LOCATION_KEY;
 
 public class PostCreationFragment extends Fragment {
 
@@ -42,6 +41,7 @@ public class PostCreationFragment extends Fragment {
     Location location;
     LatLng latLng;
     FirebaseUser currentUser;
+    dataBaseManagement dataBaseManagement;
 
     public PostCreationFragment() {
         // Required empty public constructor
@@ -67,6 +67,9 @@ public class PostCreationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        //Init database management
+        dataBaseManagement = new dataBaseManagement();
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_post_creation, container, false);
         title = "Untitled";
@@ -97,14 +100,19 @@ public class PostCreationFragment extends Fragment {
                 if (privacySwitch.isChecked()) {
                     isPublic = false;
                 }
+
+                //Init the post class
+
                 String post_id = Calendar.getInstance().getTime().toString() + currentUser.getUid();
                 Post post = new Post(post_id, isPublic, 0);
                 post.setTitle(title);
                 post.setText(descritpion);
+                post.setPrivacy(isPublic);
+                isPublic = true;
                 if (latLng != null) {
                     post.setLocation(latLng);
                 }
-                savePost();
+                savePost(post);
 
             }
         });
@@ -113,9 +121,9 @@ public class PostCreationFragment extends Fragment {
         return view;
     }
 
-    public static void savePost() {
+    public void savePost(Post post) {
         //This method is where the new post will be saved to the database. This method, when called, will also return the user back to the homepage.
-
+        this.dataBaseManagement.dataBaseSavePost(FirebaseAuth.getInstance().getUid(), post);
     }
 
 }

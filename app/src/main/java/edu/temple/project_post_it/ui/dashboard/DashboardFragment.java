@@ -44,18 +44,6 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
         mapView.getMapAsync(this);
         mapView.onCreate(savedInstanceState);
 
-
-        Button test = root.findViewById(R.id.test_button);
-        test.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dataBaseManagement dataBaseManagement = new dataBaseManagement();
-                Post mypost = new Post("test", true, 555);
-                dataBaseManagement.dataBaseSavePost(FirebaseAuth.getInstance().getUid(), mypost);
-            }
-        });
-
-
         return root;
     }
 
