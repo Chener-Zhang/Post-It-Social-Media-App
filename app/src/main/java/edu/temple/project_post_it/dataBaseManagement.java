@@ -10,6 +10,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,25 +40,19 @@ public class dataBaseManagement {
         User user = new User();
 
         //Mocking data --------------------->
-        Post post1 = new Post(123, null, 1, 1);
-        Post post2 = new Post(666, null, 4, 2);
-        Post post3 = new Post(897, null, 5, 3);
-        Post post4 = new ImagePost(78, null, 0, 6, null);
-        user.add_post(post1);
-        user.add_post(post2);
-        user.add_post(post3);
-        user.add_post(post4);
         user.setUser_id(Uid);
         user.setNumber_posts(user.getNumber_posts());
         user.setUser_groud_id("test_group_id");
+        user.setUser_posts(new ArrayList<Post>());
         //Mocking data --------------------->
 
 
         databaseReference.setValue(user);
     }
 
-    public void dataBaseSavePost(String Uid) {
-
+    public void dataBaseSavePost(String Uid, Post post) {
+        databaseReference = rootNode.getReference().child("Members/" + Uid + "/Info");
+        databaseReference.child("user_posts").push().setValue(post);
     }
 
 

@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import edu.temple.project_post_it.dataBaseManagement;
 import edu.temple.project_post_it.R;
+import edu.temple.project_post_it.post.Post;
 
 public class UserProfileFragment extends Fragment {
 
@@ -53,8 +54,10 @@ public class UserProfileFragment extends Fragment {
         sign_out_button = root.findViewById(R.id.logout_button);
         User_UID = root.findViewById(R.id.user_uid);
 
+        //Set the Uid
         set_UID();
 
+        //Sign out button click listener
         sign_out_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,7 +74,6 @@ public class UserProfileFragment extends Fragment {
         user = FirebaseAuth.getInstance().getCurrentUser();
         dataBase_management.dataBaseAddUser(user.getUid());
         User_UID.setText(user.getUid());
-
     }
 
     public interface OnDataPass_UserProfileFragment {

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,6 +19,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import edu.temple.project_post_it.R;
+import edu.temple.project_post_it.dataBaseManagement;
+import edu.temple.project_post_it.post.Post;
 import edu.temple.project_post_it.user_navigation;
 
 
@@ -39,6 +42,17 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
         mapView = root.findViewById(R.id.mapView);
         mapView.getMapAsync(this);
         mapView.onCreate(savedInstanceState);
+
+
+        Button test = root.findViewById(R.id.test_button);
+        test.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dataBaseManagement dataBaseManagement = new dataBaseManagement();
+                Post mypost = new Post(0, null, 555, 555);
+                dataBaseManagement.dataBaseSavePost("5su5tQCb1OM9acBbx1m4tRaPdZf1", mypost);
+            }
+        });
 
 
         return root;
