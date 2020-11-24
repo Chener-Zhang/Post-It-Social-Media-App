@@ -140,7 +140,7 @@ public class ImageCreationFragment extends Fragment {
                     isPublic = false;
                 }
                 String post_id = Calendar.getInstance().getTime().toString() + currentUser.getUid();
-                ImagePost post = new ImagePost(post_id, isPublic, 1, imageUri);
+                ImagePost post = new ImagePost(post_id, isPublic, 1, currentPhotoPath);
                 post.setTitle(title);
                 post.setText(descritpion);
                 if (latLng != null) {

@@ -7,9 +7,18 @@ import com.google.android.gms.maps.model.LatLng;
 import java.io.File;
 
 public class AudioPost extends Post {
-    File audioFile;
-    public AudioPost(String Post_ID, boolean Privacy, int type, File audioFile) {
+    String audioFilePath;
+
+    public AudioPost(String Post_ID, boolean Privacy, int type, String audioFilePath) {
         super(Post_ID, Privacy, type);
-        this.audioFile = audioFile;
+        this.audioFilePath = audioFilePath;
+    }
+
+    public String getAudioFilePath() {
+        return audioFilePath;
+    }
+
+    public void setAudioFilePath(String audioFilePath) {
+        this.audioFilePath = audioFilePath;
     }
 }

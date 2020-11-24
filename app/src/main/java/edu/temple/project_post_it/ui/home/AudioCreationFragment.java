@@ -117,8 +117,8 @@ public class AudioCreationFragment extends Fragment {
         createPostButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                File audioFile = new File(audioRunner.getCurrentAudioPath());
-                if (!(audioFile.exists())) {
+                String audioPath = audioRunner.getCurrentAudioPath();
+                if (audioPath == null) {
                     Toast.makeText(view.getContext(), "You must record something first!", Toast.LENGTH_SHORT).show();
                 } else {
                     String titleTest = titleView.getText().toString();
@@ -134,7 +134,7 @@ public class AudioCreationFragment extends Fragment {
                     }
 
                     String post_id = Calendar.getInstance().getTime().toString() + currentUser.getUid();
-                    Post post = new AudioPost(post_id, isPublic, 2, audioFile);
+                    Post post = new AudioPost(post_id, isPublic, 2, audioPath);
                     post.setTitle(title);
                     post.setText(descritpion);
                     if (latLng != null) {
