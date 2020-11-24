@@ -67,6 +67,7 @@ public class PostCreationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         //Init database management
         dataBaseManagement = new dataBaseManagement();
 
