@@ -46,16 +46,12 @@ import static android.app.Activity.RESULT_OK;
 public class ImageCreationFragment extends Fragment {
 
     private static final String MODE = "MODE";
-    private int mode;
     TextView titleView;
-    String title;
+    String title, description;
     TextView descriptionView;
-    String descritpion;
     CheckBox privacySwitch;
     boolean isPublic;
-    Button createPostButton;
-    Button takePhotoButton;
-    Location location;
+    Button createPostButton, takePhotoButton;
     LatLng latLng;
     FirebaseUser currentUser;
     Activity activity;
@@ -63,7 +59,6 @@ public class ImageCreationFragment extends Fragment {
     Uri imageUri;
 
     String currentPhotoPath;
-    static Uri photoURI;
     static final int REQUEST_TAKE_PHOTO = 713;
     edu.temple.project_post_it.dataBaseManagement dataBaseManagement;
 
@@ -78,14 +73,6 @@ public class ImageCreationFragment extends Fragment {
         return fragment;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mode = getArguments().getInt(MODE);
-        }
-
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -94,7 +81,7 @@ public class ImageCreationFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_image_creation, container, false);
         dataBaseManagement = new dataBaseManagement();
         title = "Untitled";
-        descritpion = "No Description";
+        description = "No Description";
         isPublic = true;
         titleView = view.findViewById(R.id.titleEditText);
         descriptionView = view.findViewById(R.id.descriptionEditText);
@@ -134,7 +121,7 @@ public class ImageCreationFragment extends Fragment {
                     title = titleTest;
                 }
                 if (descriptionTest.length() > 0) {
-                    descritpion = descriptionTest;
+                    description = descriptionTest;
                 }
                 if (privacySwitch.isChecked()) {
                     isPublic = false;
@@ -142,7 +129,7 @@ public class ImageCreationFragment extends Fragment {
                 String post_id = Calendar.getInstance().getTime().toString() + currentUser.getUid();
                 ImagePost post = new ImagePost(post_id, isPublic, 1, currentPhotoPath);
                 post.setTitle(title);
-                post.setText(descritpion);
+                post.setText(description);
                 if (latLng != null) {
                     post.setLocation(latLng);
                 }
