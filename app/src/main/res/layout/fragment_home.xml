@@ -55,7 +55,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyle_view_Posts"
             android:layout_width="match_parent"
-            android:layout_height="239dp" />
+            android:layout_height="500dp" />
 
     </LinearLayout>
 

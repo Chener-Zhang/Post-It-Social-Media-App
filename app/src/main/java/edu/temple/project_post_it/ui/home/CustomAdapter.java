@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import edu.temple.project_post_it.R;
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
-    private final String[] testDataset = {"hello", "world", "this", "is", "chener"};
+    private final String[] testDataset = {"hello", "world", "this", "is", "chener", "test", "from", "android"};
 
     //CustomAdapter Constructor
     public CustomAdapter() {
