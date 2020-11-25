@@ -8,8 +8,8 @@ import java.io.File;
 
 public class ImagePost extends Post{
     Uri imageUri;
-    public ImagePost(long Post_ID, Location location, int Privacy, int type, Uri imageUri) {
-        super(Post_ID, location, Privacy, type);
+    public ImagePost(String Post_ID, boolean Privacy, int type, Uri imageUri) {
+        super(Post_ID, Privacy, type);
         this.imageUri = imageUri;
     }
 }
