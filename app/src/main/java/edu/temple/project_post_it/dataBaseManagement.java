@@ -37,7 +37,7 @@ public class dataBaseManagement {
 
     //Mock data require debug
     public void dataBaseAddUser(String Uid) {
-        databaseReference = rootNode.getReference().child("Members/" + Uid + "/Info");
+        databaseReference = rootNode.getReference().child("Members/" + Uid);
         User user = new User();
 
         //Mocking data --------------------->
@@ -52,14 +52,10 @@ public class dataBaseManagement {
     }
 
     public void dataBaseSavePost(String Uid, Post post) {
-        databaseReference = rootNode.getReference().child("Members/" + Uid + "/Info");
+        databaseReference = rootNode.getReference().child("Members/" + Uid);
         databaseReference.child("user_posts/"+post.getPost_ID()).setValue(post);
     }
 
-    public void dataBaseSavePost(String Uid, ImagePost post) {
-        databaseReference = rootNode.getReference().child("Members/" + Uid + "/Info");
-        databaseReference.child("user_posts/"+post.getPost_ID()).setValue(post);
-    }
 
     public void dataBaseSavePost(String Uid, AudioPost post) {
         databaseReference = rootNode.getReference().child("Members/" + Uid + "/Info");
