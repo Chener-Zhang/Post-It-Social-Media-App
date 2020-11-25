@@ -30,7 +30,6 @@ import edu.temple.project_post_it.user_navigation;
 
 public class PostCreationFragment extends Fragment {
 
-    private static final String MODE = "MODE";
     TextView titleView, descriptionView;
     String title, description;
     CheckBox privacySwitch;
@@ -42,14 +41,6 @@ public class PostCreationFragment extends Fragment {
 
     public PostCreationFragment() {
         // Required empty public constructor
-    }
-
-    public static PostCreationFragment newInstance(int mode) {
-        PostCreationFragment fragment = new PostCreationFragment();
-        Bundle args = new Bundle();
-        args.putInt(MODE, mode);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override

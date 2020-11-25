@@ -38,11 +38,6 @@ import edu.temple.project_post_it.user_navigation;
 
 import static android.app.Activity.RESULT_OK;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ImageCreationFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class ImageCreationFragment extends Fragment {
 
     private static final String MODE = "MODE";
@@ -54,7 +49,7 @@ public class ImageCreationFragment extends Fragment {
     LatLng latLng;
     FirebaseUser currentUser;
     Activity activity;
-    Uri imageUri;
+Uri imageUri;
 
     String currentPhotoPath;
     static final int REQUEST_TAKE_PHOTO = 713;
@@ -70,7 +65,6 @@ public class ImageCreationFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

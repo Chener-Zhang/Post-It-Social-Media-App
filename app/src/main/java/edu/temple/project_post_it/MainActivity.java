@@ -11,10 +11,6 @@ import com.google.firebase.auth.FirebaseAuth;
 
 
 public class MainActivity extends AppCompatActivity {
-    String currentPhotoPath;
-    String currentAudioPath;
-    Uri photoURI;
-    MediaRecorder recorder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

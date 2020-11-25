@@ -16,18 +16,22 @@ import static edu.temple.project_post_it.CONSTANT.TEXT;
 import static edu.temple.project_post_it.CONSTANT.TYPE;
 
 public class Post {
-    String Post_ID;
     LatLng location;
-    long Group_ID;
-    boolean privacy;
+    String Post_ID;
     String Title;
     String Text;
+    boolean privacy;
+    long Group_ID;
     int type;
 
     public Post(String Post_ID, boolean Privacy, int type) {
         this.Post_ID = Post_ID;
         this.privacy = Privacy;
         this.type = type;
+    }
+
+    public Post() {
+
     }
 
     public String getTitle() {
