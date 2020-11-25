@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,6 +23,7 @@ import java.io.IOException;
 import java.util.Calendar;
 
 import edu.temple.project_post_it.R;
+import edu.temple.project_post_it.dataBaseManagement;
 import edu.temple.project_post_it.mechanics.AudioRunner;
 import edu.temple.project_post_it.post.AudioPost;
 import edu.temple.project_post_it.post.Post;
@@ -35,19 +37,15 @@ import edu.temple.project_post_it.user_navigation;
 public class AudioCreationFragment extends Fragment {
 
     private static final String MODE = "MODE";
-    private int mode;
-    TextView titleView;
-    String title;
-    TextView descriptionView;
-    String descritpion;
+    TextView titleView, descriptionView;
+    String title, description;
     CheckBox privacySwitch;
     boolean isPublic;
-    Button createPostButton;
-    Button recordButton;
-    Location location;
+    Button createPostButton, recordButton;
     LatLng latLng;
     FirebaseUser currentUser;
     AudioRunner audioRunner;
+    dataBaseManagement dataBaseManagement;
 
     public AudioCreationFragment() {
         // Required empty public constructor
@@ -60,22 +58,15 @@ public class AudioCreationFragment extends Fragment {
         return fragment;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mode = getArguments().getInt(MODE);
-        }
-
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_audio_creation, container, false);
+        final View view = inflater.inflate(R.layout.fragment_audio_creation, container, false);
+        dataBaseManagement = new dataBaseManagement();
         title = "Untitled";
-        descritpion = "No Description";
+        description = "No Description";
         isPublic = true;
         titleView = view.findViewById(R.id.titleEditText);
         descriptionView = view.findViewById(R.id.descriptionEditText);
@@ -113,27 +104,32 @@ public class AudioCreationFragment extends Fragment {
         createPostButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String titleTest = titleView.getText().toString();
-                String descriptionTest = (String) descriptionView.getText().toString();
-                if (titleTest.length() > 0){
-                    title = titleTest;
-                }
-                if (descriptionTest.length() > 0){
-                    descritpion = descriptionTest;
-                }
-                if (privacySwitch.isChecked()){
-                    isPublic = false;
-                }
-                File audioFile = new File(audioRunner.getCurrentAudioPath());
-                String post_id = Calendar.getInstance().getTime().toString() + currentUser.getUid();
-                Post post = new AudioPost(post_id, isPublic, 2, audioFile);
-                post.setTitle(title);
-                post.setText(descritpion);
-                if (latLng != null){
-                    post.setLocation(latLng);
-                }
-                savePost();
+                String audioPath = audioRunner.getCurrentAudioPath();
+                if (audioPath == null) {
+                    Toast.makeText(view.getContext(), "You must record something first!", Toast.LENGTH_SHORT).show();
+                } else {
+                    String titleTest = titleView.getText().toString();
+                    String descriptionTest = (String) descriptionView.getText().toString();
+                    if (titleTest.length() > 0) {
+                        title = titleTest;
+                    }
+                    if (descriptionTest.length() > 0) {
+                        description = descriptionTest;
+                    }
+                    if (privacySwitch.isChecked()) {
+                        isPublic = false;
+                    }
 
+                    String post_id = Calendar.getInstance().getTime().toString() + currentUser.getUid();
+                    Post post = new AudioPost(post_id, isPublic, 2, audioPath);
+                    post.setTitle(title);
+                    post.setText(description);
+                    if (latLng != null) {
+                        post.setLocation(latLng);
+                    }
+                    savePost(post);
+
+                }
             }
         });
 
@@ -142,8 +138,10 @@ public class AudioCreationFragment extends Fragment {
         return view;
     }
 
-    public static void savePost(){
+    public void savePost(Post post){
         //This method is where the new post will be saved to the database. This method, when called, will also return the user back to the homepage.
+        dataBaseManagement.dataBaseSavePost(FirebaseAuth.getInstance().getUid(), post);
+        Toast.makeText(this.getContext(), "Post Saved!", Toast.LENGTH_SHORT).show();
 
     }
 

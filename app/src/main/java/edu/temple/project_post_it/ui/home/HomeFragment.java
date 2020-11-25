@@ -1,6 +1,5 @@
 package edu.temple.project_post_it.ui.home;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +23,8 @@ public class HomeFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_home, container, false);
+
+        //create fragments to make appropriate type of post
         textButton = root.findViewById(R.id.textButton);
         textButton.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_navigation_home_to_postCreationFragment, null));
 
@@ -32,7 +33,6 @@ public class HomeFragment extends Fragment {
 
         photoButton = root.findViewById(R.id.photoButton);
         photoButton.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_navigation_home_to_imageCreationFragment, null));
-
 
         return root;
     }

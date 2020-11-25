@@ -11,6 +11,15 @@ public class User {
     public ArrayList<Post> user_posts;
 
     public User() {
+        user_posts = new ArrayList<Post>();
+    }
+
+
+    public void add_post(Post post) {
+        user_posts.add(post);
+    }
+
+    public void delete_post() {
 
     }
 
@@ -31,7 +40,7 @@ public class User {
     }
 
     public int getNumber_posts() {
-        return number_posts;
+        return user_posts.size();
     }
 
     public void setNumber_posts(int number_posts) {
@@ -44,14 +53,6 @@ public class User {
 
     public void setUser_posts(ArrayList<Post> user_posts) {
         this.user_posts = user_posts;
-    }
-
-    public boolean delete_post() {
-        return false;
-    }
-
-    public boolean add_post() {
-        return false;
     }
 
 }
