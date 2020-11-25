@@ -8,13 +8,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+
 import edu.temple.project_post_it.R;
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
-    private final String[] testDataset = {"hello", "world", "this", "is", "chener", "test", "from", "android"};
+
+    public ArrayList<String> stringArrays;
 
     //CustomAdapter Constructor
-    public CustomAdapter() {
+    public CustomAdapter(ArrayList<String> test_data) {
+        this.stringArrays = test_data;
 
     }
 
@@ -28,12 +32,12 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.getTextView().setText(testDataset[position]);
+        holder.getTextView().setText(stringArrays.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return testDataset.length;
+        return stringArrays.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

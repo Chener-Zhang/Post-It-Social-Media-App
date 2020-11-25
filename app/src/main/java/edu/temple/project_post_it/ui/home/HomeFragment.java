@@ -12,7 +12,15 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+
 import edu.temple.project_post_it.R;
+import edu.temple.project_post_it.dataBaseManagement;
 
 public class HomeFragment extends Fragment {
 
@@ -21,6 +29,7 @@ public class HomeFragment extends Fragment {
     Button audioButton;
     RecyclerView recyclerView;
     CustomAdapter customAdapter;
+    dataBaseManagement dataBaseManagement;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -37,10 +46,35 @@ public class HomeFragment extends Fragment {
         photoButton = root.findViewById(R.id.photoButton);
         photoButton.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_navigation_home_to_imageCreationFragment, null));
 
+
+        //Implement the recycleView
         recyclerView = root.findViewById(R.id.recyle_view_Posts);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        customAdapter = new CustomAdapter();
-        recyclerView.setAdapter(customAdapter);
+        //Implement call back function:
+
+        dataBaseManagement = new dataBaseManagement();
+        dataBaseManagement.databaseReference = dataBaseManagement.root.getReference("Members/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/" + "user_posts");
+        dataBaseManagement.databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                System.out.println(snapshot.getValue());
+                ArrayList<String> list = new ArrayList<>();
+
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    list.add(dataSnapshot.child("post_ID").getValue().toString());
+                }
+                System.out.println(list.toString());
+
+                customAdapter = new CustomAdapter(list);
+                recyclerView.setAdapter(customAdapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
 
         return root;
     }
