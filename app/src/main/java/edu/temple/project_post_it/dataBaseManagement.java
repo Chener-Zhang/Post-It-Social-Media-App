@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import edu.temple.project_post_it.post.AudioPost;
 import edu.temple.project_post_it.post.ImagePost;
 import edu.temple.project_post_it.post.Post;
 import edu.temple.project_post_it.user.User;
@@ -52,7 +53,17 @@ public class dataBaseManagement {
 
     public void dataBaseSavePost(String Uid, Post post) {
         databaseReference = rootNode.getReference().child("Members/" + Uid + "/Info");
-        databaseReference.child("user_posts").push().setValue(post);
+        databaseReference.child("user_posts/"+post.getPost_ID()).setValue(post);
+    }
+
+    public void dataBaseSavePost(String Uid, ImagePost post) {
+        databaseReference = rootNode.getReference().child("Members/" + Uid + "/Info");
+        databaseReference.child("user_posts/"+post.getPost_ID()).setValue(post);
+    }
+
+    public void dataBaseSavePost(String Uid, AudioPost post) {
+        databaseReference = rootNode.getReference().child("Members/" + Uid + "/Info");
+        databaseReference.child("user_posts/"+post.getPost_ID()).setValue(post);
     }
 
 

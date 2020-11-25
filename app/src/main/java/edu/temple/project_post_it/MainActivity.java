@@ -4,21 +4,10 @@ import android.content.Intent;
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.util.Log;
-import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.FileProvider;
 
 import com.google.firebase.auth.FirebaseAuth;
-
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -26,7 +15,6 @@ public class MainActivity extends AppCompatActivity {
     String currentAudioPath;
     Uri photoURI;
     MediaRecorder recorder;
-    static final int REQUEST_TAKE_PHOTO = 71311;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,11 +38,5 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
-            Toast.makeText(this, "Photo Taken!", Toast.LENGTH_SHORT).show();
-        }
-    }
+
 }
