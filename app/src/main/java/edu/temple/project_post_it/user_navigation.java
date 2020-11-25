@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -18,14 +19,20 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import edu.temple.project_post_it.ui.UserProfile.UserProfileFragment;
 import edu.temple.project_post_it.ui.dashboard.DashboardFragment;
+import edu.temple.project_post_it.ui.home.HomeFragment;
+import edu.temple.project_post_it.ui.home.PostCreationFragment;
 
 import static edu.temple.project_post_it.CONSTANT.LOCATION_BROADCAST;
 import static edu.temple.project_post_it.CONSTANT.LOCATION_KEY;
@@ -34,6 +41,7 @@ public class user_navigation extends AppCompatActivity implements UserProfileFra
     Intent mapServiceIntent;
     IntentFilter broadcastFilter;
     Location location;
+    NavController navController;
     public static LatLng loc;
 
 
@@ -60,7 +68,7 @@ public class user_navigation extends AppCompatActivity implements UserProfileFra
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_userprofile)
                 .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 
@@ -85,6 +93,7 @@ public class user_navigation extends AppCompatActivity implements UserProfileFra
             mapServiceIntent = new Intent(this, MapService.class);
             startService(mapServiceIntent);
         }
+        
     }
 
 
