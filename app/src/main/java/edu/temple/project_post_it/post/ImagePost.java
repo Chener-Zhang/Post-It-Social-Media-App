@@ -7,9 +7,17 @@ import android.net.Uri;
 import java.io.File;
 
 public class ImagePost extends Post{
-    Uri imageUri;
-    public ImagePost(long Post_ID, Location location, int Privacy, int type, Uri imageUri) {
-        super(Post_ID, location, Privacy, type);
-        this.imageUri = imageUri;
+    String imageFilePath;
+    public ImagePost(String Post_ID, boolean Privacy, int type, String imageFilePath) {
+        super(Post_ID, Privacy, type);
+        this.imageFilePath = imageFilePath;
+    }
+
+    public String getImageFilePath() {
+        return imageFilePath;
+    }
+
+    public void setImageFilePath(String imageFilePath) {
+        this.imageFilePath = imageFilePath;
     }
 }

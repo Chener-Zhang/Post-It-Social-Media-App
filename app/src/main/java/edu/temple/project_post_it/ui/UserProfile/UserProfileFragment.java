@@ -14,11 +14,15 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
+import edu.temple.project_post_it.dataBaseManagement;
 import edu.temple.project_post_it.R;
+import edu.temple.project_post_it.post.Post;
 
 public class UserProfileFragment extends Fragment {
 
@@ -32,6 +36,7 @@ public class UserProfileFragment extends Fragment {
 
     //Firebase
     FirebaseUser user;
+    dataBaseManagement dataBase_management;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -45,12 +50,19 @@ public class UserProfileFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.fragment_userprofile, container, false);
 
+        //Setup the database management
+        dataBase_management = new dataBaseManagement();
+
+
         //Set the xml element
         sign_out_button = root.findViewById(R.id.logout_button);
         User_UID = root.findViewById(R.id.user_uid);
         Button settingsButton = root.findViewById(R.id.settings_button);
 
+        //Set the Uid
         set_UID();
+
+        //Sign out button click listener
         sign_out_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,7 +77,26 @@ public class UserProfileFragment extends Fragment {
     }
 
     public void set_UID() {
+        //Set the user information
         user = FirebaseAuth.getInstance().getCurrentUser();
+        dataBase_management.databaseReference = dataBase_management.rootNode.getReference("Members");
+        dataBase_management.databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                if (!snapshot.hasChild(user.getUid())) {
+                    dataBase_management.dataBaseAddUser(user.getUid());
+                } else {
+                    Log.i("USER", "ALREADY EXIST");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
         User_UID.setText(user.getUid());
     }
 

@@ -2,6 +2,7 @@ package edu.temple.project_post_it.post;
 
 import android.location.Location;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.Exclude;
 
 import java.util.HashMap;
@@ -15,33 +16,33 @@ import static edu.temple.project_post_it.CONSTANT.TEXT;
 import static edu.temple.project_post_it.CONSTANT.TYPE;
 
 public class Post {
-    long Post_ID;
-    Location location;
+    String Post_ID;
+    LatLng location;
     long Group_ID;
-    int privacy;
+    boolean privacy;
+    String Title;
     String Text;
     int type;
 
-    public Post(long Post_ID, Location location, int Privacy, int type) {
+    public Post(String Post_ID, boolean Privacy, int type) {
         this.Post_ID = Post_ID;
-        this.location = location;
         this.privacy = Privacy;
         this.type = type;
     }
 
-    public long getPost_ID() {
-        return Post_ID;
+    public String getTitle() {
+        return Title;
     }
 
-    public void setPost_ID(long post_ID) {
-        Post_ID = post_ID;
+    public void setTitle(String title) {
+        Title = title;
     }
 
-    public Location getLocation() {
+    public LatLng getLocation() {
         return location;
     }
 
-    public void setLocation(Location location) {
+    public void setLocation(LatLng location) {
         this.location = location;
     }
 
@@ -53,11 +54,19 @@ public class Post {
         Group_ID = group_ID;
     }
 
-    public int getPrivacy() {
+    public String getPost_ID() {
+        return Post_ID;
+    }
+
+    public void setPost_ID(String post_ID) {
+        Post_ID = post_ID;
+    }
+
+    public boolean getPrivacy() {
         return privacy;
     }
 
-    public void setPrivacy(int privacy) {
+    public void setPrivacy(boolean privacy) {
         this.privacy = privacy;
     }
 
