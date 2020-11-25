@@ -31,15 +31,11 @@ import edu.temple.project_post_it.user_navigation;
 public class PostCreationFragment extends Fragment {
 
     private static final String MODE = "MODE";
-    private int mode;
-    TextView titleView;
-    String title;
-    TextView descriptionView;
-    String descritpion;
+    TextView titleView, descriptionView;
+    String title, description;
     CheckBox privacySwitch;
     boolean isPublic;
     Button createPostButton;
-    Location location;
     LatLng latLng;
     FirebaseUser currentUser;
     dataBaseManagement dataBaseManagement;
@@ -57,15 +53,6 @@ public class PostCreationFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mode = getArguments().getInt(MODE);
-        }
-
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
@@ -75,7 +62,7 @@ public class PostCreationFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_post_creation, container, false);
         title = "Untitled";
-        descritpion = "No Description";
+        description = "No Description";
         isPublic = true;
         titleView = view.findViewById(R.id.titleEditText);
         descriptionView = view.findViewById(R.id.descriptionEditText);
@@ -97,7 +84,7 @@ public class PostCreationFragment extends Fragment {
                     title = titleTest;
                 }
                 if (descriptionTest.length() > 0) {
-                    descritpion = descriptionTest;
+                    description = descriptionTest;
                 }
                 if (privacySwitch.isChecked()) {
                     isPublic = false;
@@ -108,7 +95,7 @@ public class PostCreationFragment extends Fragment {
                 String post_id = Calendar.getInstance().getTime().toString() + currentUser.getUid();
                 Post post = new Post(post_id, isPublic, 0);
                 post.setTitle(title);
-                post.setText(descritpion);
+                post.setText(description);
                 post.setPrivacy(isPublic);
 
                 //Set is Public back to true

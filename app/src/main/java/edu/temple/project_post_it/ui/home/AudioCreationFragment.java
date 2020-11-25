@@ -37,10 +37,8 @@ import edu.temple.project_post_it.user_navigation;
 public class AudioCreationFragment extends Fragment {
 
     private static final String MODE = "MODE";
-    private int mode;
-    TextView titleView;
+    TextView titleView, descriptionView;
     String title, description;
-    TextView descriptionView;
     CheckBox privacySwitch;
     boolean isPublic;
     Button createPostButton, recordButton;
@@ -60,14 +58,6 @@ public class AudioCreationFragment extends Fragment {
         return fragment;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mode = getArguments().getInt(MODE);
-        }
-
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

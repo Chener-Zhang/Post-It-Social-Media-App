@@ -46,16 +46,14 @@ import static android.app.Activity.RESULT_OK;
 public class ImageCreationFragment extends Fragment {
 
     private static final String MODE = "MODE";
-    TextView titleView;
+    TextView titleView, descriptionView;
     String title, description;
-    TextView descriptionView;
     CheckBox privacySwitch;
     boolean isPublic;
     Button createPostButton, takePhotoButton;
     LatLng latLng;
     FirebaseUser currentUser;
     Activity activity;
-
     Uri imageUri;
 
     String currentPhotoPath;
