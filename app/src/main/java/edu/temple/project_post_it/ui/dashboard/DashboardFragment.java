@@ -100,6 +100,7 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(final GoogleMap googleMap) {
         this.googleMap = googleMap;
+        googleMap.getUiSettings().setZoomControlsEnabled(true);
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(user_navigation.loc, 15));
         //different color to show current location
         googleMap.addMarker((new MarkerOptions()).position(user_navigation.loc)).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
