@@ -4,8 +4,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,6 +18,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import edu.temple.project_post_it.R;
@@ -22,7 +26,7 @@ import edu.temple.project_post_it.dataBaseManagement;
 import edu.temple.project_post_it.post.Post;
 import edu.temple.project_post_it.user_navigation;
 
-public class PostCreationFragment extends Fragment {
+public class PostCreationFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
     TextView titleView, descriptionView;
     String title, description;
@@ -32,6 +36,7 @@ public class PostCreationFragment extends Fragment {
     LatLng latLng;
     FirebaseUser currentUser;
     dataBaseManagement dataBaseManagement;
+    Spinner groupingSelectorSpinner;
 
     public PostCreationFragment() {
         // Required empty public constructor
@@ -46,6 +51,8 @@ public class PostCreationFragment extends Fragment {
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_post_creation, container, false);
+
+        //Init the xml elements
         title = "Untitled";
         description = "No Description";
         isPublic = true;
@@ -54,6 +61,26 @@ public class PostCreationFragment extends Fragment {
         privacySwitch = view.findViewById(R.id.privacyCheckBox);
         createPostButton = view.findViewById(R.id.createPostButton);
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        groupingSelectorSpinner = view.findViewById(R.id.goupingSelectorSpinner);
+
+
+        //Set up spinner
+
+        //Implement the firebase here
+        ArrayList<String> categories = new ArrayList<String>();
+        categories.add("test1");
+        categories.add("test2");
+        //Implement the firebase here
+
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, categories);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+
+
+        groupingSelectorSpinner.setAdapter(dataAdapter);
+//        groupingSelectorSpinner.setOnItemClickListener(onItemSelected());
+        
+
         if (user_navigation.loc != null) {
             latLng = user_navigation.loc;
         }
@@ -107,4 +134,13 @@ public class PostCreationFragment extends Fragment {
         Toast.makeText(this.getContext(), "Post Saved!", Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
 }
