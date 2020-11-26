@@ -17,7 +17,6 @@ import androidx.preference.SwitchPreference;
 import edu.temple.project_post_it.R;
 
 public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
-    SharedPreferences preferences;
     Context context;
     SwitchPreference anon, group, all;
 
@@ -38,6 +37,9 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey);
+        anon = findPreference(context.getResources().getString(R.string.anon_key));
+        group = findPreference(context.getResources().getString(R.string.group_key));
+        all = findPreference(context.getResources().getString(R.string.all_key));
     }
 
     @Override
@@ -56,9 +58,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     //clean up with some test code but preferences saved, need to implement flags in database
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        SwitchPreference anon = findPreference(context.getResources().getString(R.string.anon_key));
-        SwitchPreference group = findPreference(context.getResources().getString(R.string.group_key));
-        SwitchPreference all = findPreference(context.getResources().getString(R.string.all_key));
         switch (key) {
             case "ANON KEY":
                 if (anon.isChecked()) {
