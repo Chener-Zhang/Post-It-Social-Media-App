@@ -75,6 +75,8 @@ public class PostCreationFragment extends Fragment implements AdapterView.OnItem
         categories.add("Another Group");
         //Implement the firebase here
 
+        //test
+
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, categories);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         groupingSelectorSpinner.setAdapter(dataAdapter);
