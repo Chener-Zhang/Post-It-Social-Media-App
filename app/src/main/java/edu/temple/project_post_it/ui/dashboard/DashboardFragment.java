@@ -111,11 +111,18 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists()) {
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                Post post = snapshot.getValue(Post.class);
+                                final Post post = snapshot.getValue(Post.class);
                                 lat = post.getLocation().getLatitude();
                                 lng = post.getLocation().getLongitude();
                                 loc = new LatLng(lat, lng);
                                 googleMap.addMarker((new MarkerOptions()).position(loc));
+                                googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                                    @Override
+                                    public boolean onMarkerClick(Marker marker) {
+                                        System.out.println("post id is " + post.getPost_ID());
+                                        return false;
+                                    }
+                                });
                             }
                         }
                     }
