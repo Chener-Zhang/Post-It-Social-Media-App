@@ -31,10 +31,6 @@ public class Post {
         this.type = type;
     }
 
-    public Post() {
-
-    }
-
     public String getTitle() {
         return Title;
     }

@@ -109,16 +109,15 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists()) {
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                lat = (double) snapshot.child("location/latitude").getValue();
-                                Log.i("latitude", String.valueOf(lat));
-                                lng = (double) snapshot.child("location/longitude").getValue();
-                                Log.i("longitude", String.valueOf(lng));
+                                Post post = snapshot.getValue(Post.class);
+                                lat = post.getLocation().getLatitude();
+                                lng = post.getLocation().getLongitude();
                                 loc = new LatLng(lat, lng);
-                                Log.i("post object", loc.toString());
                                 marker = googleMap.addMarker((new MarkerOptions()).position(loc));
                             }
                         }
                     }
+
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
                         Log.i("Error", String.valueOf(error));
