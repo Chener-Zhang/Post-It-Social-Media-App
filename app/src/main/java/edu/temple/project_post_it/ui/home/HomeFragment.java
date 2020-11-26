@@ -21,6 +21,7 @@ import java.util.ArrayList;
 
 import edu.temple.project_post_it.R;
 import edu.temple.project_post_it.dataBaseManagement;
+import edu.temple.project_post_it.post.Post;
 
 public class HomeFragment extends Fragment {
 
@@ -57,15 +58,20 @@ public class HomeFragment extends Fragment {
         dataBaseManagement.databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                System.out.println(snapshot.getValue());
-                ArrayList<String> list = new ArrayList<>();
+
+                ArrayList<String> title = new ArrayList<>();
+                ArrayList<String> text = new ArrayList<>();
 
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    list.add(dataSnapshot.child("post_ID").getValue().toString());
-                }
-                System.out.println(list.toString());
+                    Post post = dataSnapshot.getValue(Post.class);
+                    title.add(post.getTitle());
+                    text.add(post.getText());
 
-                customAdapter = new CustomAdapter(list);
+//                    list.add(dataSnapshot.child("post_ID").getValue().toString());
+                }
+//
+//                System.out.println(list.toString());
+                customAdapter = new CustomAdapter(title, text);
                 recyclerView.setAdapter(customAdapter);
             }
 

@@ -1,14 +1,6 @@
 package edu.temple.project_post_it.ui.home;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +8,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
@@ -78,7 +72,7 @@ public class PostCreationFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String titleTest = titleView.getText().toString();
-                String descriptionTest = (String) descriptionView.getText().toString();
+                String descriptionTest = descriptionView.getText().toString();
 
                 if (titleTest.length() > 0) {
                     title = titleTest;
@@ -102,7 +96,10 @@ public class PostCreationFragment extends Fragment {
                 isPublic = true;
 
                 if (latLng != null) {
-                    post.setLocation(latLng);
+                    edu.temple.project_post_it.post.LatLng location = new edu.temple.project_post_it.post.LatLng();
+                    location.setLatitude(latLng.latitude);
+                    location.setLongitude(latLng.longitude);
+                    post.setLocation(location);
                 }
                 savePost(post);
 

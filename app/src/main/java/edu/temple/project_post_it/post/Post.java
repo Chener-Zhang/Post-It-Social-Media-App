@@ -1,6 +1,6 @@
 package edu.temple.project_post_it.post;
 
-import com.google.android.gms.maps.model.LatLng;
+
 import com.google.firebase.database.Exclude;
 
 import java.util.HashMap;
@@ -22,14 +22,13 @@ public class Post {
     String Text;
     int type;
 
+    public Post() {
+    }
+
     public Post(String Post_ID, boolean Privacy, int type) {
         this.Post_ID = Post_ID;
         this.privacy = Privacy;
         this.type = type;
-    }
-
-    public Post() {
-
     }
 
     public String getTitle() {

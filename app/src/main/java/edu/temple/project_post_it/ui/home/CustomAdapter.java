@@ -14,12 +14,13 @@ import edu.temple.project_post_it.R;
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
 
-    public ArrayList<String> stringArrays;
+    public ArrayList<String> post_title;
+    public ArrayList<String> post_text;
 
     //CustomAdapter Constructor
-    public CustomAdapter(ArrayList<String> test_data) {
-        this.stringArrays = test_data;
-
+    public CustomAdapter(ArrayList<String> post_title, ArrayList<String> post_text) {
+        this.post_title = post_title;
+        this.post_text = post_text;
     }
 
     @NonNull
@@ -32,26 +33,35 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.getTextView().setText(stringArrays.get(position));
+        holder.getTitle_textView().setText(post_title.get(position));
+        holder.getText_textView().setText(post_text.get(position));
+
     }
 
     @Override
     public int getItemCount() {
-        return stringArrays.size();
+        return post_title.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView textView;
+        TextView title_textView;
+        TextView text_textView;
 
         //ViewHolder Constructor
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            textView = itemView.findViewById(R.id.rv_post_text);
+            title_textView = itemView.findViewById(R.id.post_title);
+            text_textView = itemView.findViewById(R.id.post_text);
         }
 
-        public TextView getTextView() {
-            return textView;
+        public TextView getTitle_textView() {
+            return title_textView;
         }
+
+        public TextView getText_textView() {
+            return text_textView;
+        }
+
     }
 
 
