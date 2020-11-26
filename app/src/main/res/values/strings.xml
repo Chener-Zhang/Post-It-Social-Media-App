@@ -22,15 +22,20 @@
     <string name="hello_world">Hello Square World!</string>
     <!-- Preference Titles -->
     <string name="map_display">Map Display</string>
+    <string name="group_edit">Delete Group</string>
 
     <!-- Map Display Preferences -->
     <string name="show_group">Show Posts From Group</string>
     <string name="show_anon">Show Anonymous Posts</string>
     <string name="show_all">Show All Posts</string>
 
+    <!-- Delete Group Preferences -->
+    <string name="delete_group"> Select Group To Delete</string>
+
     <!-- Settings Keys -->
     <string name="anon_key">ANON KEY</string>
     <string name="group_key">GROUP KEY</string>
     <string name="all_key">ALL KEY</string>
+    <string name="delete_group_key"> DELETE GROUP KEY</string>
 
 </resources>

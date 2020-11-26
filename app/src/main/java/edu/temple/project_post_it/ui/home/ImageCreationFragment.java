@@ -46,7 +46,7 @@ public class ImageCreationFragment extends Fragment {
     LatLng latLng;
     FirebaseUser currentUser;
     Activity activity;
-Uri imageUri;
+    Uri imageUri;
 
     String currentPhotoPath;
     static final int REQUEST_TAKE_PHOTO = 713;

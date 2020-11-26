@@ -4,6 +4,7 @@
     <PreferenceCategory app:title="@string/map_display">
 
         <SwitchPreference
+            android:id="@+id/enableAnonymous"
             android:defaultValue="false"
             android:key="@string/anon_key"
             android:title="@string/show_anon" />
@@ -18,6 +19,16 @@
             app:key="@string/all_key"
             app:title="@string/show_all" />
 
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/group_edit">
+
+        <ListPreference
+            android:id="@+id/deleteGroups"
+            android:defaultValue="1"
+            android:entries="@array/reply_entries"
+            android:entryValues="@array/reply_entries"
+            android:key="@string/delete_group_key"
+            android:title="@string/delete_group" />
     </PreferenceCategory>
 
 </PreferenceScreen>
