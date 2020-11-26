@@ -100,7 +100,8 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(final GoogleMap googleMap) {
         this.googleMap = googleMap;
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(user_navigation.loc, 15));
-//        marker = googleMap.addMarker((new MarkerOptions()).position(user_navigation.loc));
+        //need to make a different color to show current location
+        marker = googleMap.addMarker((new MarkerOptions()).position(user_navigation.loc));
 
         FirebaseDatabase.getInstance().getReference("Members/" + user.getUid() + "/user_posts")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
