@@ -1,24 +1,27 @@
 package edu.temple.project_post_it.group;
 
 import java.util.ArrayList;
-
 import edu.temple.project_post_it.post.Post;
 import edu.temple.project_post_it.user.User;
 
 public class Group {
-    ArrayList<User> userArrayList;
-    ArrayList<Post> postArrayList;
+    String admin;
+    ArrayList<User> users;
+    ArrayList<Post> posts;
 
     public Group() {
 
     }
 
     public void setUserArrayList(ArrayList<User> userArrayList) {
-        this.userArrayList = userArrayList;
+        users = userArrayList;
     }
 
     public void setPostArrayList(ArrayList<Post> postArrayList) {
-        this.postArrayList = postArrayList;
+        posts = postArrayList;
+    }
+    public void setAdmin(String user) {
+        admin = user;
     }
 
     public void grouping_post() {

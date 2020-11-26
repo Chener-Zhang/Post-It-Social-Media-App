@@ -20,7 +20,7 @@ public class Post {
     String Post_ID;
     String Title;
     String Text;
-    long Group_ID;
+    String groupID = "Default";
     int type;
 
     public Post() {
@@ -48,12 +48,12 @@ public class Post {
         this.location = location;
     }
 
-    public long getGroup_ID() {
-        return Group_ID;
+    public String getGroupID() {
+        return groupID;
     }
 
-    public void setGroup_ID(long group_ID) {
-        Group_ID = group_ID;
+    public void setGroupID(String groupID) {
+        this.groupID = groupID;
     }
 
     public String getPost_ID() {
@@ -93,7 +93,7 @@ public class Post {
         HashMap<String, Object> result = new HashMap<>();
         result.put(POST_ID, getPost_ID());
         result.put(LOCATION, getLocation());
-        result.put(GROUP_ID, getGroup_ID());
+        result.put(GROUP_ID, getGroupID());
         result.put(PRIVACY, getPrivacy());
         result.put(TEXT, getText());
         result.put(TYPE, getType());

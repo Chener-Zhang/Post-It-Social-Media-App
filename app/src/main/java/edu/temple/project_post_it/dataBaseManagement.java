@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import edu.temple.project_post_it.group.Group;
 import edu.temple.project_post_it.post.Post;
 import edu.temple.project_post_it.user.User;
 
@@ -53,6 +54,7 @@ public class dataBaseManagement {
     public void dataBaseSavePost(String Uid, Post post) {
         databaseReference = root.getReference().child("Members/" + Uid);
         databaseReference.child("user_posts/" + post.getPost_ID()).setValue(post);
+        root.getReference("Groups/" + post.getGroupID() + "/posts").setValue(post);
     }
 
 
@@ -114,6 +116,17 @@ public class dataBaseManagement {
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put(key, postValues);
         databaseReference.updateChildren(childUpdates);
+    }
+
+    public void databaseAddGroup(String newGroup){
+        databaseReference = root.getReference().child("/Groups/" + newGroup);
+        Group group = new Group();
+        group.setAdmin(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        group.setPostArrayList(new ArrayList<Post>());
+        group.setUserArrayList(new ArrayList<User>());
+
+        databaseReference.setValue(group);
+
     }
 }
 
