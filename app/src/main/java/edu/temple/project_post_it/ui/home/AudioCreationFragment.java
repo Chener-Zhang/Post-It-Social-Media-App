@@ -1,11 +1,6 @@
 package edu.temple.project_post_it.ui.home;
 
-import android.location.Location;
-import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +9,12 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
 
@@ -109,7 +105,7 @@ public class AudioCreationFragment extends Fragment {
                     Toast.makeText(view.getContext(), "You must record something first!", Toast.LENGTH_SHORT).show();
                 } else {
                     String titleTest = titleView.getText().toString();
-                    String descriptionTest = (String) descriptionView.getText().toString();
+                    String descriptionTest = descriptionView.getText().toString();
                     if (titleTest.length() > 0) {
                         title = titleTest;
                     }
@@ -125,7 +121,10 @@ public class AudioCreationFragment extends Fragment {
                     post.setTitle(title);
                     post.setText(description);
                     if (latLng != null) {
-                        post.setLocation(latLng);
+                        edu.temple.project_post_it.post.LatLng location = new edu.temple.project_post_it.post.LatLng();
+                        location.setLatitude(latLng.latitude);
+                        location.setLongitude(latLng.longitude);
+                        post.setLocation(location);
                     }
                     savePost(post);
 

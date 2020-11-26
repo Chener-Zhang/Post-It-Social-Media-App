@@ -14,30 +14,28 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import edu.temple.project_post_it.post.AudioPost;
-import edu.temple.project_post_it.post.ImagePost;
 import edu.temple.project_post_it.post.Post;
 import edu.temple.project_post_it.user.User;
 
 public class dataBaseManagement {
     //RootNode = postit-8d9a4
-    public FirebaseDatabase rootNode;
+    public FirebaseDatabase root;
     public DatabaseReference databaseReference;
 
     public dataBaseManagement() {
-        rootNode = FirebaseDatabase.getInstance();
+        root = FirebaseDatabase.getInstance();
     }
 
 
     public void dataBaseSetDirection(String reference) {
-        databaseReference = rootNode.getReference(reference);
+        databaseReference = root.getReference(reference);
         Log.i("Direction: ", reference);
     }
 
 
     //Mock data require debug
     public void dataBaseAddUser(String Uid) {
-        databaseReference = rootNode.getReference().child("Members/" + Uid);
+        databaseReference = root.getReference().child("Members/" + Uid);
         User user = new User();
 
         //Mocking data --------------------->
@@ -52,25 +50,19 @@ public class dataBaseManagement {
     }
 
     public void dataBaseSavePost(String Uid, Post post) {
-        databaseReference = rootNode.getReference().child("Members/" + Uid);
-        databaseReference.child("user_posts/"+post.getPost_ID()).setValue(post);
-    }
-
-
-    public void dataBaseSavePost(String Uid, AudioPost post) {
-        databaseReference = rootNode.getReference().child("Members/" + Uid + "/Info");
-        databaseReference.child("user_posts/"+post.getPost_ID()).setValue(post);
+        databaseReference = root.getReference().child("Members/" + Uid);
+        databaseReference.child("user_posts/" + post.getPost_ID()).setValue(post);
     }
 
 
     public void dataBaseWriteDataChild(String childs_parent_reference, String child_reference, Object object) {
-        databaseReference = rootNode.getReference().child(childs_parent_reference);
+        databaseReference = root.getReference().child(childs_parent_reference);
         databaseReference.child(child_reference).setValue(object);
     }
 
 
     public void dataBaseGetData(String reference) {
-        databaseReference = rootNode.getReference(reference);
+        databaseReference = root.getReference(reference);
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -94,7 +86,7 @@ public class dataBaseManagement {
     //reference = "Posts/post1/image"
     //reference = "Members/user/name"
     public void databaseRemoveData(String reference) {
-        databaseReference = rootNode.getReference(reference);
+        databaseReference = root.getReference(reference);
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -117,7 +109,7 @@ public class dataBaseManagement {
     //DataBase_management.update_data("sometable/thechild", test, "-MLmtCXJtplg1g2GkpTE");
 
     public void databaseUpdateData(String reference, Post update_object, String key) {
-        databaseReference = rootNode.getReference(reference);
+        databaseReference = root.getReference(reference);
         Map<String, Object> postValues = update_object.toMap();
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put(key, postValues);

@@ -2,14 +2,8 @@ package edu.temple.project_post_it.ui.home;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.core.content.FileProvider;
-import androidx.fragment.app.Fragment;
-
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
@@ -19,6 +13,10 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,7 +31,6 @@ import java.util.Date;
 import edu.temple.project_post_it.R;
 import edu.temple.project_post_it.dataBaseManagement;
 import edu.temple.project_post_it.post.ImagePost;
-import edu.temple.project_post_it.post.Post;
 import edu.temple.project_post_it.user_navigation;
 
 import static android.app.Activity.RESULT_OK;
@@ -58,6 +55,7 @@ Uri imageUri;
     public ImageCreationFragment() {
         // Required empty public constructor
     }
+
     public static ImageCreationFragment newInstance(int mode) {
         ImageCreationFragment fragment = new ImageCreationFragment();
         Bundle args = new Bundle();
@@ -80,7 +78,7 @@ Uri imageUri;
         privacySwitch = view.findViewById(R.id.privacyCheckBox);
         createPostButton = view.findViewById(R.id.createPostButton);
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (user_navigation.loc != null){
+        if (user_navigation.loc != null) {
             latLng = user_navigation.loc;
         }
         activity = getActivity();
@@ -99,7 +97,6 @@ Uri imageUri;
         });
 
 
-
         createPostButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,36 +104,38 @@ Uri imageUri;
                     Toast.makeText(view.getContext(), "You must take a photo first!", Toast.LENGTH_SHORT).show();
                 } else {
 
-                String titleTest = titleView.getText().toString();
-                String descriptionTest = (String) descriptionView.getText().toString();
-                if (titleTest.length() > 0) {
-                    title = titleTest;
+                    String titleTest = titleView.getText().toString();
+                    String descriptionTest = descriptionView.getText().toString();
+                    if (titleTest.length() > 0) {
+                        title = titleTest;
+                    }
+                    if (descriptionTest.length() > 0) {
+                        description = descriptionTest;
+                    }
+                    if (privacySwitch.isChecked()) {
+                        isPublic = false;
+                    }
+                    String post_id = Calendar.getInstance().getTime().toString() + currentUser.getUid();
+                    ImagePost post = new ImagePost(post_id, isPublic, 1, currentPhotoPath);
+                    post.setTitle(title);
+                    post.setText(description);
+                    if (latLng != null) {
+                        edu.temple.project_post_it.post.LatLng location = new edu.temple.project_post_it.post.LatLng();
+                        location.setLatitude(latLng.latitude);
+                        location.setLongitude(latLng.longitude);
+                        post.setLocation(location);
+                    }
+                    savePost(post);
                 }
-                if (descriptionTest.length() > 0) {
-                    description = descriptionTest;
-                }
-                if (privacySwitch.isChecked()) {
-                    isPublic = false;
-                }
-                String post_id = Calendar.getInstance().getTime().toString() + currentUser.getUid();
-                ImagePost post = new ImagePost(post_id, isPublic, 1, currentPhotoPath);
-                post.setTitle(title);
-                post.setText(description);
-                if (latLng != null) {
-                    post.setLocation(latLng);
-                }
-                savePost(post);
-            }
 
             }
         });
 
 
-
         return view;
     }
 
-    public void savePost(ImagePost post){
+    public void savePost(ImagePost post) {
         //This method is where the new post will be saved to the database. This method, when called, will also return the user back to the homepage.
         dataBaseManagement.dataBaseSavePost(FirebaseAuth.getInstance().getUid(), post);
         Toast.makeText(this.getContext(), "Post Saved!", Toast.LENGTH_SHORT).show();
