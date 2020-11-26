@@ -36,6 +36,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.getTitle_textView().setText(post_list.get(position).getTitle());
         holder.getText_textView().setText(post_list.get(position).getText());
+
+
     }
 
     @Override
@@ -43,6 +45,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
         return post_list.size();
     }
 
+    //ViewHolder Class
     public static class ViewHolder extends RecyclerView.ViewHolder {
         //Declase the item in the ViewHolder
         TextView title_textView;
