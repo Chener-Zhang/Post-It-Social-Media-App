@@ -37,7 +37,8 @@ public class HomeFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
-        //create fragments to make appropriate type of post
+        //Create fragments to make appropriate type of post
+        //Set the button and button onclick listener
         textButton = root.findViewById(R.id.textButton);
         textButton.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_navigation_home_to_postCreationFragment, null));
 
@@ -51,21 +52,21 @@ public class HomeFragment extends Fragment {
         //Implement the recycleView
         recyclerView = root.findViewById(R.id.recyle_view_Posts);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        //Implement call back function:
 
+        //Implement firebase realtime databse call back function:
         dataBaseManagement = new dataBaseManagement();
         dataBaseManagement.databaseReference = dataBaseManagement.root.getReference("Members/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/" + "user_posts");
         dataBaseManagement.databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                ArrayList<String> title = new ArrayList<>();
-                ArrayList<String> text = new ArrayList<>();
+                //Init the ArrayList of post
                 ArrayList<Post> post_list = new ArrayList<Post>();
+                //Loop for individual post within the posts
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Post post = dataSnapshot.getValue(Post.class);
                     post_list.add(post);
                 }
+                //Init the custom adapter 
                 customAdapter = new CustomAdapter(post_list);
                 recyclerView.setAdapter(customAdapter);
             }
@@ -75,7 +76,6 @@ public class HomeFragment extends Fragment {
 
             }
         });
-
 
         return root;
     }
