@@ -17,6 +17,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -35,7 +37,6 @@ import edu.temple.project_post_it.user_navigation;
 
 
 public class DashboardFragment extends Fragment implements OnMapReadyCallback {
-    private Marker marker;
     private MapView mapView;
     GoogleMap googleMap;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -100,8 +101,9 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(final GoogleMap googleMap) {
         this.googleMap = googleMap;
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(user_navigation.loc, 15));
-        //need to make a different color to show current location
-        marker = googleMap.addMarker((new MarkerOptions()).position(user_navigation.loc));
+        //different color to show current location
+        googleMap.addMarker((new MarkerOptions()).position(user_navigation.loc)).setIcon(BitmapDescriptorFactory
+                .defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
 
         FirebaseDatabase.getInstance().getReference("Members/" + user.getUid() + "/user_posts")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -113,7 +115,7 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
                                 lat = post.getLocation().getLatitude();
                                 lng = post.getLocation().getLongitude();
                                 loc = new LatLng(lat, lng);
-                                marker = googleMap.addMarker((new MarkerOptions()).position(loc));
+                                googleMap.addMarker((new MarkerOptions()).position(loc));
                             }
                         }
                     }
