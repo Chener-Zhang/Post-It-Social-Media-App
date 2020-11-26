@@ -18,10 +18,16 @@
 
         <TextView
             android:id="@+id/post_text"
-            android:layout_width="match_parent"
+            android:layout_width="173dp"
             android:layout_height="match_parent"
             android:text="Test"
             android:textSize="15dp" />
+
+        <ImageButton
+            android:id="@+id/delete_button"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:background="@drawable/ic_baseline_delete_outline_24" />
 
     </LinearLayout>
 

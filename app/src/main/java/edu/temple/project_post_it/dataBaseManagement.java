@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -85,12 +86,11 @@ public class dataBaseManagement {
     //For example:
     //reference = "Posts/post1/image"
     //reference = "Members/user/name"
-    public void databaseRemoveData(String reference) {
-        databaseReference = root.getReference(reference);
+    public void databaseRemoveData(String post_id) {
+        databaseReference = root.getReference("Members/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/" + "user_posts/" + post_id);
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                //if (!snapshot.hasChild(user_id)) check user exist
                 snapshot.getRef().removeValue();
             }
 

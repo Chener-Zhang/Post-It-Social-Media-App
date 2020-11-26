@@ -14,11 +14,12 @@ import static edu.temple.project_post_it.CONSTANT.TEXT;
 import static edu.temple.project_post_it.CONSTANT.TYPE;
 
 public class Post {
+    // privacy: true --> public, false --> private
+    boolean privacy;
     LatLng location;
     String Post_ID;
     String Title;
     String Text;
-    boolean privacy;
     long Group_ID;
     int type;
 
