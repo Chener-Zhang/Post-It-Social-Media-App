@@ -61,17 +61,12 @@ public class HomeFragment extends Fragment {
 
                 ArrayList<String> title = new ArrayList<>();
                 ArrayList<String> text = new ArrayList<>();
-
+                ArrayList<Post> post_list = new ArrayList<Post>();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Post post = dataSnapshot.getValue(Post.class);
-                    title.add(post.getTitle());
-                    text.add(post.getText());
-
-//                    list.add(dataSnapshot.child("post_ID").getValue().toString());
+                    post_list.add(post);
                 }
-//
-//                System.out.println(list.toString());
-                customAdapter = new CustomAdapter(title, text);
+                customAdapter = new CustomAdapter(post_list);
                 recyclerView.setAdapter(customAdapter);
             }
 

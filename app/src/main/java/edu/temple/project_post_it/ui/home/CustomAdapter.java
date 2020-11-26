@@ -11,16 +11,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import edu.temple.project_post_it.R;
+import edu.temple.project_post_it.post.Post;
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
 
-    public ArrayList<String> post_title;
-    public ArrayList<String> post_text;
+    public ArrayList<Post> post_list;
+
 
     //CustomAdapter Constructor
-    public CustomAdapter(ArrayList<String> post_title, ArrayList<String> post_text) {
-        this.post_title = post_title;
-        this.post_text = post_text;
+    public CustomAdapter(ArrayList<Post> post_list) {
+        this.post_list = post_list;
     }
 
     @NonNull
@@ -33,14 +33,14 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.getTitle_textView().setText(post_title.get(position));
-        holder.getText_textView().setText(post_text.get(position));
+        holder.getTitle_textView().setText(post_list.get(position).getTitle());
+        holder.getText_textView().setText(post_list.get(position).getText());
 
     }
 
     @Override
     public int getItemCount() {
-        return post_title.size();
+        return post_list.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
