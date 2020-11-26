@@ -11,4 +11,7 @@ public class CONSTANT {
     public static String PRIVACY = "privacy";
     public static String TEXT = "text";
     public static String TYPE = "type";
+    public static String USERS = "users";
+    public static String POSTS = "posts";
+    public static String ADMIN = "admin";
 }
