@@ -12,14 +12,14 @@ import static androidx.constraintlayout.motion.widget.Debug.getLocation;
 
 public class Group {
     String admin;
-    ArrayList<User> users;
-    ArrayList<Post> posts;
+    public ArrayList<String> users;
+    public ArrayList<Post> posts;
 
     public Group() {
 
     }
 
-    public void setUserArrayList(ArrayList<User> userArrayList) {
+    public void setUserArrayList(ArrayList<String> userArrayList) {
         users = userArrayList;
     }
 
@@ -31,7 +31,7 @@ public class Group {
         admin = user;
     }
 
-    public ArrayList<User> getUsers(){ return users;    }
+    public ArrayList<String> getUsers(){ return users;    }
 
     public ArrayList<Post> getPosts(){return posts;}
 

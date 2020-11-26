@@ -68,8 +68,11 @@ public class PostCreationFragment extends Fragment implements AdapterView.OnItem
 
         //Implement the firebase here
         ArrayList<String> categories = new ArrayList<String>();
+        categories.add("Add New Group");
         categories.add("test1");
         categories.add("test2");
+        categories.add("Special Group");
+        categories.add("Another Group");
         //Implement the firebase here
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, categories);
