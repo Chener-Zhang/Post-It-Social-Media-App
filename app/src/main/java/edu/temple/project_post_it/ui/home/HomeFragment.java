@@ -66,16 +66,13 @@ public class HomeFragment extends Fragment {
                     Post post = dataSnapshot.getValue(Post.class);
                     post_list.add(post);
                 }
-
                 //Init the custom adapter
                 customAdapter = new CustomAdapter(post_list);
                 recyclerView.setAdapter(customAdapter);
-
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
 
