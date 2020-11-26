@@ -12,11 +12,15 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -65,27 +69,40 @@ public class PostCreationFragment extends Fragment implements AdapterView.OnItem
 
 
         //Set up spinner
+        dataBaseManagement.databaseReference = dataBaseManagement.root.getReference("Groups");
+        dataBaseManagement.databaseReference.addValueEventListener(new ValueEventListener() {
 
-        //Implement the firebase here
-        ArrayList<String> categories = new ArrayList<String>();
-        categories.add("test1");
-        categories.add("test2");
-        //Implement the firebase here
 
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, categories);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        groupingSelectorSpinner.setAdapter(dataAdapter);
-        groupingSelectorSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                System.out.println("you select on an item" + position);
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ArrayList<String> groups = new ArrayList<String>();
+                for (DataSnapshot single_snapshot : snapshot.getChildren()) {
+                    groups.add(single_snapshot.getKey());
+                }
+                ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, groups);
+                dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                groupingSelectorSpinner.setAdapter(dataAdapter);
+                groupingSelectorSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        System.out.println("you select on an item" + position);
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
+
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
+
         });
+
 
         if (user_navigation.loc != null) {
             latLng = user_navigation.loc;
