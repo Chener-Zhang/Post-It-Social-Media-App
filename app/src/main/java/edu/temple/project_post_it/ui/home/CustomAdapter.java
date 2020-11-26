@@ -3,6 +3,7 @@ package edu.temple.project_post_it.ui.home;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -33,10 +34,16 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         holder.getTitle_textView().setText(post_list.get(position).getTitle());
         holder.getText_textView().setText(post_list.get(position).getText());
-
+        holder.getDelete_button().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("you click on the button");
+                System.out.println(post_list.get(position).getPost_ID());
+            }
+        });
 
     }
 
@@ -48,6 +55,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
     //ViewHolder Class
     public static class ViewHolder extends RecyclerView.ViewHolder {
         //Declase the item in the ViewHolder
+        ImageButton delete_button;
         TextView title_textView;
         TextView text_textView;
 
@@ -57,6 +65,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
             //Init the variable in the post_row_item.xml -> findViewById
             title_textView = itemView.findViewById(R.id.post_title);
             text_textView = itemView.findViewById(R.id.post_text);
+            delete_button = itemView.findViewById(R.id.delete_button);
         }
 
         //Get title
@@ -69,6 +78,10 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
             return text_textView;
         }
 
+        //Set delete button
+        public ImageButton getDelete_button() {
+            return delete_button;
+        }
     }
 
 
