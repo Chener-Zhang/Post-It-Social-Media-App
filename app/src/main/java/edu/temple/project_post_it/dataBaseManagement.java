@@ -86,14 +86,12 @@ public class dataBaseManagement {
     //For example:
     //reference = "Posts/post1/image"
     //reference = "Members/user/name"
-    public void databaseRemoveData(String reference) {
-        databaseReference = root.getReference("Members/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/" + "user_posts/" + reference);
+    public void databaseRemoveData(String post_id) {
+        databaseReference = root.getReference("Members/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/" + "user_posts/" + post_id);
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                //if (!snapshot.hasChild(user_id)) check user exist
-//                snapshot.getRef().removeValue();
-
+                snapshot.getRef().removeValue();
             }
 
             @Override
