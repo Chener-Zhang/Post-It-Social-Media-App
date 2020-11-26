@@ -74,12 +74,18 @@ public class PostCreationFragment extends Fragment implements AdapterView.OnItem
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, categories);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-
-
         groupingSelectorSpinner.setAdapter(dataAdapter);
-//        groupingSelectorSpinner.setOnItemClickListener(onItemSelected());
-        
+        groupingSelectorSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                System.out.println("you select on an item" + position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         if (user_navigation.loc != null) {
             latLng = user_navigation.loc;
