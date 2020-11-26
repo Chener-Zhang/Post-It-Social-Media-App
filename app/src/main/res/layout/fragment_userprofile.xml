@@ -38,8 +38,10 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50px"
+        android:layout_height="50dp"
         android:layout_marginTop="56dp"
+        android:background="@drawable/customborder"
+        android:gravity="center_horizontal"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,8 +58,8 @@
             android:id="@+id/user_uid"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:textAlignment="viewStart"
-            android:text="USER UID" />
+            android:text="USER UID"
+            android:textAlignment="viewStart" />
 
 
     </LinearLayout>

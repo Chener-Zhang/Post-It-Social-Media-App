@@ -20,9 +20,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
-import edu.temple.project_post_it.dataBaseManagement;
 import edu.temple.project_post_it.R;
-import edu.temple.project_post_it.post.Post;
+import edu.temple.project_post_it.dataBaseManagement;
 
 public class UserProfileFragment extends Fragment {
 
@@ -79,7 +78,7 @@ public class UserProfileFragment extends Fragment {
     public void set_UID() {
         //Set the user information
         user = FirebaseAuth.getInstance().getCurrentUser();
-        dataBase_management.databaseReference = dataBase_management.rootNode.getReference("Members");
+        dataBase_management.databaseReference = dataBase_management.root.getReference("Members");
         dataBase_management.databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -101,6 +100,6 @@ public class UserProfileFragment extends Fragment {
     }
 
     public interface OnDataPass_UserProfileFragment {
-        public void sign_out();
+        void sign_out();
     }
 }

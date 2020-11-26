@@ -1,6 +1,7 @@
 package edu.temple.project_post_it.ui.dashboard;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -15,9 +17,18 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import edu.temple.project_post_it.R;
 import edu.temple.project_post_it.dataBaseManagement;
@@ -26,9 +37,11 @@ import edu.temple.project_post_it.user_navigation;
 
 
 public class DashboardFragment extends Fragment implements OnMapReadyCallback {
-    private Marker marker;
     private MapView mapView;
     GoogleMap googleMap;
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    double lat, lng;
+    LatLng loc;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -36,6 +49,7 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
 
         View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
         final TextView textView = root.findViewById(R.id.text_dashboard);
+        Log.i("user id", "Members/" + user.getUid() + "/user_posts");
 
 
         //Init the map
@@ -84,9 +98,32 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(final GoogleMap googleMap) {
         this.googleMap = googleMap;
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(user_navigation.loc, 15));
-        marker = googleMap.addMarker((new MarkerOptions()).position(user_navigation.loc));
+        //different color to show current location
+        googleMap.addMarker((new MarkerOptions()).position(user_navigation.loc)).setIcon(BitmapDescriptorFactory
+                .defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+
+        FirebaseDatabase.getInstance().getReference("Members/" + user.getUid() + "/user_posts")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                Post post = snapshot.getValue(Post.class);
+                                lat = post.getLocation().getLatitude();
+                                lng = post.getLocation().getLongitude();
+                                loc = new LatLng(lat, lng);
+                                googleMap.addMarker((new MarkerOptions()).position(loc));
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.i("Error", String.valueOf(error));
+                    }
+                });
     }
 }

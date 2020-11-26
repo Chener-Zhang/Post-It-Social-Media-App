@@ -1,8 +1,6 @@
 package edu.temple.project_post_it.post;
 
-import android.location.Location;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.Exclude;
 
 import java.util.HashMap;
@@ -16,13 +14,17 @@ import static edu.temple.project_post_it.CONSTANT.TEXT;
 import static edu.temple.project_post_it.CONSTANT.TYPE;
 
 public class Post {
-    String Post_ID;
-    LatLng location;
-    long Group_ID;
+    // privacy: true --> public, false --> private
     boolean privacy;
+    LatLng location;
+    String Post_ID;
     String Title;
     String Text;
+    long Group_ID;
     int type;
+
+    public Post() {
+    }
 
     public Post(String Post_ID, boolean Privacy, int type) {
         this.Post_ID = Post_ID;

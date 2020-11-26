@@ -8,12 +8,12 @@
             android:key="@string/anon_key"
             android:title="@string/show_anon" />
 
-        <SwitchPreferenceCompat
+        <SwitchPreference
             android:id="@+id/enableGroup"
             app:key="@string/group_key"
             app:title="@string/show_group" />
 
-        <SwitchPreferenceCompat
+        <SwitchPreference
             android:id="@+id/enableAll"
             app:key="@string/all_key"
             app:title="@string/show_all" />
