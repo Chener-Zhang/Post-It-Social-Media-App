@@ -42,7 +42,6 @@ public class dataBaseManagement {
 
         //Mocking data --------------------->
         user.setUser_id(Uid);
-        user.setNumber_posts(user.getNumber_posts());
         user.setUser_groud_id("test_group_id");
         user.setUser_posts(new ArrayList<Post>());
         //Mocking data --------------------->
@@ -54,7 +53,7 @@ public class dataBaseManagement {
     public void dataBaseSavePost(String Uid, Post post) {
         databaseReference = root.getReference().child("Members/" + Uid);
         databaseReference.child("user_posts/" + post.getPost_ID()).setValue(post);
-        if(post.getPrivacy()) {
+        if (post.getPrivacy()) {
             databaseAddGroup(post.getGroupID());
             root.getReference("Groups/" + post.getGroupID() + "/posts").setValue(post);
         }
@@ -121,7 +120,7 @@ public class dataBaseManagement {
         databaseReference.updateChildren(childUpdates);
     }
 
-    public void databaseAddGroup(String newGroup){
+    public void databaseAddGroup(String newGroup) {
         databaseReference = root.getReference().child("/Groups/" + newGroup);
         Group group = new Group();
         group.setPostArrayList(new ArrayList<Post>());
