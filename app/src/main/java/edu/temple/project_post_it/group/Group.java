@@ -11,8 +11,8 @@ import edu.temple.project_post_it.post.Post;
 
 public class Group {
     String groupName;
-    public List<String> users;
-    public List<Post> posts;
+    public ArrayList<String> users;
+    public ArrayList<Post> posts;
 
     public Group() {
 
@@ -21,18 +21,18 @@ public class Group {
         this.groupName = groupName;
     }
 
-    public void setUsers(List<String> userArrayList) {
+    public void setUsers(ArrayList<String> userArrayList) {
         users = userArrayList;
     }
 
-    public void setPosts(List<Post> postArrayList) {
+    public void setPosts(ArrayList<Post> postArrayList) {
         posts = postArrayList;
     }
 
 
-    public List<String> getUsers(){ return users;    }
+    public ArrayList<String> getUsers(){ return users;    }
 
-    public List<Post> getPosts(){return posts;}
+    public ArrayList<Post> getPosts(){return posts;}
 
     public String getGroupName(){
         return groupName;

@@ -1,6 +1,8 @@
 package edu.temple.project_post_it;
 
+import android.app.Application;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -133,17 +135,36 @@ public class dataBaseManagement {
                     group.setUsers(new ArrayList<String>());
                     group.getUsers().add(FirebaseAuth.getInstance().getCurrentUser().getUid());
                     group.setGroupName(newGroup);
-                    databaseReference.setValue(group);
-                } else {
-                    databaseReference = root.getReference().child("/Groups/" + newGroup + "/users");
+                    if(databaseReference.setValue(group).isComplete())
+                        databaseReference.removeEventListener(this);
+                } else if(snapshot.hasChild(newGroup)){
+                    databaseReference = root.getReference().child("/Groups/" + newGroup);
                     Group group = snapshot.child(newGroup).getValue(Group.class);
-                    System.out.println(group.toString());
-                    group.getUsers().add(FirebaseAuth.getInstance().getUid());
-                    databaseReference.setValue(group);
-//                    databaseReference = root.getReference().child("/Members/" + FirebaseAuth.getInstance().getCurrentUser().getUid());
-//                    User user = snapshot.getValue(User.class);
-//                    user.groupList.add(FirebaseAuth.getInstance().getCurrentUser().getUid());
-//                    databaseReference.setValue(user);
+                    System.out.println("This is Group " + group.users.toString());
+                    if(group.users.contains(FirebaseAuth.getInstance().getCurrentUser().getUid()))
+                        //display message that it failed
+                        System.out.println("needs to do something");
+                    else
+                        group.users.add(FirebaseAuth.getInstance().getUid());
+                    System.out.println("This is Group " + group.users.toString());
+                    if(databaseReference.setValue(group).isComplete())
+                        databaseReference.removeEventListener(this);
+                    databaseReference = root.getReference().child("/Members/" + FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    databaseReference.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            User user = snapshot.getValue(User.class);
+                            if(!user.groupList.contains(newGroup))
+                                user.groupList.add(newGroup);
+                            if(databaseReference.setValue(user).isComplete())
+                                databaseReference.removeEventListener(this);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
                 }
             }
 
