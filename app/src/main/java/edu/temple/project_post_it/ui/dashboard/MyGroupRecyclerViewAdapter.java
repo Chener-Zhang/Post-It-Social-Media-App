@@ -17,10 +17,10 @@ import java.util.List;
 
 public class MyGroupRecyclerViewAdapter extends RecyclerView.Adapter<MyGroupRecyclerViewAdapter.ViewHolder> {
 
-    public List<Group> groupList;
+    public List<String> groupList;
     public dataBaseManagement dataBaseManagement;
 
-    public MyGroupRecyclerViewAdapter(List<Group> groupList) {
+    public MyGroupRecyclerViewAdapter(List<String> groupList) {
         this.groupList = groupList;
         dataBaseManagement = new dataBaseManagement();
     }
@@ -34,12 +34,12 @@ public class MyGroupRecyclerViewAdapter extends RecyclerView.Adapter<MyGroupRecy
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        holder.get_group_name().setText(groupList.get(position).getGroupName());
+        holder.get_group_name().setText(groupList.get(position));
         holder.get_delete_button().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //write the delete code here
-                 String selectedGroup = groupList.get(position).getGroupName();
+                 String selectedGroup = groupList.get(position);
                  dataBaseManagement.databaseRemoveData(selectedGroup);
                  }
                  });

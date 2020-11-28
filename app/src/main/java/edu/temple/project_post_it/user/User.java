@@ -1,5 +1,6 @@
 package edu.temple.project_post_it.user;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import edu.temple.project_post_it.group.Group;
@@ -7,12 +8,11 @@ import edu.temple.project_post_it.post.Post;
 
 public class User {
     public String user_id;
-    public String user_groud_id;
     public ArrayList<Post> user_posts;
-    public ArrayList<Group> groupList;
+    public ArrayList<String> groupList;
 
     public User() {
-        user_posts = new ArrayList<Post>();
+
     }
 
 
@@ -20,18 +20,21 @@ public class User {
         this.user_id = user_id;
     }
 
-
-    public void setUser_groud_id(String user_groud_id) {
-        this.user_groud_id = user_groud_id;
-    }
-
-
     public void setUser_posts(ArrayList<Post> user_posts) {
         this.user_posts = user_posts;
     }
 
-    public void setGroupList(ArrayList<Group> groupList){ this.groupList = groupList;}
+    public void setGroupList(ArrayList<String> groupList){ this.groupList = groupList;
+    groupList.add("Default");}
 
-    public ArrayList<Group> groupList(){ return groupList;}
+    public ArrayList<String> getGroupList(){ return groupList;}
+
+    public String getUser_id(){
+        return user_id;
+    }
+
+    public ArrayList<Post> getUser_posts(){
+        return user_posts;
+    }
 
 }

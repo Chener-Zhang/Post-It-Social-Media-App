@@ -20,7 +20,7 @@ public class Post {
     String Post_ID;
     String Title;
     String Text;
-    String groupID = "Special";
+    String groupID = "Default";
     int type;
 
     public Post() {

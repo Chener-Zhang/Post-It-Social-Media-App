@@ -17,6 +17,7 @@ import java.util.List;
 
 public class SignInActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 123;
+    dataBaseManagement dataBaseManagement;
 
 
     @Override
@@ -45,7 +46,7 @@ public class SignInActivity extends AppCompatActivity {
 
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                dataBaseManagement.dataBaseAddUser(FirebaseAuth.getInstance().getUid());
                 user_navigation();
             } else {
                 // Sign in failed. If response is null the user canceled the

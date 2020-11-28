@@ -42,7 +42,7 @@ public class dataBaseManagement {
 
         //Mocking data --------------------->
         user.setUser_id(Uid);
-        user.setUser_groud_id("test_group_id");
+        user.setGroupList(new ArrayList<String>());
         user.setUser_posts(new ArrayList<Post>());
         //Mocking data --------------------->
 
@@ -121,18 +121,21 @@ public class dataBaseManagement {
     }
 
     public void databaseAddGroup(final String newGroup){
-        databaseReference = root.getReference("Groups");
+        databaseReference = root.getReference().child("/Groups/");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.hasChild(newGroup)){
-                    Group copy = new Group();
-                    databaseReference = root.getReference().child("Groups").child(newGroup);
+                    databaseReference = root.getReference().child("/Groups/" + newGroup);
                     Group group = snapshot.getValue(Group.class);
-                    copy.setPosts(group.getPosts());
-                    copy.setGroupName(group.getGroupName());
-                    copy.setUsers(group.getUsers());
-                    databaseReference.setValue(copy);
+                    System.out.println(group.toString());
+                    group.users.add(FirebaseAuth.getInstance().getUid());
+                    databaseReference.push().setValue(group);
+                    databaseReference = root.getReference().child("/Members/" + FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    User user = snapshot.getValue(User.class);
+                    user.groupList.add(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    databaseReference.setValue(user);
+
                 } else{
                     databaseReference = root.getReference().child("/Groups/" + newGroup);
                     Group group = new Group();
