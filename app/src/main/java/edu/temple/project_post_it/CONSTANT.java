@@ -13,5 +13,5 @@ public class CONSTANT {
     public static String TYPE = "type";
     public static String USERS = "users";
     public static String POSTS = "posts";
-    public static String ADMIN = "admin";
+    public static String GROUPNAME = "group_name";
 }

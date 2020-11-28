@@ -22,6 +22,7 @@ import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import edu.temple.project_post_it.R;
 import edu.temple.project_post_it.dataBaseManagement;
@@ -54,8 +55,8 @@ public class GroupFragment extends Fragment {
         dataBaseManagement.databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                ArrayList<String> groupList = new ArrayList<>();
-//                GenericTypeIndicator<ArrayList<String>> genericTypeIndicator = new GenericTypeIndicator<ArrayList<String>>() {                };
+//                List<String> groupList;
+//                GenericTypeIndicator<List<String>> genericTypeIndicator = new GenericTypeIndicator<List<String>>() {                };
 //                groupList = snapshot.getValue(genericTypeIndicator);
 //                groupAdapter = new MyGroupRecyclerViewAdapter(groupList);
 //                recyclerView.setAdapter(groupAdapter);

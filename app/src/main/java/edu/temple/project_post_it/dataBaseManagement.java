@@ -13,6 +13,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import edu.temple.project_post_it.group.Group;
@@ -125,18 +126,7 @@ public class dataBaseManagement {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.hasChild(newGroup)){
-                    databaseReference = root.getReference().child("/Groups/" + newGroup);
-                    Group group = snapshot.getValue(Group.class);
-                    System.out.println(group.toString());
-                    group.users.add(FirebaseAuth.getInstance().getUid());
-                    databaseReference.push().setValue(group);
-                    databaseReference = root.getReference().child("/Members/" + FirebaseAuth.getInstance().getCurrentUser().getUid());
-                    User user = snapshot.getValue(User.class);
-                    user.groupList.add(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                    databaseReference.setValue(user);
-
-                } else{
+                if(!snapshot.hasChild(newGroup)){
                     databaseReference = root.getReference().child("/Groups/" + newGroup);
                     Group group = new Group();
                     group.setPosts(new ArrayList<Post>());
@@ -144,6 +134,16 @@ public class dataBaseManagement {
                     group.getUsers().add(FirebaseAuth.getInstance().getCurrentUser().getUid());
                     group.setGroupName(newGroup);
                     databaseReference.setValue(group);
+                } else {
+                    databaseReference = root.getReference().child("/Groups/" + newGroup + "/users");
+                    Group group = snapshot.child(newGroup).getValue(Group.class);
+                    System.out.println(group.toString());
+                    group.getUsers().add(FirebaseAuth.getInstance().getUid());
+                    databaseReference.setValue(group);
+//                    databaseReference = root.getReference().child("/Members/" + FirebaseAuth.getInstance().getCurrentUser().getUid());
+//                    User user = snapshot.getValue(User.class);
+//                    user.groupList.add(FirebaseAuth.getInstance().getCurrentUser().getUid());
+//                    databaseReference.setValue(user);
                 }
             }
 

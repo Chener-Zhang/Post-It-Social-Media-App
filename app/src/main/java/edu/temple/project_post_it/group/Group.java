@@ -42,6 +42,7 @@ public class Group {
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> serialize = new HashMap<>();
+        serialize.put(CONSTANT.GROUPNAME, getGroupName());
         serialize.put(CONSTANT.USERS, getUsers());
         serialize.put(CONSTANT.POSTS, getPosts());
         return serialize;
