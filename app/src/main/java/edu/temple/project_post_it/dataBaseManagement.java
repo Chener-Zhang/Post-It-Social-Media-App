@@ -121,15 +121,31 @@ public class dataBaseManagement {
         databaseReference.updateChildren(childUpdates);
     }
 
-    public void databaseAddGroup(String newGroup){
-        databaseReference = root.getReference().child("/Groups/" + newGroup);
-        Group group = new Group();
-        group.setPostArrayList(new ArrayList<Post>());
-        group.setUserArrayList(new ArrayList<String>());
-        group.users.add(FirebaseAuth.getInstance().getUid());
+    public void databaseAddGroup(final String newGroup){
+        databaseReference = root.getReference("/Groups");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.hasChild(newGroup)){
+                    databaseReference = root.getReference("/Groups/" + newGroup);
+                    Group group = snapshot.getValue(Group.class);
+                    group.users.add("shabba");
+                    databaseReference.setValue(group);
+                } else{
+                    Group group = new Group();
+                    group.setPostArrayList(new ArrayList<Post>());
+                    group.setUserArrayList(new ArrayList<String>());
+                    group.users.add(FirebaseAuth.getInstance().getUid());
+                    databaseReference.setValue(group);
 
+                }
+            }
 
-        databaseReference.setValue(group);
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
     }
 }

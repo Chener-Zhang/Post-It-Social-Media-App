@@ -2,6 +2,7 @@ package edu.temple.project_post_it.user;
 
 import java.util.ArrayList;
 
+import edu.temple.project_post_it.group.Group;
 import edu.temple.project_post_it.post.Post;
 
 public class User {
@@ -9,6 +10,7 @@ public class User {
     public String user_groud_id;
     public int number_posts;
     public ArrayList<Post> user_posts;
+    public ArrayList<Group> groupList;
 
     public User() {
         user_posts = new ArrayList<Post>();
@@ -54,5 +56,9 @@ public class User {
     public void setUser_posts(ArrayList<Post> user_posts) {
         this.user_posts = user_posts;
     }
+
+    public void setGroupList(ArrayList<Group> groupList){ this.groupList = groupList;}
+
+    public ArrayList<Group> groupList(){ return groupList;}
 
 }

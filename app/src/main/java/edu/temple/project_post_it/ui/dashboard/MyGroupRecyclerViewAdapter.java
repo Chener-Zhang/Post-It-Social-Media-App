@@ -11,7 +11,6 @@ import android.widget.TextView;
 import edu.temple.project_post_it.R;
 import edu.temple.project_post_it.dataBaseManagement;
 import edu.temple.project_post_it.group.Group;
-import edu.temple.project_post_it.ui.dashboard.dummy.DummyContent.DummyItem;
 
 import java.util.List;
 
