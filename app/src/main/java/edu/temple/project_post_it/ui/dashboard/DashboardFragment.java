@@ -48,7 +48,6 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
                              ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
-        final TextView textView = root.findViewById(R.id.text_dashboard);
         Log.i("user id", "Members/" + user.getUid() + "/user_posts");
 
 

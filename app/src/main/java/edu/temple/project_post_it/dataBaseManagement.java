@@ -54,7 +54,10 @@ public class dataBaseManagement {
     public void dataBaseSavePost(String Uid, Post post) {
         databaseReference = root.getReference().child("Members/" + Uid);
         databaseReference.child("user_posts/" + post.getPost_ID()).setValue(post);
-        root.getReference("Groups/" + post.getGroupID() + "/posts").setValue(post);
+        if(post.getPrivacy()) {
+            databaseAddGroup(post.getGroupID());
+            root.getReference("Groups/" + post.getGroupID() + "/posts").setValue(post);
+        }
     }
 
 
@@ -121,9 +124,10 @@ public class dataBaseManagement {
     public void databaseAddGroup(String newGroup){
         databaseReference = root.getReference().child("/Groups/" + newGroup);
         Group group = new Group();
-        group.setAdmin(FirebaseAuth.getInstance().getCurrentUser().getUid());
         group.setPostArrayList(new ArrayList<Post>());
-        group.setUserArrayList(new ArrayList<User>());
+        group.setUserArrayList(new ArrayList<String>());
+        group.users.add(FirebaseAuth.getInstance().getUid());
+
 
         databaseReference.setValue(group);
 

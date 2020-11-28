@@ -17,7 +17,7 @@
             android:textSize="30dp" />
 
         <TextView
-            android:id="@+id/post_text"
+            android:id="@+id/group_name"
             android:layout_width="173dp"
             android:layout_height="match_parent"
             android:text="Test"
