@@ -77,8 +77,9 @@ public class GroupFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.i("Button Clicked", "Clicked button");
-                dataBaseManagement.databaseAddGroup(addGroup.getText().toString());
-                groupAdapter.notifyDataSetChanged();
+                if(addGroup.getText() != null) {
+                    dataBaseManagement.databaseAddGroup(addGroup.getText().toString());
+                }
             }
         });
 

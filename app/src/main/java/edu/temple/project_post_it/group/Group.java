@@ -22,11 +22,11 @@ public class Group {
         this.groupName = groupName;
     }
 
-    public void setUserArrayList(ArrayList<String> userArrayList) {
+    public void setUsers(ArrayList<String> userArrayList) {
         users = userArrayList;
     }
 
-    public void setPostArrayList(ArrayList<Post> postArrayList) {
+    public void setPosts(ArrayList<Post> postArrayList) {
         posts = postArrayList;
     }
 

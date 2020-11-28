@@ -42,7 +42,6 @@ public class dataBaseManagement {
 
         //Mocking data --------------------->
         user.setUser_id(Uid);
-        user.setNumber_posts(user.getNumber_posts());
         user.setUser_groud_id("test_group_id");
         user.setUser_posts(new ArrayList<Post>());
         //Mocking data --------------------->
@@ -54,10 +53,10 @@ public class dataBaseManagement {
     public void dataBaseSavePost(String Uid, Post post) {
         databaseReference = root.getReference().child("Members/" + Uid);
         databaseReference.child("user_posts/" + post.getPost_ID()).setValue(post);
-        if(post.getPrivacy()) {
-            databaseAddGroup(post.getGroupID());
-            root.getReference("Groups/" + post.getGroupID() + "/posts").setValue(post);
-        }
+//        if(post.getPrivacy()) {
+//            databaseAddGroup(post.getGroupID());
+//            root.getReference("Groups/" + post.getGroupID() + "/posts").setValue(post);
+//        }
     }
 
 
@@ -122,22 +121,26 @@ public class dataBaseManagement {
     }
 
     public void databaseAddGroup(final String newGroup){
-        databaseReference = root.getReference("/Groups");
+        databaseReference = root.getReference("Groups");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.hasChild(newGroup)){
-                    databaseReference = root.getReference("/Groups/" + newGroup);
+                    Group copy = new Group();
+                    databaseReference = root.getReference().child("Groups").child(newGroup);
                     Group group = snapshot.getValue(Group.class);
-                    group.users.add("shabba");
-                    databaseReference.setValue(group);
+                    copy.setPosts(group.getPosts());
+                    copy.setGroupName(group.getGroupName());
+                    copy.setUsers(group.getUsers());
+                    databaseReference.setValue(copy);
                 } else{
+                    databaseReference = root.getReference().child("/Groups/" + newGroup);
                     Group group = new Group();
-                    group.setPostArrayList(new ArrayList<Post>());
-                    group.setUserArrayList(new ArrayList<String>());
-                    group.users.add(FirebaseAuth.getInstance().getUid());
+                    group.setPosts(new ArrayList<Post>());
+                    group.setUsers(new ArrayList<String>());
+                    group.getUsers().add(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    group.setGroupName(newGroup);
                     databaseReference.setValue(group);
-
                 }
             }
 
