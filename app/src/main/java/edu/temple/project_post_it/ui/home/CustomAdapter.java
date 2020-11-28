@@ -68,7 +68,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
             super(itemView);
             //Init the variable in the post_row_item.xml -> findViewById
             title_textView = itemView.findViewById(R.id.post_title);
-            text_textView = itemView.findViewById(R.id.post_text);
+            text_textView = itemView.findViewById(R.id.group_name);
             delete_button = itemView.findViewById(R.id.delete_button);
         }
 

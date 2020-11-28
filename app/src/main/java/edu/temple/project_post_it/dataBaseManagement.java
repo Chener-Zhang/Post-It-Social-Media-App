@@ -124,7 +124,6 @@ public class dataBaseManagement {
     public void databaseAddGroup(String newGroup){
         databaseReference = root.getReference().child("/Groups/" + newGroup);
         Group group = new Group();
-        group.setAdmin(FirebaseAuth.getInstance().getCurrentUser().getUid());
         group.setPostArrayList(new ArrayList<Post>());
         group.setUserArrayList(new ArrayList<String>());
         group.users.add(FirebaseAuth.getInstance().getUid());
