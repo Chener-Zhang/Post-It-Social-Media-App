@@ -140,7 +140,7 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
                 ArrayList<String> groups = user.getGroupList();
                 try {
                     for (String group : groups) {
-                        databaseReference = root.getReference().child("/Groups/" + group + "/posts");
+                        databaseReference = root.getReference().child("/Groups/" + group + "/posts/" + FirebaseAuth.getInstance().getCurrentUser().getUid());
                         databaseReference.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
