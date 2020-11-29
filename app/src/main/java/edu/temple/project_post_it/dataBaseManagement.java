@@ -64,7 +64,9 @@ public class dataBaseManagement {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     Group group = snapshot.getValue(Group.class);
-                    group.getPosts().add(post);
+                    if(group.getPosts() == null)
+                        group.setPosts(new ArrayList<Post>());
+                    group.posts.add(post);
                     databaseReference.setValue(group);
                     databaseReference.removeEventListener(this);
                 }
