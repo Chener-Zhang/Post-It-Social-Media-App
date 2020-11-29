@@ -55,11 +55,25 @@ public class dataBaseManagement {
         databaseReference.setValue(user);
     }
 
-    public void dataBaseSavePost(String Uid, Post post) {
+    public void dataBaseSavePost(String Uid, final Post post) {
         databaseReference = root.getReference().child("Members/" + Uid);
         databaseReference.child("user_posts/" + post.getPost_ID()).setValue(post);
         if(post.getPrivacy()) {
-            root.getReference("Groups/" + post.getGroupID() + "/posts").setValue(post);
+            databaseReference = root.getReference().child("/Groups/" + post.getGroupID());
+            databaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    Group group = snapshot.getValue(Group.class);
+                    group.getPosts().add(post);
+                    databaseReference.setValue(group);
+                    databaseReference.removeEventListener(this);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
         }
     }
 
