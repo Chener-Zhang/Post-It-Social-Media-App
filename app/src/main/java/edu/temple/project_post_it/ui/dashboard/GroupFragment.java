@@ -33,7 +33,7 @@ public class GroupFragment extends Fragment {
     RecyclerView recyclerView;
     Button addButton;
     EditText addGroup;
-
+    
     public GroupFragment() {
     }
 
@@ -42,10 +42,10 @@ public class GroupFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_groups, container, false);
-
+    
         recyclerView = view.findViewById(R.id.groupListView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
+    
         dataBaseManagement = new dataBaseManagement();
         dataBaseManagement.databaseReference = dataBaseManagement.root.getReference("Members/" + FirebaseAuth.getInstance().getCurrentUser().getUid());
         dataBaseManagement.databaseReference.addValueEventListener(new ValueEventListener() {
@@ -57,12 +57,12 @@ public class GroupFragment extends Fragment {
                 groupAdapter = new MyGroupRecyclerViewAdapter(groupList);
                 recyclerView.setAdapter(groupAdapter);
             }
-
+    
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
-
+    
         addButton = view.findViewById(R.id.addButton);
         addGroup = view.findViewById(R.id.addGroup);
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -71,14 +71,16 @@ public class GroupFragment extends Fragment {
                 Log.i("Button Clicked", "Clicked button");
                 if (!addGroup.getText().toString().isEmpty()) {
                     dataBaseManagement.databaseAddGroup(addGroup.getText().toString());
+    
                     groupAdapter.notifyDataSetChanged();
-                }
-            }
-        });
+
+                } else {
+
+
 
         return view;
     }
-
+    
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
