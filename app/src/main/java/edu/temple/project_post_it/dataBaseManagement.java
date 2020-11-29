@@ -163,17 +163,18 @@ public class dataBaseManagement {
                 User user = snapshot.getValue(User.class);
                 if (!((user.getGroupList()) == null)) {
                     if (!user.getGroupList().contains(newGroup)) {
+                        //require debug
+                        System.out.println("all users " + user.postList);
+                        System.out.println("all group " + user.groupList);
+
                         user.groupList.add(newGroup);
                         databaseReference.setValue(user);
+                        //require debug
                         databaseReference.removeEventListener(this);
                     }
                 } else {
                     databaseReference.child("groupList").child("0").setValue(newGroup);
-
-
                 }
-
-
             }
 
             @Override

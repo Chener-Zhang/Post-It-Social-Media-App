@@ -38,15 +38,14 @@ public class MyGroupRecyclerViewAdapter extends RecyclerView.Adapter<MyGroupRecy
             @Override
             public void onClick(View v) {
                 //write the delete code here
-                 String selectedGroup = groupList.get(position);
-                 dataBaseManagement.databaseRemoveGroup(selectedGroup);
-                 }
-                 });
-                 }
+                String selectedGroup = groupList.get(position);
+                dataBaseManagement.databaseRemoveGroup(selectedGroup);
+            }
+        });
+    }
 
     @Override
     public int getItemCount() {
-        System.out.println("---------------------------->");
         if (!(groupList == null)) {
             return groupList.size();
         } else {
