@@ -64,7 +64,6 @@ public class SignInActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if(!snapshot.hasChild(FirebaseAuth.getInstance().getUid())) {
                             dataBaseManagement.dataBaseAddUser(FirebaseAuth.getInstance().getUid());
-                            dataBaseManagement.databaseAddGroup("Default");
                             databaseReference.removeEventListener(this);
                         }
                     }

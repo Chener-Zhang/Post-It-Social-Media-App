@@ -36,7 +36,8 @@ public class User {
         this.postList = postList;
     }
 
-    public void setGroupList(ArrayList<String> groupList){ this.groupList = groupList;}
+    public void setGroupList(ArrayList<String> groupList){ this.groupList = groupList;
+    groupList.add("Default");}
 
     public ArrayList<String> getGroupList(){ return groupList;}
 

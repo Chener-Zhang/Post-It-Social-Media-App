@@ -32,7 +32,6 @@ public class dataBaseManagement {
         User user = new User();
         user.setUserID(Uid);
         user.setGroupList(new ArrayList<String>());
-        user.groupList.add("Default");
         user.setPostList(new ArrayList<Post>());
 
 
