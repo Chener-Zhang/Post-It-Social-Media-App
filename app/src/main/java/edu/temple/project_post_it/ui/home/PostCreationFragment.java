@@ -1,6 +1,7 @@
 package edu.temple.project_post_it.ui.home;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,22 +83,28 @@ public class PostCreationFragment extends Fragment implements AdapterView.OnItem
                 final ArrayList<String> groups;
                 User user = snapshot.getValue(User.class);
                 groups = user.getGroupList();
-                System.out.println(groups.toString() + "is not null");
-                ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, groups);
-                dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                groupingSelectorSpinner.setAdapter(dataAdapter);
-                groupingSelectorSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        System.out.println(groups.get(position));
-                        useGroupSelection = groups.get(position);
-                    }
 
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
+                try {
 
-                    }
-                });
+                    ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, groups);
+                    dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    groupingSelectorSpinner.setAdapter(dataAdapter);
+                    groupingSelectorSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            System.out.println(groups.get(position));
+                            useGroupSelection = groups.get(position);
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+
+                        }
+                    });
+                } catch (Exception e) {
+                    Log.d("EXCEPTION", e.toString());
+
+                }
 
             }
 
