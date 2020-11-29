@@ -1,5 +1,7 @@
 package edu.temple.project_post_it.ui.home;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +11,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -78,18 +81,22 @@ public class AudioCreationFragment extends Fragment {
         recordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!(audioRunner.isRecording())){
-                    recordButton.setText("Stop Recording");
-                    try {
-                        audioRunner.createAudioFile();
-                        audioRunner.startRecording();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                if (getActivity().checkSelfPermission(Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED)
+                    requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO}, 2);
+                else {
+                    if (!(audioRunner.isRecording())) {
+                        recordButton.setText("Stop Recording");
+                        try {
+                            audioRunner.createAudioFile();
+                            audioRunner.startRecording();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
 
-                } else {
-                    recordButton.setText("Record");
-                    audioRunner.stopRecording();
+                    } else {
+                        recordButton.setText("Record");
+                        audioRunner.stopRecording();
+                    }
                 }
             }
         });
