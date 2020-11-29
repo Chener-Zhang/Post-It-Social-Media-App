@@ -58,17 +58,22 @@ public class dataBaseManagement {
     public void dataBaseSavePost(String Uid, final Post post) {
         databaseReference = root.getReference().child("Members/" + Uid);
         databaseReference.child("user_posts/" + post.getPost_ID()).setValue(post);
-        if(post.getPrivacy()) {
+        if (post.getPrivacy()) {
             databaseReference = root.getReference().child("/Groups/" + post.getGroupID());
             databaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     Group group = snapshot.getValue(Group.class);
-                    if(group.getPosts() == null)
+                    if (group.getPosts().isEmpty()) {
+                        System.out.println("is empty");
                         group.setPosts(new ArrayList<Post>());
-                    group.posts.add(post);
-                    databaseReference.setValue(group);
-                    databaseReference.removeEventListener(this);
+                    } else {
+                        group.posts.add(post);
+                        databaseReference.setValue(group);
+                        databaseReference.removeEventListener(this);
+                    }
+
+
                 }
 
                 @Override
@@ -140,12 +145,12 @@ public class dataBaseManagement {
         databaseReference.updateChildren(childUpdates);
     }
 
-    public void databaseAddGroup(final String newGroup){
+    public void databaseAddGroup(final String newGroup) {
         databaseReference = root.getReference().child("/Groups/");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(!snapshot.hasChild(newGroup)){
+                if (!snapshot.hasChild(newGroup)) {
                     databaseReference = root.getReference().child("/Groups/" + newGroup);
                     Group group = new Group();
                     group.setPosts(new ArrayList<Post>());
@@ -156,11 +161,11 @@ public class dataBaseManagement {
                     databaseAddGroupList(newGroup);
                     databaseReference.removeEventListener(this);
 
-                } else if(snapshot.hasChild(newGroup)){
+                } else if (snapshot.hasChild(newGroup)) {
                     databaseReference = root.getReference().child("/Groups/" + newGroup);
                     Group group = snapshot.child(newGroup).getValue(Group.class);
                     System.out.println("This is Group " + group.users.toString());
-                    if(group.users.contains(FirebaseAuth.getInstance().getCurrentUser().getUid()))
+                    if (group.users.contains(FirebaseAuth.getInstance().getCurrentUser().getUid()))
                         //display message that it failed
                         System.out.println("needs to do something");
                     else
@@ -180,7 +185,7 @@ public class dataBaseManagement {
 
     }
 
-    public void databaseAddGroupList(final String newGroup){
+    public void databaseAddGroupList(final String newGroup) {
         databaseReference = root.getReference().child("/Members/" + FirebaseAuth.getInstance().getCurrentUser().getUid());
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -188,7 +193,7 @@ public class dataBaseManagement {
                 User user = snapshot.getValue(User.class);
                 System.out.println("This is the snapshot" + snapshot.toString());
                 System.out.println("This is the users " + user.getGroupList().toString());
-                if(!user.getGroupList().contains(newGroup)) {
+                if (!user.getGroupList().contains(newGroup)) {
                     user.groupList.add(newGroup);
                     databaseReference.setValue(user);
                     databaseReference.removeEventListener(this);
