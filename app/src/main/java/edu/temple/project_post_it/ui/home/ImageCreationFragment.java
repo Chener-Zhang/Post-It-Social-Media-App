@@ -1,8 +1,10 @@
 package edu.temple.project_post_it.ui.home;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -62,6 +64,7 @@ public class ImageCreationFragment extends Fragment {
     edu.temple.project_post_it.dataBaseManagement dataBaseManagement;
 
     private StorageReference mStorageRef;
+    private StorageReference savedPhotoLocation;
 
     public ImageCreationFragment() {
         // Required empty public constructor
@@ -128,7 +131,7 @@ public class ImageCreationFragment extends Fragment {
                         isPublic = false;
                     }
                     String post_id = Calendar.getInstance().getTime().toString() + currentUser.getUid();
-                    ImagePost post = new ImagePost(post_id, isPublic, 1, currentPhotoPath);
+                    ImagePost post = new ImagePost(post_id, isPublic, 1, currentPhotoPath, savedPhotoLocation);
                     post.setTitle(title);
                     post.setText(description);
                     if (latLng != null) {
@@ -185,16 +188,17 @@ public class ImageCreationFragment extends Fragment {
             String userID =  FirebaseAuth.getInstance().getCurrentUser().getUid();
             StorageReference usersRef = mStorageRef.child("Users/" + userID);
             Log.v("Current UserID", userID);
-            StorageReference saveRef = usersRef.child(imageFileName);
+            final StorageReference saveRef = usersRef.child(imageFileName);
             saveRef.putFile(file).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-
+                    Toast.makeText(context, "Error: Photo Not Saved to Firebase Storage!", Toast.LENGTH_SHORT).show();
                 }
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Toast.makeText(context, "Photo Saved to Firebase Storage!", Toast.LENGTH_SHORT).show();
+                    savedPhotoLocation = saveRef;
                 }
             });
         }
