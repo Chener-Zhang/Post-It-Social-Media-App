@@ -19,6 +19,7 @@ public class dataBaseManagement {
     //RootNode = postit-8d9a4
     public FirebaseDatabase root;
     public DatabaseReference databaseReference;
+    String currentUser = FirebaseAuth.getInstance().getUid();
 
     public dataBaseManagement() {
         root = FirebaseDatabase.getInstance();
@@ -77,41 +78,61 @@ public class dataBaseManagement {
 
     }
 
-    public void dataBaseSavePost(String Uid, final Post post) {
+    public void databaseSavePost(String Uid, final Post post) {
         databaseReference = root.getReference().child("Members/" + Uid);
         databaseReference.child("user_posts/" + post.getPost_ID()).setValue(post);
         if (post.getPrivacy()) {
-            databaseReference = root.getReference().child("/Groups/" + post.getGroupID());
-            databaseReference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    Group group = snapshot.getValue(Group.class);
-                    if (group.getPosts() == null)
-                        group.setPosts(new ArrayList<Post>());
-                    group.posts.add(post);
-                    databaseReference.setValue(group);
-                    databaseReference.removeEventListener(this);
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
+            databaseSaveGroupPost(post);
         }
     }
 
-
-    public void databaseRemoveData(String post_id) {
-        databaseReference = root.getReference("Members/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/" + "user_posts/" + post_id);
+    public void databaseSaveGroupPost(final Post post){
+        databaseReference = root.getReference().child("Groups/" + post.getGroupID() + "/posts/" + currentUser);
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                snapshot.getRef().removeValue();
+                databaseReference.child(post.getPost_ID()).setValue(post);
+                databaseReference.removeEventListener(this);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+
+    public void databaseRemoveData(Post post) {
+        databaseReference = root.getReference("Members/" + currentUser + "/user_posts/" + post.getPost_ID());
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                snapshot.getRef().removeValue();
+                databaseReference.removeEventListener(this);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+
+        if(post.getPrivacy())
+            databaseRemoveGroupData(post);
+    }
+
+    public void databaseRemoveGroupData(Post post){
+        databaseReference = root.getReference().child("/Groups/" + post.getGroupID() + "/posts/" +currentUser + "/" + post.getPost_ID());
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                snapshot.getRef().removeValue();
+                databaseReference.removeEventListener(this);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
     }
@@ -126,6 +147,7 @@ public class dataBaseManagement {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     if (dataSnapshot.getValue().toString().equals(FirebaseAuth.getInstance().getUid())) {
                         snapshot.child(dataSnapshot.getKey()).getRef().removeValue();
+                        databaseReference.removeEventListener(this);
                     }
                 }
             }
@@ -142,6 +164,7 @@ public class dataBaseManagement {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     if (dataSnapshot.getValue().toString().equals(groupName)) {
                         snapshot.child(dataSnapshot.getKey()).getRef().removeValue();
+                        databaseReference.removeEventListener(this);
                     }
                 }
             }

@@ -44,7 +44,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
             @Override
             public void onClick(View v) {
                 //write the delete code here
-                String current_post = post_list.get(position).getPost_ID();
+                Post current_post = post_list.get(position);
                 dataBaseManagement.databaseRemoveData(current_post);
             }
         });

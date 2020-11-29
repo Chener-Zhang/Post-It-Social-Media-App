@@ -139,7 +139,7 @@ public class AudioCreationFragment extends Fragment {
 
     public void savePost(Post post){
         //This method is where the new post will be saved to the database. This method, when called, will also return the user back to the homepage.
-        dataBaseManagement.dataBaseSavePost(FirebaseAuth.getInstance().getUid(), post);
+        dataBaseManagement.databaseSavePost(FirebaseAuth.getInstance().getUid(), post);
         Toast.makeText(this.getContext(), "Post Saved!", Toast.LENGTH_SHORT).show();
 
     }

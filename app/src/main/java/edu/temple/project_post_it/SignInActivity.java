@@ -57,12 +57,14 @@ public class SignInActivity extends AppCompatActivity {
 
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
+                dataBaseManagement = new dataBaseManagement();
                 databaseReference = dataBaseManagement.root.getReference().child("/Members/");
                 databaseReference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if(!snapshot.hasChild(FirebaseAuth.getInstance().getUid())) {
                             dataBaseManagement.dataBaseAddUser(FirebaseAuth.getInstance().getUid());
+                            dataBaseManagement.databaseAddGroup("Default");
                             databaseReference.removeEventListener(this);
                         }
                     }
