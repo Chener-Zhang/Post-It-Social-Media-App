@@ -64,7 +64,6 @@ public class ImageCreationFragment extends Fragment {
     edu.temple.project_post_it.dataBaseManagement dataBaseManagement;
 
     private StorageReference mStorageRef;
-    private StorageReference savedPhotoLocation;
 
     public ImageCreationFragment() {
         // Required empty public constructor
@@ -131,7 +130,7 @@ public class ImageCreationFragment extends Fragment {
                         isPublic = false;
                     }
                     String post_id = Calendar.getInstance().getTime().toString() + currentUser.getUid();
-                    ImagePost post = new ImagePost(post_id, isPublic, 1, currentPhotoPath, savedPhotoLocation);
+                    ImagePost post = new ImagePost(post_id, isPublic, 1, currentPhotoPath, imageFileName);
                     post.setTitle(title);
                     post.setText(description);
                     if (latLng != null) {
@@ -152,8 +151,24 @@ public class ImageCreationFragment extends Fragment {
 
     public void savePost(ImagePost post) {
         //This method is where the new post will be saved to the database. This method, when called, will also return the user back to the homepage.
-        dataBaseManagement.dataBaseSavePost(FirebaseAuth.getInstance().getUid(), post);
-        Toast.makeText(this.getContext(), "Post Saved!", Toast.LENGTH_SHORT).show();
+            dataBaseManagement.dataBaseSavePost(FirebaseAuth.getInstance().getUid(), post);
+            Toast.makeText(this.getContext(), "Post Saved!", Toast.LENGTH_SHORT).show();
+            final Context context = this.getContext();
+            Uri file = Uri.fromFile(new File(currentPhotoPath));
+            String userID =  FirebaseAuth.getInstance().getCurrentUser().getUid();
+            StorageReference usersRef = mStorageRef.child("Users/" + userID);
+            final StorageReference saveRef = usersRef.child(imageFileName);
+            saveRef.putFile(file).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(context, "Error: Photo Not Saved to Firebase Storage!", Toast.LENGTH_SHORT).show();
+            }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Toast.makeText(context, "Photo Saved to Firebase Storage!", Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 
@@ -184,23 +199,7 @@ public class ImageCreationFragment extends Fragment {
         final Context context = this.getContext();
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
             Toast.makeText(context, "Photo Taken!", Toast.LENGTH_SHORT).show();
-            Uri file = Uri.fromFile(new File(currentPhotoPath));
-            String userID =  FirebaseAuth.getInstance().getCurrentUser().getUid();
-            StorageReference usersRef = mStorageRef.child("Users/" + userID);
-            Log.v("Current UserID", userID);
-            final StorageReference saveRef = usersRef.child(imageFileName);
-            saveRef.putFile(file).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(context, "Error: Photo Not Saved to Firebase Storage!", Toast.LENGTH_SHORT).show();
-                }
-            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Toast.makeText(context, "Photo Saved to Firebase Storage!", Toast.LENGTH_SHORT).show();
-                    savedPhotoLocation = saveRef;
-                }
-            });
+
         }
     }
 

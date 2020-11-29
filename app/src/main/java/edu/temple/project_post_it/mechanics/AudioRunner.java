@@ -18,6 +18,7 @@ public class AudioRunner {
     MediaRecorder recorder;
     boolean isRecording;
     String currentAudioPath;
+    String audioFileName;
     Activity activity;
 
     public AudioRunner(Activity activity){
@@ -27,10 +28,10 @@ public class AudioRunner {
 
     public File createAudioFile() throws IOException {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "MP3_" + timeStamp + "_";
+        audioFileName = "MP3_" + timeStamp + "_";
         File storageDir = activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File audio = File.createTempFile(
-                imageFileName,
+                audioFileName,
                 ".mp3",
                 storageDir
         );
@@ -65,6 +66,10 @@ public class AudioRunner {
 
     public String getCurrentAudioPath() {
         return currentAudioPath;
+    }
+
+    public String getAudioFileName() {
+        return audioFileName;
     }
 
     public boolean isRecording() {

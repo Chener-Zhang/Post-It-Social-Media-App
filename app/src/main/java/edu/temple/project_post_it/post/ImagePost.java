@@ -10,22 +10,26 @@ import java.io.File;
 
 public class ImagePost extends Post{
     String imageFilePath;
-    StorageReference photoSaveLocation;
-    public ImagePost(String Post_ID, boolean Privacy, int type, String imageFilePath, StorageReference photoSaveLocation) {
+    String imageFileName;
+    public ImagePost(String Post_ID, boolean Privacy, int type, String imageFilePath, String imageFileName) {
         super(Post_ID, Privacy, type);
         this.imageFilePath = imageFilePath;
-        this.photoSaveLocation = photoSaveLocation;
+        this.imageFileName = imageFileName;
     }
 
     public String getImageFilePath() {
         return imageFilePath;
     }
 
-    public StorageReference getPhotoSaveLocation() {
-        return photoSaveLocation;
-    }
-
     public void setImageFilePath(String imageFilePath) {
         this.imageFilePath = imageFilePath;
+    }
+
+    public String getImageFileName() {
+        return imageFileName;
+    }
+
+    public void setImageFileName(String imageFileName) {
+        this.imageFileName = imageFileName;
     }
 }

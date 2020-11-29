@@ -51,8 +51,12 @@ public class dataBaseManagement {
     }
 
     public void dataBaseSavePost(String Uid, Post post) {
-        databaseReference = root.getReference().child("Members/" + Uid);
-        databaseReference.child("user_posts/" + post.getPost_ID()).setValue(post);
+        try {
+            databaseReference = root.getReference().child("Members/" + Uid);
+            databaseReference.child("user_posts/" + post.getPost_ID()).setValue(post);
+        } catch (Exception e){
+            Log.v("Saving Exception", String.valueOf(e.getCause()));
+        }
 //        if(post.getPrivacy()) {
 //            databaseAddGroup(post.getGroupID());
 //            root.getReference("Groups/" + post.getGroupID() + "/posts").setValue(post);
