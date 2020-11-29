@@ -41,6 +41,7 @@ public class PostCreationFragment extends Fragment implements AdapterView.OnItem
     FirebaseUser currentUser;
     dataBaseManagement dataBaseManagement;
     Spinner groupingSelectorSpinner;
+    String useGroupSelection = "default";
 
     public PostCreationFragment() {
         // Required empty public constructor
@@ -75,7 +76,7 @@ public class PostCreationFragment extends Fragment implements AdapterView.OnItem
 
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                ArrayList<String> groups = new ArrayList<String>();
+                final ArrayList<String> groups = new ArrayList<String>();
                 for (DataSnapshot single_snapshot : snapshot.getChildren()) {
                     groups.add(single_snapshot.getKey());
                 }
@@ -85,7 +86,8 @@ public class PostCreationFragment extends Fragment implements AdapterView.OnItem
                 groupingSelectorSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        System.out.println("you select on an item" + position);
+                        System.out.println(groups.get(position));
+                        useGroupSelection = groups.get(position);
                     }
 
                     @Override
@@ -132,6 +134,7 @@ public class PostCreationFragment extends Fragment implements AdapterView.OnItem
                 post.setTitle(title);
                 post.setText(description);
                 post.setPrivacy(isPublic);
+                post.setGroupID(useGroupSelection);
 
                 //Set is Public back to true
                 isPublic = true;
