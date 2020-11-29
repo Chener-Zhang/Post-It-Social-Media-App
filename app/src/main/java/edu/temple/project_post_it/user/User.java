@@ -1,31 +1,61 @@
 package edu.temple.project_post_it.user;
 
-import java.util.ArrayList;
+import com.google.firebase.database.Exclude;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import edu.temple.project_post_it.CONSTANT;
+import edu.temple.project_post_it.group.Group;
 import edu.temple.project_post_it.post.Post;
 
+import static edu.temple.project_post_it.CONSTANT.GROUP_ID;
+import static edu.temple.project_post_it.CONSTANT.LOCATION;
+import static edu.temple.project_post_it.CONSTANT.POST_ID;
+import static edu.temple.project_post_it.CONSTANT.PRIVACY;
+import static edu.temple.project_post_it.CONSTANT.TEXT;
+import static edu.temple.project_post_it.CONSTANT.TYPE;
+
 public class User {
-    public String user_id;
-    public String user_groud_id;
-    public ArrayList<Post> user_posts;
+    public String userID;
+    public ArrayList<Post> postList;
+    public ArrayList<String> groupList;
 
     public User() {
-        user_posts = new ArrayList<Post>();
+
     }
 
 
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 
-
-    public void setUser_groud_id(String user_groud_id) {
-        this.user_groud_id = user_groud_id;
+    public void setPostList(ArrayList<Post> postList) {
+        this.postList = postList;
     }
 
+    public void setGroupList(ArrayList<String> groupList){ this.groupList = groupList;
+    groupList.add("Default");}
 
-    public void setUser_posts(ArrayList<Post> user_posts) {
-        this.user_posts = user_posts;
+    public ArrayList<String> getGroupList(){ return groupList;}
+
+    public String getUserID(){
+        return userID;
+    }
+
+    public ArrayList<Post> getPostList(){
+        return postList;
+    }
+
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put(CONSTANT.GROUPLIST, getGroupList());
+        result.put(CONSTANT.POSTLIST, getPostList());
+        result.put(CONSTANT.USERID, getUserID());
+        return result;
     }
 
 }

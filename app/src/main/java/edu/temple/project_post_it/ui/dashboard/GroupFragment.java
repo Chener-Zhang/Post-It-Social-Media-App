@@ -1,38 +1,41 @@
 package edu.temple.project_post_it.ui.dashboard;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
+import android.widget.Button;
+import android.widget.EditText;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import edu.temple.project_post_it.R;
 import edu.temple.project_post_it.dataBaseManagement;
-import edu.temple.project_post_it.ui.dashboard.dummy.DummyContent;
+import edu.temple.project_post_it.group.Group;
+import edu.temple.project_post_it.user.User;
 
-/**
- * A fragment representing a list of Items.
- */
 public class GroupFragment extends Fragment {
 
     dataBaseManagement dataBaseManagement;
-    Spinner spinner;
+    MyGroupRecyclerViewAdapter groupAdapter;
+    RecyclerView recyclerView;
+    Button addButton;
+    EditText addGroup;
 
     public GroupFragment() {
     }
@@ -43,30 +46,45 @@ public class GroupFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_groups, container, false);
+
+        recyclerView = view.findViewById(R.id.groupListView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
         dataBaseManagement = new dataBaseManagement();
-
-        dataBaseManagement.databaseReference = dataBaseManagement.root.getReference("Groups");
+        dataBaseManagement.databaseReference = dataBaseManagement.root.getReference("Members/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/groupList");
         dataBaseManagement.databaseReference.addValueEventListener(new ValueEventListener() {
-
-
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                ArrayList<String> groups = new ArrayList<String>();
-                for (DataSnapshot single_snapshot : snapshot.getChildren()) {
-                    groups.add(single_snapshot.getKey());
-                }
-                ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, groups);
-                dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                List<String> groupList;
+//                GenericTypeIndicator<List<String>> genericTypeIndicator = new GenericTypeIndicator<List<String>>() {                };
+//                groupList = snapshot.getValue(genericTypeIndicator);
+//                groupAdapter = new MyGroupRecyclerViewAdapter(groupList);
+//                recyclerView.setAdapter(groupAdapter);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
+        });
 
+        addButton = view.findViewById(R.id.addButton);
+        addGroup = view.findViewById(R.id.addGroup);
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("Button Clicked", "Clicked button");
+                if(addGroup.getText() != null) {
+                    dataBaseManagement.databaseAddGroup(addGroup.getText().toString());
+                }
+            }
         });
 
 
         return view;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 }

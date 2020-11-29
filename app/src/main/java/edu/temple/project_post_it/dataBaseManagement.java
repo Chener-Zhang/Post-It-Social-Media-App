@@ -1,6 +1,8 @@
 package edu.temple.project_post_it;
 
+import android.app.Application;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -13,6 +15,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import edu.temple.project_post_it.group.Group;
@@ -41,9 +44,9 @@ public class dataBaseManagement {
         User user = new User();
 
         //Mocking data --------------------->
-        user.setUser_id(Uid);
-        user.setUser_groud_id("test_group_id");
-        user.setUser_posts(new ArrayList<Post>());
+        user.setUserID(Uid);
+        user.setGroupList(new ArrayList<String>());
+        user.setPostList(new ArrayList<Post>());
         //Mocking data --------------------->
 
 
@@ -53,10 +56,10 @@ public class dataBaseManagement {
     public void dataBaseSavePost(String Uid, Post post) {
         databaseReference = root.getReference().child("Members/" + Uid);
         databaseReference.child("user_posts/" + post.getPost_ID()).setValue(post);
-        if (post.getPrivacy()) {
-            databaseAddGroup(post.getGroupID());
-            root.getReference("Groups/" + post.getGroupID() + "/posts").setValue(post);
-        }
+//        if(post.getPrivacy()) {
+//            databaseAddGroup(post.getGroupID());
+//            root.getReference("Groups/" + post.getGroupID() + "/posts").setValue(post);
+//        }
     }
 
 
@@ -120,15 +123,57 @@ public class dataBaseManagement {
         databaseReference.updateChildren(childUpdates);
     }
 
-    public void databaseAddGroup(String newGroup) {
-        databaseReference = root.getReference().child("/Groups/" + newGroup);
-        Group group = new Group();
-        group.setPostArrayList(new ArrayList<Post>());
-        group.setUserArrayList(new ArrayList<String>());
-        group.users.add(FirebaseAuth.getInstance().getUid());
+    public void databaseAddGroup(final String newGroup){
+        databaseReference = root.getReference().child("/Groups/");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(!snapshot.hasChild(newGroup)){
+                    databaseReference = root.getReference().child("/Groups/" + newGroup);
+                    Group group = new Group();
+                    group.setPosts(new ArrayList<Post>());
+                    group.setUsers(new ArrayList<String>());
+                    group.getUsers().add(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    group.setGroupName(newGroup);
+                    if(databaseReference.setValue(group).isComplete())
+                        databaseReference.removeEventListener(this);
+                } else if(snapshot.hasChild(newGroup)){
+                    databaseReference = root.getReference().child("/Groups/" + newGroup);
+                    Group group = snapshot.child(newGroup).getValue(Group.class);
+                    System.out.println("This is Group " + group.users.toString());
+                    if(group.users.contains(FirebaseAuth.getInstance().getCurrentUser().getUid()))
+                        //display message that it failed
+                        System.out.println("needs to do something");
+                    else
+                        group.users.add(FirebaseAuth.getInstance().getUid());
+                    System.out.println("This is Group " + group.users.toString());
+                    if(databaseReference.setValue(group).isComplete()) {
+                        databaseReference.removeEventListener(this);
+                        databaseReference = root.getReference().child("/Members/" + FirebaseAuth.getInstance().getCurrentUser().getUid());
+                        databaseReference.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                User user = snapshot.getValue(User.class);
+                                if (!user.groupList.contains(newGroup))
+                                    user.groupList.add(newGroup);
+                                if (databaseReference.setValue(user).isComplete())
+                                    databaseReference.removeEventListener(this);
+                            }
 
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
 
-        databaseReference.setValue(group);
+                            }
+                        });
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
     }
 }
