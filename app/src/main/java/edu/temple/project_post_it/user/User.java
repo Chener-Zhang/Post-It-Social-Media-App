@@ -28,11 +28,11 @@ public class User {
     }
 
 
-    public void setUser_id(String userID) {
+    public void setUserID(String userID) {
         this.userID = userID;
     }
 
-    public void setUser_posts(ArrayList<Post> postList) {
+    public void setPostList(ArrayList<Post> postList) {
         this.postList = postList;
     }
 

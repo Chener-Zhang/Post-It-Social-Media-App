@@ -62,11 +62,8 @@ public class SignInActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if(!snapshot.hasChild(FirebaseAuth.getInstance().getUid())) {
-                            User user = new User();
-                            user.setGroupList(new ArrayList<String>());
-                            user.setUser_id(FirebaseAuth.getInstance().getUid());
-                            user.setUser_posts(new ArrayList<Post>());
-                            databaseReference.setValue(user);
+                            dataBaseManagement.dataBaseAddUser(FirebaseAuth.getInstance().getUid());
+                            databaseReference.removeEventListener(this);
                         }
                     }
 
@@ -75,7 +72,6 @@ public class SignInActivity extends AppCompatActivity {
 
                     }
                 });
-                dataBaseManagement.dataBaseAddUser(FirebaseAuth.getInstance().getUid());
                 user_navigation();
             } else {
                 // Sign in failed. If response is null the user canceled the

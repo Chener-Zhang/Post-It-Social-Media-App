@@ -44,9 +44,9 @@ public class dataBaseManagement {
         User user = new User();
 
         //Mocking data --------------------->
-        user.setUser_id(Uid);
+        user.setUserID(Uid);
         user.setGroupList(new ArrayList<String>());
-        user.setUser_posts(new ArrayList<Post>());
+        user.setPostList(new ArrayList<Post>());
         //Mocking data --------------------->
 
 
@@ -147,24 +147,25 @@ public class dataBaseManagement {
                     else
                         group.users.add(FirebaseAuth.getInstance().getUid());
                     System.out.println("This is Group " + group.users.toString());
-                    if(databaseReference.setValue(group).isComplete())
+                    if(databaseReference.setValue(group).isComplete()) {
                         databaseReference.removeEventListener(this);
-                    databaseReference = root.getReference().child("/Members/" + FirebaseAuth.getInstance().getCurrentUser().getUid());
-                    databaseReference.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            User user = snapshot.getValue(User.class);
-                            if(!user.groupList.contains(newGroup))
-                                user.groupList.add(newGroup);
-                            if(databaseReference.setValue(user).isComplete())
-                                databaseReference.removeEventListener(this);
-                        }
+                        databaseReference = root.getReference().child("/Members/" + FirebaseAuth.getInstance().getCurrentUser().getUid());
+                        databaseReference.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                User user = snapshot.getValue(User.class);
+                                if (!user.groupList.contains(newGroup))
+                                    user.groupList.add(newGroup);
+                                if (databaseReference.setValue(user).isComplete())
+                                    databaseReference.removeEventListener(this);
+                            }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
 
-                        }
-                    });
+                            }
+                        });
+                    }
                 }
             }
 
