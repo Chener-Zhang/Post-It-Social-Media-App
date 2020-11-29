@@ -169,12 +169,12 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
                     });
                 }
             }
-                    @Override
-                    public void onCancelled (@NonNull DatabaseError error){
 
-                    }
-                }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
     }
 }
+
