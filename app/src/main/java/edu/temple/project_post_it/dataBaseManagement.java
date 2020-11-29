@@ -36,12 +36,6 @@ public class dataBaseManagement {
     }
 
 
-    public void dataBaseSetDirection(String reference) {
-        databaseReference = root.getReference(reference);
-        Log.i("Direction: ", reference);
-    }
-
-
     //Mock data require debug
     public void dataBaseAddUser(String Uid) {
         databaseReference = root.getReference().child("Members/" + Uid);
@@ -53,7 +47,6 @@ public class dataBaseManagement {
         user.groupList.add("Default");
         user.setPostList(new ArrayList<Post>());
         //Mocking data --------------------->
-
 
         databaseReference.setValue(user);
     }
@@ -83,36 +76,6 @@ public class dataBaseManagement {
     }
 
 
-    public void dataBaseWriteDataChild(String childs_parent_reference, String child_reference, Object object) {
-        databaseReference = root.getReference().child(childs_parent_reference);
-        databaseReference.child(child_reference).setValue(object);
-    }
-
-
-    public void dataBaseGetData(String reference) {
-        databaseReference = root.getReference(reference);
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                //Class of object, exp : Post place here
-                Post object = snapshot.getValue(Post.class);
-                //Access the attribute inside the object. Example: object.name, object.image_url
-                Log.d("TAG", "Value is: " + object);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.w("TAG", "Failed to read value.", error.toException());
-            }
-        });
-    }
-
-
-    //Remove data
-    //Reference: directory
-    //For example:
-    //reference = "Posts/post1/image"
-    //reference = "Members/user/name"
     public void databaseRemoveData(String post_id) {
         databaseReference = root.getReference("Members/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/" + "user_posts/" + post_id);
         databaseReference.addValueEventListener(new ValueEventListener() {
@@ -165,24 +128,10 @@ public class dataBaseManagement {
 
     }
 
-    //Update_data:
-    //Reference: directory
-    //Update_object: Post
-    //Key: taget node reference
-    //Example usage:
-    //DataBase_management.update_data("sometable/thechild", test, "-MLmtCXJtplg1g2GkpTE");
-
-    public void databaseUpdateData(String reference, Post update_object, String key) {
-        databaseReference = root.getReference(reference);
-        Map<String, Object> postValues = update_object.toMap();
-        Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put(key, postValues);
-        databaseReference.updateChildren(childUpdates);
-    }
 
     public void databaseAddGroup(final String newGroup) {
         databaseReference = root.getReference().child("/Groups/");
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (!snapshot.hasChild(newGroup)) {
