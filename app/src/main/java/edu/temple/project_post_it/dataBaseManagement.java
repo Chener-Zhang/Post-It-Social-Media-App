@@ -131,10 +131,9 @@ public class dataBaseManagement {
     public void databaseRemoveGroup(final String groupName) {
         // Remove the Uid in the group
         databaseReference = root.getReference("Groups/" + groupName + "/users");
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                System.out.println(snapshot.getRef());
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     if (dataSnapshot.getValue().toString().equals(FirebaseAuth.getInstance().getUid())) {
                         snapshot.child(dataSnapshot.getKey()).getRef().removeValue();
@@ -148,11 +147,9 @@ public class dataBaseManagement {
         });
         // Remove the Uid in the Member group list
         databaseReference = root.getReference("Members/" + FirebaseAuth.getInstance().getUid() + "/groupList");
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                System.out.println("------------------------------------------------------------>");
-                System.out.println(snapshot.getRef());
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     if (dataSnapshot.getValue().toString().equals(groupName)) {
                         snapshot.child(dataSnapshot.getKey()).getRef().removeValue();
@@ -202,13 +199,11 @@ public class dataBaseManagement {
                 } else if (snapshot.hasChild(newGroup)) {
                     databaseReference = root.getReference().child("/Groups/" + newGroup);
                     Group group = snapshot.child(newGroup).getValue(Group.class);
-                    System.out.println("This is Group " + group.users.toString());
                     if (group.users.contains(FirebaseAuth.getInstance().getCurrentUser().getUid()))
                         //display message that it failed
                         System.out.println("needs to do something");
                     else
                         group.users.add(FirebaseAuth.getInstance().getUid());
-                    System.out.println("This is Group " + group.users.toString());
                     databaseReference.setValue(group).isComplete();
                     databaseAddGroupList(newGroup);
                     databaseReference.removeEventListener(this);
@@ -229,8 +224,6 @@ public class dataBaseManagement {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);
-                System.out.println("This is the snapshot" + snapshot.toString());
-                System.out.println("This is the users " + user.getGroupList().toString());
                 if (!user.getGroupList().contains(newGroup)) {
                     user.groupList.add(newGroup);
                     databaseReference.setValue(user);
