@@ -1,11 +1,13 @@
 package edu.temple.project_post_it.ui.home;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,13 +16,19 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.IOException;
@@ -47,10 +55,13 @@ public class ImageCreationFragment extends Fragment {
     FirebaseUser currentUser;
     Activity activity;
     Uri imageUri;
+    String imageFileName;
 
     String currentPhotoPath;
     static final int REQUEST_TAKE_PHOTO = 713;
     edu.temple.project_post_it.dataBaseManagement dataBaseManagement;
+
+    private StorageReference mStorageRef;
 
     public ImageCreationFragment() {
         // Required empty public constructor
@@ -70,6 +81,7 @@ public class ImageCreationFragment extends Fragment {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_image_creation, container, false);
         dataBaseManagement = new dataBaseManagement();
+        mStorageRef = FirebaseStorage.getInstance().getReference();
         title = "Untitled";
         description = "No Description";
         isPublic = true;
@@ -152,7 +164,7 @@ public class ImageCreationFragment extends Fragment {
 
     private File createImageFile() throws IOException {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "PNG_" + timeStamp + "_";
+        imageFileName = "PNG_" + timeStamp + "_";
         File storageDir = activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
                 imageFileName,
@@ -166,8 +178,25 @@ public class ImageCreationFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        final Context context = this.getContext();
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
-            Toast.makeText(this.getContext(), "Photo Taken!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Photo Taken!", Toast.LENGTH_SHORT).show();
+            Uri file = Uri.fromFile(new File(currentPhotoPath));
+            String userID =  FirebaseAuth.getInstance().getCurrentUser().getUid();
+            StorageReference usersRef = mStorageRef.child("Users/" + userID);
+            Log.v("Current UserID", userID);
+            StorageReference saveRef = usersRef.child(imageFileName);
+            saveRef.putFile(file).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Toast.makeText(context, "Photo Saved to Firebase Storage!", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 
