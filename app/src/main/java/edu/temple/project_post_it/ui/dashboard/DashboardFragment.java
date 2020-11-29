@@ -146,6 +146,7 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                System.out.println("auto trigger test");
                 User user = snapshot.getValue(User.class);
                 ArrayList<String> groups = user.getGroupList();
                 for (String group : groups) {

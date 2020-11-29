@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import edu.temple.project_post_it.R;
 import edu.temple.project_post_it.dataBaseManagement;
-import edu.temple.project_post_it.group.Group;
 
 import java.util.List;
 
@@ -39,11 +38,11 @@ public class MyGroupRecyclerViewAdapter extends RecyclerView.Adapter<MyGroupRecy
             @Override
             public void onClick(View v) {
                 //write the delete code here
-                 String selectedGroup = groupList.get(position);
-                 dataBaseManagement.databaseRemoveData(selectedGroup);
-                 }
-                 });
-                 }
+                String selectedGroup = groupList.get(position);
+                dataBaseManagement.databaseRemoveGroupData(selectedGroup);
+            }
+        });
+    }
 
     @Override
     public int getItemCount() {

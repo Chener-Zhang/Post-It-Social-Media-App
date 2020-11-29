@@ -1,6 +1,7 @@
 package edu.temple.project_post_it;
 
 import android.app.Application;
+import android.app.DirectAction;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -30,12 +31,6 @@ public class dataBaseManagement {
 
     public dataBaseManagement() {
         root = FirebaseDatabase.getInstance();
-    }
-
-
-    public void dataBaseSetDirection(String reference) {
-        databaseReference = root.getReference(reference);
-        Log.i("Direction: ", reference);
     }
 
 
@@ -72,8 +67,6 @@ public class dataBaseManagement {
                         databaseReference.setValue(group);
                         databaseReference.removeEventListener(this);
                     }
-
-
                 }
 
                 @Override
@@ -85,37 +78,7 @@ public class dataBaseManagement {
     }
 
 
-    public void dataBaseWriteDataChild(String childs_parent_reference, String child_reference, Object object) {
-        databaseReference = root.getReference().child(childs_parent_reference);
-        databaseReference.child(child_reference).setValue(object);
-    }
-
-
-    public void dataBaseGetData(String reference) {
-        databaseReference = root.getReference(reference);
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                //Class of object, exp : Post place here
-                Post object = snapshot.getValue(Post.class);
-                //Access the attribute inside the object. Example: object.name, object.image_url
-                Log.d("TAG", "Value is: " + object);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.w("TAG", "Failed to read value.", error.toException());
-            }
-        });
-    }
-
-
-    //Remove data
-    //Reference: directory
-    //For example:
-    //reference = "Posts/post1/image"
-    //reference = "Members/user/name"
-    public void databaseRemoveData(String post_id) {
+    public void databaseRemovePostData(String post_id) {
         databaseReference = root.getReference("Members/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/" + "user_posts/" + post_id);
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -129,21 +92,50 @@ public class dataBaseManagement {
         });
     }
 
+    public void databaseRemoveGroupData(final String group_id) {
+        databaseReference = root.getReference("Members/" + FirebaseAuth.getInstance().getUid() + "/groupList");
 
-    //Update_data:
-    //Reference: directory
-    //Update_object: Post
-    //Key: taget node reference
-    //Example usage:
-    //DataBase_management.update_data("sometable/thechild", test, "-MLmtCXJtplg1g2GkpTE");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String target = null;
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+//                    System.out.println(dataSnapshot.toString());
+                    if (dataSnapshot.getValue().equals(group_id)) {
+                        target = dataSnapshot.getKey();
+                        snapshot.child(target).getRef().removeValue();
+                    }
+                }
+            }
 
-    public void databaseUpdateData(String reference, Post update_object, String key) {
-        databaseReference = root.getReference(reference);
-        Map<String, Object> postValues = update_object.toMap();
-        Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put(key, postValues);
-        databaseReference.updateChildren(childUpdates);
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        databaseReference = root.getReference("Groups/" + group_id + "/users");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String target = null;
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    System.out.println(dataSnapshot.toString());
+                    if (dataSnapshot.getValue().toString().equals(FirebaseAuth.getInstance().getUid().toString())) {
+                        target = dataSnapshot.getKey();
+                        snapshot.child(target).getRef().removeValue();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
+
 
     public void databaseAddGroup(final String newGroup) {
         databaseReference = root.getReference().child("/Groups/");
@@ -164,16 +156,27 @@ public class dataBaseManagement {
                 } else if (snapshot.hasChild(newGroup)) {
                     databaseReference = root.getReference().child("/Groups/" + newGroup);
                     Group group = snapshot.child(newGroup).getValue(Group.class);
-                    System.out.println("This is Group " + group.users.toString());
-                    if (group.users.contains(FirebaseAuth.getInstance().getCurrentUser().getUid()))
+                    System.out.println(group.getGroupName());
+
+
+                    if (!snapshot.child(newGroup).hasChild("users")) {
+                        group.setUsers(new ArrayList<String>());
+                        group.getUsers().add(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+                    }
+
+                    if (group.users.contains(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                         //display message that it failed
                         System.out.println("needs to do something");
-                    else
+                    } else {
                         group.users.add(FirebaseAuth.getInstance().getUid());
+                    }
                     System.out.println("This is Group " + group.users.toString());
                     databaseReference.setValue(group).isComplete();
                     databaseAddGroupList(newGroup);
                     databaseReference.removeEventListener(this);
+
+
                 }
             }
 
