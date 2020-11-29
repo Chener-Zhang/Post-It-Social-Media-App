@@ -28,6 +28,7 @@ import java.util.Calendar;
 import edu.temple.project_post_it.R;
 import edu.temple.project_post_it.dataBaseManagement;
 import edu.temple.project_post_it.post.Post;
+import edu.temple.project_post_it.user.User;
 import edu.temple.project_post_it.user_navigation;
 
 public class PostCreationFragment extends Fragment implements AdapterView.OnItemSelectedListener {
@@ -70,16 +71,18 @@ public class PostCreationFragment extends Fragment implements AdapterView.OnItem
 
 
         //Set up spinner
-        dataBaseManagement.databaseReference = dataBaseManagement.root.getReference("Groups");
+        dataBaseManagement.databaseReference = dataBaseManagement.root.getReference("Members/" + FirebaseAuth.getInstance().getCurrentUser().getUid());
+
         dataBaseManagement.databaseReference.addValueEventListener(new ValueEventListener() {
 
 
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                final ArrayList<String> groups = new ArrayList<String>();
-                for (DataSnapshot single_snapshot : snapshot.getChildren()) {
-                    groups.add(single_snapshot.getKey());
-                }
+
+                final ArrayList<String> groups;
+                User user = snapshot.getValue(User.class);
+                groups = user.getGroupList();
+
                 ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, groups);
                 dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 groupingSelectorSpinner.setAdapter(dataAdapter);
