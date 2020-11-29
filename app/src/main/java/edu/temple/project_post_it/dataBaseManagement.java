@@ -59,7 +59,6 @@ public class dataBaseManagement {
         databaseReference = root.getReference().child("Members/" + Uid);
         databaseReference.child("user_posts/" + post.getPost_ID()).setValue(post);
         if(post.getPrivacy()) {
-            databaseAddGroup(post.getGroupID());
             root.getReference("Groups/" + post.getGroupID() + "/posts").setValue(post);
         }
     }

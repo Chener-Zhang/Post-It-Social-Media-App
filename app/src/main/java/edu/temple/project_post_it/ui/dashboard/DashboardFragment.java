@@ -30,9 +30,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 import edu.temple.project_post_it.R;
 import edu.temple.project_post_it.dataBaseManagement;
+import edu.temple.project_post_it.group.Group;
 import edu.temple.project_post_it.post.Post;
+import edu.temple.project_post_it.user.User;
 import edu.temple.project_post_it.user_navigation;
 
 
@@ -40,6 +45,8 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
     private MapView mapView;
     GoogleMap googleMap;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    FirebaseDatabase root = FirebaseDatabase.getInstance();
+    DatabaseReference databaseReference;
     double lat, lng;
     LatLng loc;
 
@@ -47,7 +54,7 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-         View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
+        View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
         Log.i("user id", "Members/" + user.getUid() + "/user_posts");
 
 
@@ -131,5 +138,43 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
                         Log.i("Error", String.valueOf(error));
                     }
                 });
+
+        databaseReference = root.getReference().child("/Members/" + user.getUid());
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User user = snapshot.getValue(User.class);
+                ArrayList<String> groups = user.getGroupList();
+                for (String group : groups) {
+                    databaseReference = root.getReference().child("/Groups/" + group + "/posts");
+                    databaseReference.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                    final Post post = snapshot.getValue(Post.class);
+                                    lat = post.getLocation().getLatitude();
+                                    lng = post.getLocation().getLongitude();
+                                    loc = new LatLng(lat, lng);
+                                    googleMap.addMarker((new MarkerOptions()).position(loc)).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
+                                }
+                            }
+                        }
+
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+                }
+            }
+                    @Override
+                    public void onCancelled (@NonNull DatabaseError error){
+
+                    }
+                }
+            }
+        });
     }
 }
