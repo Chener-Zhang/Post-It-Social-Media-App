@@ -18,15 +18,12 @@ import android.widget.EditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import edu.temple.project_post_it.R;
 import edu.temple.project_post_it.dataBaseManagement;
-import edu.temple.project_post_it.group.Group;
 import edu.temple.project_post_it.user.User;
 
 public class GroupFragment extends Fragment {
@@ -51,15 +48,15 @@ public class GroupFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         dataBaseManagement = new dataBaseManagement();
-        dataBaseManagement.databaseReference = dataBaseManagement.root.getReference("Members/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/groupList");
+        dataBaseManagement.databaseReference = dataBaseManagement.root.getReference("Members/" + FirebaseAuth.getInstance().getCurrentUser().getUid());
         dataBaseManagement.databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                List<String> groupList;
-//                GenericTypeIndicator<List<String>> genericTypeIndicator = new GenericTypeIndicator<List<String>>() {                };
-//                groupList = snapshot.getValue(genericTypeIndicator);
-//                groupAdapter = new MyGroupRecyclerViewAdapter(groupList);
-//                recyclerView.setAdapter(groupAdapter);
+                ArrayList<String> groupList;
+                User user = snapshot.getValue(User.class);
+                groupList = user.getGroupList();
+                groupAdapter = new MyGroupRecyclerViewAdapter(groupList);
+                recyclerView.setAdapter(groupAdapter);
             }
 
             @Override
@@ -75,10 +72,10 @@ public class GroupFragment extends Fragment {
                 Log.i("Button Clicked", "Clicked button");
                 if(addGroup.getText() != null) {
                     dataBaseManagement.databaseAddGroup(addGroup.getText().toString());
+                    groupAdapter.notifyDataSetChanged();
                 }
             }
         });
-
 
         return view;
     }

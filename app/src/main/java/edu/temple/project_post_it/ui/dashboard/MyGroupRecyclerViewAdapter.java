@@ -51,13 +51,13 @@ public class MyGroupRecyclerViewAdapter extends RecyclerView.Adapter<MyGroupRecy
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        ImageButton deleteGroup;
         TextView groupName;
+        ImageButton deleteButton;
 
         public ViewHolder(View view) {
             super(view);
             groupName = view.findViewById(R.id.groupName);
-            deleteGroup = view.findViewById(R.id.deleteGroups);
+            deleteButton = view.findViewById(R.id.deleteButton);
         }
 
         public TextView get_group_name() {
@@ -65,7 +65,7 @@ public class MyGroupRecyclerViewAdapter extends RecyclerView.Adapter<MyGroupRecy
         }
 
         public ImageButton get_delete_button() {
-            return deleteGroup;
+            return deleteButton;
         }
     }
 

@@ -13,6 +13,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,6 +47,7 @@ public class dataBaseManagement {
         //Mocking data --------------------->
         user.setUserID(Uid);
         user.setGroupList(new ArrayList<String>());
+        user.groupList.add("Default");
         user.setPostList(new ArrayList<Post>());
         //Mocking data --------------------->
 
@@ -135,8 +137,10 @@ public class dataBaseManagement {
                     group.setUsers(new ArrayList<String>());
                     group.getUsers().add(FirebaseAuth.getInstance().getCurrentUser().getUid());
                     group.setGroupName(newGroup);
-                    if(databaseReference.setValue(group).isComplete())
-                        databaseReference.removeEventListener(this);
+                    databaseReference.setValue(group);
+                    databaseAddGroupList(newGroup);
+                    databaseReference.removeEventListener(this);
+
                 } else if(snapshot.hasChild(newGroup)){
                     databaseReference = root.getReference().child("/Groups/" + newGroup);
                     Group group = snapshot.child(newGroup).getValue(Group.class);
@@ -147,25 +151,9 @@ public class dataBaseManagement {
                     else
                         group.users.add(FirebaseAuth.getInstance().getUid());
                     System.out.println("This is Group " + group.users.toString());
-                    if(databaseReference.setValue(group).isComplete()) {
-                        databaseReference.removeEventListener(this);
-                        databaseReference = root.getReference().child("/Members/" + FirebaseAuth.getInstance().getCurrentUser().getUid());
-                        databaseReference.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                User user = snapshot.getValue(User.class);
-                                if (!user.groupList.contains(newGroup))
-                                    user.groupList.add(newGroup);
-                                if (databaseReference.setValue(user).isComplete())
-                                    databaseReference.removeEventListener(this);
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-
-                            }
-                        });
-                    }
+                    databaseReference.setValue(group).isComplete();
+                    databaseAddGroupList(newGroup);
+                    databaseReference.removeEventListener(this);
                 }
             }
 
@@ -175,6 +163,28 @@ public class dataBaseManagement {
             }
         });
 
+    }
+
+    public void databaseAddGroupList(final String newGroup){
+        databaseReference = root.getReference().child("/Members/" + FirebaseAuth.getInstance().getCurrentUser().getUid());
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User user = snapshot.getValue(User.class);
+                System.out.println("This is the snapshot" + snapshot.toString());
+                System.out.println("This is the users " + user.getGroupList().toString());
+                if(!user.getGroupList().contains(newGroup)) {
+                    user.groupList.add(newGroup);
+                    databaseReference.setValue(user);
+                    databaseReference.removeEventListener(this);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }
 
