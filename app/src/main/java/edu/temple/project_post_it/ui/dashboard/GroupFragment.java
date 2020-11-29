@@ -41,7 +41,6 @@ public class GroupFragment extends Fragment {
     }
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -73,8 +72,10 @@ public class GroupFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.i("Button Clicked", "Clicked button");
-                if(addGroup.getText() != null) {
+                if (!addGroup.getText().toString().isEmpty()) {
                     dataBaseManagement.databaseAddGroup(addGroup.getText().toString());
+                } else {
+
                 }
             }
         });
