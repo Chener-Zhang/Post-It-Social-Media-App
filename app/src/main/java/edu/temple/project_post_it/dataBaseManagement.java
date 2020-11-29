@@ -49,6 +49,7 @@ public class dataBaseManagement {
                     group.setPosts(new ArrayList<Post>());
                     group.setUsers(new ArrayList<String>());
                     group.getUsers().add(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    group.getUsers().add("Do not remove");
                     group.setGroupName(newGroup);
                     databaseReference.setValue(group);
                     databaseAddGroupList(newGroup);
@@ -156,15 +157,23 @@ public class dataBaseManagement {
 
     public void databaseAddGroupList(final String newGroup) {
         databaseReference = root.getReference().child("/Members/" + FirebaseAuth.getInstance().getCurrentUser().getUid());
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);
-                if (!user.getGroupList().contains(newGroup)) {
-                    user.groupList.add(newGroup);
-                    databaseReference.setValue(user);
-                    databaseReference.removeEventListener(this);
+                if (!((user.getGroupList()) == null)) {
+                    if (!user.getGroupList().contains(newGroup)) {
+                        user.groupList.add(newGroup);
+                        databaseReference.setValue(user);
+                        databaseReference.removeEventListener(this);
+                    }
+                } else {
+                    databaseReference.child("groupList").child("0").setValue(newGroup);
+
+
                 }
+
+
             }
 
             @Override

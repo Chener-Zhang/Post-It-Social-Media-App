@@ -1,7 +1,6 @@
 package edu.temple.project_post_it.ui.dashboard;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,11 +50,14 @@ public class GroupFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 ArrayList<String> groupList;
-                User user = snapshot.getValue(User.class);
-                groupList = user.getGroupList();
-                groupAdapter = new MyGroupRecyclerViewAdapter(groupList);
-                recyclerView.setAdapter(groupAdapter);
-
+                try {
+                    User user = snapshot.getValue(User.class);
+                    groupList = user.getGroupList();
+                    groupAdapter = new MyGroupRecyclerViewAdapter(groupList);
+                    recyclerView.setAdapter(groupAdapter);
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
 
             }
 
@@ -69,7 +71,7 @@ public class GroupFragment extends Fragment {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("Button Clicked", "Clicked button");
+
                 if (!addGroup.getText().toString().isEmpty()) {
                     dataBaseManagement.databaseAddGroup(addGroup.getText().toString());
                     groupAdapter.notifyDataSetChanged();
