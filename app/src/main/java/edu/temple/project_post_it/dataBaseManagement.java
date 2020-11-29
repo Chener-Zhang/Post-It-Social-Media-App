@@ -1,10 +1,5 @@
 package edu.temple.project_post_it;
 
-import android.app.Application;
-import android.app.DirectAction;
-import android.util.Log;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -14,11 +9,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import edu.temple.project_post_it.group.Group;
 import edu.temple.project_post_it.post.Post;
@@ -34,18 +25,15 @@ public class dataBaseManagement {
     }
 
 
-    //Mock data require debug
+    //First time login
     public void dataBaseAddUser(String Uid) {
         databaseReference = root.getReference().child("Members/" + Uid);
-        User user = new User();
 
-        //Mocking data --------------------->
+        User user = new User();
         user.setUserID(Uid);
         user.setGroupList(new ArrayList<String>());
         user.groupList.add("Default");
         user.setPostList(new ArrayList<Post>());
-        //Mocking data --------------------->
-
 
         databaseReference.setValue(user);
     }
@@ -53,14 +41,16 @@ public class dataBaseManagement {
     public void dataBaseSavePost(String Uid, final Post post) {
         databaseReference = root.getReference().child("Members/" + Uid);
         databaseReference.child("user_posts/" + post.getPost_ID()).setValue(post);
+
         if (post.getPrivacy()) {
             databaseReference = root.getReference().child("/Groups/" + post.getGroupID());
+
             databaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     Group group = snapshot.getValue(Group.class);
+
                     if (group.getPosts().isEmpty()) {
-                        System.out.println("is empty");
                         group.setPosts(new ArrayList<Post>());
                     } else {
                         group.posts.add(post);
