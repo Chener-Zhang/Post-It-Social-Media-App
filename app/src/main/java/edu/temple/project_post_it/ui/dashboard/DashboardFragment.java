@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -111,12 +112,13 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
         //different color to show current location
         googleMap.addMarker((new MarkerOptions()).position(user_navigation.loc)).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
 
+
         FirebaseDatabase.getInstance().getReference("Members/" + user.getUid() + "/user_posts")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists()) {
-                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            for (final DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                 final Post post = snapshot.getValue(Post.class);
                                 lat = post.getLocation().getLatitude();
                                 lng = post.getLocation().getLongitude();
@@ -125,7 +127,8 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
                                 googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                                     @Override
                                     public boolean onMarkerClick(Marker marker) {
-                                        System.out.println("post id is " + post.getPost_ID());
+                                        String message =  " created by " + snapshot.getKey();
+                                        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
                                         return false;
                                     }
                                 });
