@@ -82,7 +82,7 @@ public class PostCreationFragment extends Fragment implements AdapterView.OnItem
                 final ArrayList<String> groups;
                 User user = snapshot.getValue(User.class);
                 groups = user.getGroupList();
-
+                System.out.println(groups.toString() + "is not null");
                 ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, groups);
                 dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 groupingSelectorSpinner.setAdapter(dataAdapter);
