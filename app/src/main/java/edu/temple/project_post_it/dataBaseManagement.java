@@ -9,9 +9,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-
-import edu.temple.project_post_it.group.Group;
 import edu.temple.project_post_it.post.Post;
 import edu.temple.project_post_it.user.User;
 
@@ -55,14 +52,14 @@ public class dataBaseManagement {
     }
 
 
-    public void databaseRemovePostData(final String post_id, final String group_id) {
+    public void databaseRemovePostInMembers(final String post_id, final String group_id) {
         databaseReference = root.getReference("Members/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/" + "user_posts/" + post_id);
 
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 snapshot.getRef().removeValue();
-                delete_in_group(post_id, group_id);
+                databaseRemovePostInGroups(post_id, group_id);
                 databaseReference.removeEventListener(this);
             }
 
@@ -72,7 +69,7 @@ public class dataBaseManagement {
         });
     }
 
-    public void delete_in_group(final String post_id, String group_id) {
+    public void databaseRemovePostInGroups(final String post_id, String group_id) {
         databaseReference = root.getReference("Groups/" + group_id);
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
