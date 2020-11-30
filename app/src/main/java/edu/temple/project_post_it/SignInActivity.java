@@ -57,7 +57,7 @@ public class SignInActivity extends AppCompatActivity {
 
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
-                databaseReference = dataBaseManagement.root.getReference().child("/Members/");
+                databaseReference = dataBaseManagement.root.getReference().child("/Members");
                 databaseReference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {

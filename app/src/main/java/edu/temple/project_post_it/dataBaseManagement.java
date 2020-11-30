@@ -31,7 +31,6 @@ public class dataBaseManagement {
 
         User user = new User();
         user.setUserID(Uid);
-        user.groupList.add("Default");
 
         databaseReference.setValue(user);
     }
@@ -62,6 +61,8 @@ public class dataBaseManagement {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 snapshot.getRef().removeValue();
+                databaseReference.removeEventListener(this);
+
             }
 
             @Override
@@ -74,46 +75,63 @@ public class dataBaseManagement {
         //Delete from Members
 
         databaseReference = root.getReference("Members/" + FirebaseAuth.getInstance().getUid() + "/groupList");
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 snapshot.child(group_id).getRef().removeValue();
+                databaseReference.removeEventListener(this);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                databaseReference.removeEventListener(this);
             }
+
         });
 
         //Delete from Groups
         databaseReference = root.getReference("Groups/" + group_id + "/users");
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 snapshot.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).getRef().removeValue();
+                databaseReference.removeEventListener(this);
             }
 
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                databaseReference.removeEventListener(this);
             }
         });
+
 
     }
 
 
     public void databaseAddGroupToGroups(final String newGroup) {
         databaseReference = root.getReference().child("/Groups/");
-        databaseReference.child(newGroup).child("groupName").setValue(newGroup);
-        databaseAddGroupToMembers(newGroup);
 
-    }
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (!snapshot.hasChild(newGroup)) {
+                    databaseReference.child(newGroup).child("groupName").setValue(newGroup);
+                    databaseReference.child(newGroup).child("users").child(FirebaseAuth.getInstance().getUid()).setValue(FirebaseAuth.getInstance().getUid());
+                } else {
+                    databaseReference.child(newGroup).child("users").child(FirebaseAuth.getInstance().getUid()).setValue(FirebaseAuth.getInstance().getUid());
+                }
+                databaseReference = root.getReference().child("/Members/" + FirebaseAuth.getInstance().getCurrentUser().getUid());
+                databaseReference.child("groupList").child(newGroup).setValue(newGroup);
+                databaseReference.removeEventListener(this);
+            }
 
-    public void databaseAddGroupToMembers(final String newGroup) {
-        databaseReference = root.getReference().child("/Members/" + FirebaseAuth.getInstance().getCurrentUser().getUid());
-        databaseReference.child("groupList/" + newGroup).setValue(newGroup);
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                databaseReference.removeEventListener(this);
+
+            }
+        });
 
 
     }

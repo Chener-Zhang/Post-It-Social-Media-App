@@ -40,6 +40,7 @@ public class MyGroupRecyclerViewAdapter extends RecyclerView.Adapter<MyGroupRecy
                 //write the delete code here
                 String selectedGroup = groupList.get(position);
                 dataBaseManagement.databaseRemoveGroupData(selectedGroup);
+
             }
         });
     }
