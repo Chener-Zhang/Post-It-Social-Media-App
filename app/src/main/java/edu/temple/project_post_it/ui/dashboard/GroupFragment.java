@@ -59,13 +59,10 @@ public class GroupFragment extends Fragment {
                 groupAdapter = new MyGroupRecyclerViewAdapter(arrayList);
                 recyclerView.setAdapter(groupAdapter);
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-
-
         });
 
 

@@ -71,12 +71,13 @@ public class dataBaseManagement {
     }
 
     public void databaseRemoveGroupData(final String group_id) {
-        databaseReference = root.getReference("Members/" + FirebaseAuth.getInstance().getUid() + "/groupList");
+        //Delete from Members
 
+        databaseReference = root.getReference("Members/" + FirebaseAuth.getInstance().getUid() + "/groupList");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
+                snapshot.child(group_id).getRef().removeValue();
             }
 
             @Override
@@ -85,11 +86,12 @@ public class dataBaseManagement {
             }
         });
 
+        //Delete from Groups
         databaseReference = root.getReference("Groups/" + group_id + "/users");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
+                snapshot.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).getRef().removeValue();
             }
 
 
@@ -105,6 +107,8 @@ public class dataBaseManagement {
     public void databaseAddGroupToGroups(final String newGroup) {
         databaseReference = root.getReference().child("/Groups/");
         databaseReference.child(newGroup).child("groupName").setValue(newGroup);
+        databaseAddGroupToMembers(newGroup);
+
     }
 
     public void databaseAddGroupToMembers(final String newGroup) {
