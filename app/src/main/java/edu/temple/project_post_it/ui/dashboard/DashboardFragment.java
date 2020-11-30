@@ -148,29 +148,29 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 System.out.println("auto trigger test");
                 User user = snapshot.getValue(User.class);
-                ArrayList<String> groups = user.getGroupList();
-                for (String group : groups) {
-                    databaseReference = root.getReference().child("/Groups/" + group + "/posts");
-                    databaseReference.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.exists()) {
-                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                    final Post post = snapshot.getValue(Post.class);
-                                    lat = post.getLocation().getLatitude();
-                                    lng = post.getLocation().getLongitude();
-                                    loc = new LatLng(lat, lng);
-                                    googleMap.addMarker((new MarkerOptions()).position(loc)).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
-                                }
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
-                }
+//                ArrayList<String> groups = user.getGroupList();
+//                for (String group : groups) {
+//                    databaseReference = root.getReference().child("/Groups/" + group + "/posts");
+//                    databaseReference.addValueEventListener(new ValueEventListener() {
+//                        @Override
+//                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                            if (dataSnapshot.exists()) {
+//                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+//                                    final Post post = snapshot.getValue(Post.class);
+//                                    lat = post.getLocation().getLatitude();
+//                                    lng = post.getLocation().getLongitude();
+//                                    loc = new LatLng(lat, lng);
+//                                    googleMap.addMarker((new MarkerOptions()).position(loc)).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
+//                                }
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onCancelled(@NonNull DatabaseError error) {
+//
+//                        }
+//                    });
+//                }
             }
 
             @Override

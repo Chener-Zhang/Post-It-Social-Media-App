@@ -42,7 +42,7 @@ public class PostCreationFragment extends Fragment implements AdapterView.OnItem
     FirebaseUser currentUser;
     dataBaseManagement dataBaseManagement;
     Spinner groupingSelectorSpinner;
-    String useGroupSelection = "default";
+    String useGroupSelection = "Default";
 
     public PostCreationFragment() {
         // Required empty public constructor
@@ -71,33 +71,19 @@ public class PostCreationFragment extends Fragment implements AdapterView.OnItem
 
 
         //Set up spinner
-        dataBaseManagement.databaseReference = dataBaseManagement.root.getReference("Members/" + FirebaseAuth.getInstance().getCurrentUser().getUid());
-
+        dataBaseManagement.databaseReference = dataBaseManagement.root.getReference("Members/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/groupList");
         dataBaseManagement.databaseReference.addValueEventListener(new ValueEventListener() {
-
-
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ArrayList<String> groups = new ArrayList<String>();
 
-                final ArrayList<String> groups;
-                User user = snapshot.getValue(User.class);
-                groups = user.getGroupList();
-
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    groups.add(dataSnapshot.getKey());
+                }
                 ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, groups);
                 dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 groupingSelectorSpinner.setAdapter(dataAdapter);
-                groupingSelectorSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        System.out.println(groups.get(position));
-                        useGroupSelection = groups.get(position);
-                    }
 
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-
-                    }
-                });
 
             }
 
@@ -129,8 +115,6 @@ public class PostCreationFragment extends Fragment implements AdapterView.OnItem
                 if (privacySwitch.isChecked()) {
                     isPublic = false;
                 }
-
-                //Init the post class
 
                 String post_id = Calendar.getInstance().getTime().toString() + currentUser.getUid();
                 Post post = new Post(post_id, isPublic, 0);

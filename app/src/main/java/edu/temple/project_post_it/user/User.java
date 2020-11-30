@@ -17,24 +17,9 @@ public class User {
         this.userID = userID;
     }
 
-    public void setPostList(ArrayList<Post> postList) {
-        this.postList = postList;
-    }
-
-    public void setGroupList(ArrayList<String> groupList) {
-        this.groupList = groupList;
-    }
-
-    public ArrayList<String> getGroupList() {
-        return groupList;
-    }
 
     public String getUserID() {
         return userID;
-    }
-
-    public ArrayList<Post> getPostList() {
-        return postList;
     }
 
 

@@ -88,16 +88,4 @@ public class Post {
         this.type = type;
     }
 
-    @Exclude
-    public Map<String, Object> toMap() {
-        HashMap<String, Object> result = new HashMap<>();
-        result.put(POST_ID, getPost_ID());
-        result.put(LOCATION, getLocation());
-        result.put(GROUP_ID, getGroupID());
-        result.put(PRIVACY, getPrivacy());
-        result.put(TEXT, getText());
-        result.put(TYPE, getType());
-        return result;
-    }
-
 }
