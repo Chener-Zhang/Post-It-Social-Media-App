@@ -137,7 +137,7 @@ public class ImageCreationFragment extends Fragment {
 
     public void savePost(ImagePost post) {
         //This method is where the new post will be saved to the database. This method, when called, will also return the user back to the homepage.
-        dataBaseManagement.dataBaseSavePost(FirebaseAuth.getInstance().getUid(), post);
+        dataBaseManagement.dataBaseSaveInMembers_Uid_UserPosts(FirebaseAuth.getInstance().getUid(), post);
         Toast.makeText(this.getContext(), "Post Saved!", Toast.LENGTH_SHORT).show();
 
     }

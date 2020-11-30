@@ -28,7 +28,6 @@ import java.util.Calendar;
 import edu.temple.project_post_it.R;
 import edu.temple.project_post_it.dataBaseManagement;
 import edu.temple.project_post_it.post.Post;
-import edu.temple.project_post_it.user.User;
 import edu.temple.project_post_it.user_navigation;
 
 public class PostCreationFragment extends Fragment implements AdapterView.OnItemSelectedListener {
@@ -42,7 +41,7 @@ public class PostCreationFragment extends Fragment implements AdapterView.OnItem
     FirebaseUser currentUser;
     dataBaseManagement dataBaseManagement;
     Spinner groupingSelectorSpinner;
-    String useGroupSelection = "Default";
+    String userGroupSelection = "Default";
 
     public PostCreationFragment() {
         // Required empty public constructor
@@ -75,16 +74,24 @@ public class PostCreationFragment extends Fragment implements AdapterView.OnItem
         dataBaseManagement.databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                ArrayList<String> groups = new ArrayList<String>();
-
+                final ArrayList<String> groups = new ArrayList<String>();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     groups.add(dataSnapshot.getKey());
                 }
                 ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, groups);
                 dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 groupingSelectorSpinner.setAdapter(dataAdapter);
+                groupingSelectorSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        userGroupSelection = groups.get(position);
+                    }
 
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
 
+                    }
+                });
             }
 
             @Override
@@ -121,7 +128,7 @@ public class PostCreationFragment extends Fragment implements AdapterView.OnItem
                 post.setTitle(title);
                 post.setText(description);
                 post.setPrivacy(isPublic);
-                post.setGroupID(useGroupSelection);
+                post.setGroupID(userGroupSelection);
 
                 //Set is Public back to true
                 isPublic = true;
@@ -143,7 +150,7 @@ public class PostCreationFragment extends Fragment implements AdapterView.OnItem
 
     public void savePost(Post post) {
         //This method is where the new post will be saved to the database. This method, when called, will also return the user back to the homepage.
-        this.dataBaseManagement.dataBaseSavePost(FirebaseAuth.getInstance().getUid(), post);
+        this.dataBaseManagement.dataBaseSaveInMembers_Uid_UserPosts(FirebaseAuth.getInstance().getUid(), post);
         Toast.makeText(this.getContext(), "Post Saved!", Toast.LENGTH_SHORT).show();
     }
 

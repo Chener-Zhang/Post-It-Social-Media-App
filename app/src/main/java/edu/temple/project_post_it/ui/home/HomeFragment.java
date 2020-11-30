@@ -53,9 +53,7 @@ public class HomeFragment extends Fragment {
         testButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                //add grouping working
-//                dataBaseManagement.databaseAddGroup("asdgroup");
-                dataBaseManagement.databaseAddGroupToMembers("newgroup");
+
             }
         });
 

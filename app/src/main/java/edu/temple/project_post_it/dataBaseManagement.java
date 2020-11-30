@@ -36,9 +36,22 @@ public class dataBaseManagement {
         databaseReference.setValue(user);
     }
 
-    public void dataBaseSavePost(String Uid, final Post post) {
+
+    public void dataBaseSaveInMembers_Uid_UserPosts(String Uid, final Post post) {
         databaseReference = root.getReference().child("Members/" + Uid);
         databaseReference.child("user_posts/" + post.getPost_ID()).setValue(post);
+        dataBaseSaveInGroups_group_posts(post.getGroupID(), post);
+        dataBaseSaveInGroup_group_users(post.getGroupID(), FirebaseAuth.getInstance().getUid());
+    }
+
+    public void dataBaseSaveInGroups_group_posts(String groupName, final Post post) {
+        databaseReference = root.getReference().child("Groups/" + groupName);
+        databaseReference.child("posts/" + post.getPost_ID()).setValue(post);
+    }
+
+    public void dataBaseSaveInGroup_group_users(String groupName, final String UID) {
+        databaseReference = root.getReference().child("Groups/" + groupName);
+        databaseReference.child("users/" + UID).setValue(UID);
 
     }
 
