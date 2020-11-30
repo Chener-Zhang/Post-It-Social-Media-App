@@ -55,12 +55,29 @@ public class dataBaseManagement {
     }
 
 
-    public void databaseRemovePostData(String post_id) {
+    public void databaseRemovePostData(final String post_id, final String group_id) {
         databaseReference = root.getReference("Members/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/" + "user_posts/" + post_id);
-        databaseReference.addValueEventListener(new ValueEventListener() {
+
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 snapshot.getRef().removeValue();
+                delete_in_group(post_id, group_id);
+                databaseReference.removeEventListener(this);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+    }
+
+    public void delete_in_group(final String post_id, String group_id) {
+        databaseReference = root.getReference("Groups/" + group_id);
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                snapshot.child("posts").child(post_id).getRef().removeValue();
                 databaseReference.removeEventListener(this);
 
             }
@@ -69,6 +86,7 @@ public class dataBaseManagement {
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
+
     }
 
     public void databaseRemoveGroupData(final String group_id) {
