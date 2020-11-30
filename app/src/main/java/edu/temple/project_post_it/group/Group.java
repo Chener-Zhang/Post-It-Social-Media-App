@@ -12,15 +12,11 @@ public class Group {
     public Group() {
 
     }
-
     public void setGroupName(String groupName) {
         this.groupName = groupName;
     }
 
-
     public String getGroupName() {
         return groupName;
     }
-
-
 }
