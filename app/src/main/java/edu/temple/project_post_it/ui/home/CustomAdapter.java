@@ -3,10 +3,12 @@ package edu.temple.project_post_it.ui.home;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -40,6 +42,12 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         holder.getTitle_textView().setText(post_list.get(position).getTitle());
         holder.getText_textView().setText(post_list.get(position).getText());
+        holder.getView_Button().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         holder.getDelete_button().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,6 +68,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
     public static class ViewHolder extends RecyclerView.ViewHolder {
         //Declase the item in the ViewHolder
         ImageButton delete_button;
+        Button viewButton;
         TextView title_textView;
         TextView text_textView;
 
@@ -70,6 +79,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
             title_textView = itemView.findViewById(R.id.post_title);
             text_textView = itemView.findViewById(R.id.group_name);
             delete_button = itemView.findViewById(R.id.delete_button);
+            viewButton = itemView.findViewById(R.id.viewEditButton);
         }
 
         //Get title
@@ -85,6 +95,10 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
         //Set delete button
         public ImageButton getDelete_button() {
             return delete_button;
+        }
+
+        public Button getView_Button(){
+            return viewButton;
         }
     }
 
