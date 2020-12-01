@@ -14,7 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -85,7 +84,7 @@ public class AudioCreationFragment extends Fragment {
         titleView = view.findViewById(R.id.titleEditText);
         descriptionView = view.findViewById(R.id.descriptionEditText);
         privacySwitch = view.findViewById(R.id.privacyCheckBox);
-        createPostButton = view.findViewById(R.id.createPostButton);
+        createPostButton = view.findViewById(R.id.editPostButton);
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         audioRunner = new AudioRunner(getActivity());
         if (user_navigation.loc != null){

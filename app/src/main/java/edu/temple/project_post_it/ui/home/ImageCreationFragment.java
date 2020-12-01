@@ -1,15 +1,12 @@
 package edu.temple.project_post_it.ui.home;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,7 +87,7 @@ public class ImageCreationFragment extends Fragment {
         titleView = view.findViewById(R.id.titleEditText);
         descriptionView = view.findViewById(R.id.descriptionEditText);
         privacySwitch = view.findViewById(R.id.privacyCheckBox);
-        createPostButton = view.findViewById(R.id.createPostButton);
+        createPostButton = view.findViewById(R.id.editPostButton);
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (user_navigation.loc != null) {
             latLng = user_navigation.loc;
