@@ -88,7 +88,6 @@ public class dataBaseManagement {
         });
     }
 
-
     //Remove data
     //Reference: directory
     //For example:
