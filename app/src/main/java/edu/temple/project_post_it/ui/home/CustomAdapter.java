@@ -8,6 +8,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,7 +22,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
 
     public ArrayList<Post> post_list;
     public dataBaseManagement dataBaseManagement;
-
     //CustomAdapter Constructor
     public CustomAdapter(ArrayList<Post> post_list) {
         //Pass the Array list to the local adapter
@@ -42,12 +42,15 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         holder.getTitle_textView().setText(post_list.get(position).getTitle());
         holder.getText_textView().setText(post_list.get(position).getText());
-        holder.getView_Button().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
+        Post post = post_list.get(position);
+        int type = post.getType();
+        if (type == 1){
+            holder.getView_Button().setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_navigation_home_to_imagePostViewFragment));
+        } else if (type == 2){
+            holder.getView_Button().setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_navigation_home_to_audioPostViewFragment));
+        } else {
+            holder.getView_Button().setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_navigation_home_to_textPostViewFragment));
+        }
         holder.getDelete_button().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

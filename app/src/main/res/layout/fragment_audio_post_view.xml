@@ -2,111 +2,122 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/imagePostViewLayout"
+    android:id="@+id/textCreationFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".ui.home.PostCreationFragment">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/tileText"
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
-                android:text="Title"
-                android:textSize="32sp" />
-
-            <EditText
-                android:id="@+id/titleEditText"
-                android:layout_width="292dp"
-                android:layout_height="match_parent"
-                android:inputType="textPersonName" />
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/descriptionTextBox"
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
-                android:text="Text"
-                android:textSize="32sp" />
-
-            <EditText
-                android:id="@+id/descriptionEditText"
-                android:layout_width="292dp"
-                android:layout_height="match_parent"
-                android:ems="10"
-                android:inputType="textMultiLine" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="75dp"
-            android:orientation="vertical">
-
-            <SeekBar
-                android:id="@+id/seekBar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+            android:orientation="vertical" >
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tileText"
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent"
+                        android:text="Title"
+                        android:textSize="32sp" />
+
+                    <EditText
+                        android:id="@+id/titleEditText"
+                        android:layout_width="292dp"
+                        android:layout_height="match_parent"
+                        android:inputType="textPersonName" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/descriptionTextBox"
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent"
+                        android:text="Text"
+                        android:textSize="32sp" />
+
+                    <EditText
+                        android:id="@+id/descriptionEditText"
+                        android:layout_width="292dp"
+                        android:layout_height="match_parent"
+                        android:ems="10"
+                        android:inputType="textMultiLine" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="75dp"
+                    android:orientation="vertical">
+
+                    <SeekBar
+                        android:id="@+id/seekBar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/startButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Start" />
+
+                        <Button
+                            android:id="@+id/pauseButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Pause" />
+
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:layout_gravity="center_vertical"
+                android:orientation="vertical">
 
                 <Button
-                    android:id="@+id/startButton"
+                    android:id="@+id/editPostButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Start" />
+                    android:text="Edit Post" />
 
                 <Button
-                    android:id="@+id/pauseButton"
+                    android:id="@+id/returnButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Pause" />
+                    android:text="Return to Dashboard" />
+
 
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
+    </ScrollView>
 
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:orientation="vertical">
-
-        <Button
-            android:id="@+id/editPostButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Edit Post" />
-
-        <Button
-            android:id="@+id/returnButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Return to Dashboard" />
-
-
-    </LinearLayout>
 
 </LinearLayout>
