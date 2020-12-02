@@ -1,5 +1,6 @@
 package edu.temple.project_post_it.ui.home;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
 
     public ArrayList<Post> post_list;
     public dataBaseManagement dataBaseManagement;
+    String current_post;
     //CustomAdapter Constructor
     public CustomAdapter(ArrayList<Post> post_list) {
         //Pass the Array list to the local adapter
@@ -43,19 +45,20 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
         holder.getTitle_textView().setText(post_list.get(position).getTitle());
         holder.getText_textView().setText(post_list.get(position).getText());
         Post post = post_list.get(position);
+        current_post = post_list.get(position).getPost_ID();
+        Bundle args = new Bundle();
+        args.putString("Post_ID", current_post);
         int type = post.getType();
         if (type == 1){
-            holder.getView_Button().setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_navigation_home_to_imagePostViewFragment));
+            holder.getView_Button().setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_navigation_home_to_imagePostViewFragment, args));
         } else if (type == 2){
-            holder.getView_Button().setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_navigation_home_to_audioPostViewFragment));
+            holder.getView_Button().setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_navigation_home_to_audioPostViewFragment, args));
         } else {
-            holder.getView_Button().setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_navigation_home_to_textPostViewFragment));
+            holder.getView_Button().setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_navigation_home_to_textPostViewFragment, args));
         }
         holder.getDelete_button().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //write the delete code here
-                String current_post = post_list.get(position).getPost_ID();
                 dataBaseManagement.databaseRemoveData(current_post);
             }
         });
