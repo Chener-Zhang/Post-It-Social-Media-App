@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.util.Calendar;
 
 import edu.temple.project_post_it.R;
-import edu.temple.project_post_it.dataBaseManagement;
+import edu.temple.project_post_it.databaseManagement;
 import edu.temple.project_post_it.mechanics.AudioRunner;
 import edu.temple.project_post_it.post.AudioPost;
 import edu.temple.project_post_it.post.Post;
@@ -41,7 +41,7 @@ public class AudioCreationFragment extends Fragment {
     LatLng latLng;
     FirebaseUser currentUser;
     AudioRunner audioRunner;
-    dataBaseManagement dataBaseManagement;
+    databaseManagement dataBaseManagement;
 
     public AudioCreationFragment() {
         // Required empty public constructor
@@ -60,7 +60,7 @@ public class AudioCreationFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_audio_creation, container, false);
-        dataBaseManagement = new dataBaseManagement();
+        dataBaseManagement = new databaseManagement();
         title = "Untitled";
         description = "No Description";
         isPublic = true;

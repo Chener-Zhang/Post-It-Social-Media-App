@@ -29,7 +29,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import edu.temple.project_post_it.R;
-import edu.temple.project_post_it.dataBaseManagement;
+import edu.temple.project_post_it.databaseManagement;
 import edu.temple.project_post_it.post.ImagePost;
 import edu.temple.project_post_it.user_navigation;
 
@@ -50,7 +50,7 @@ public class ImageCreationFragment extends Fragment {
 
     String currentPhotoPath;
     static final int REQUEST_TAKE_PHOTO = 713;
-    edu.temple.project_post_it.dataBaseManagement dataBaseManagement;
+    databaseManagement dataBaseManagement;
 
     public ImageCreationFragment() {
         // Required empty public constructor
@@ -69,7 +69,7 @@ public class ImageCreationFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_image_creation, container, false);
-        dataBaseManagement = new dataBaseManagement();
+        dataBaseManagement = new databaseManagement();
         title = "Untitled";
         description = "No Description";
         isPublic = true;

@@ -15,13 +15,13 @@ import edu.temple.project_post_it.group.Group;
 import edu.temple.project_post_it.post.Post;
 import edu.temple.project_post_it.user.User;
 
-public class dataBaseManagement {
+public class databaseManagement {
     //RootNode = postit-8d9a4
     public FirebaseDatabase root;
     public DatabaseReference databaseReference;
     String currentUser = FirebaseAuth.getInstance().getUid();
 
-    public dataBaseManagement() {
+    public databaseManagement() {
         root = FirebaseDatabase.getInstance();
     }
 

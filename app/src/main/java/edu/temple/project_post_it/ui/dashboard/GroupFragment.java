@@ -21,12 +21,12 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 import edu.temple.project_post_it.R;
-import edu.temple.project_post_it.dataBaseManagement;
+import edu.temple.project_post_it.databaseManagement;
 import edu.temple.project_post_it.user.User;
 
 public class GroupFragment extends Fragment {
 
-    dataBaseManagement dataBaseManagement;
+    databaseManagement dataBaseManagement;
     MyGroupRecyclerViewAdapter groupAdapter;
     RecyclerView recyclerView;
     Button addButton;
@@ -44,7 +44,7 @@ public class GroupFragment extends Fragment {
         recyclerView = view.findViewById(R.id.groupListView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        dataBaseManagement = new dataBaseManagement();
+        dataBaseManagement = new databaseManagement();
         dataBaseManagement.databaseReference = dataBaseManagement.root.getReference("Members/" + FirebaseAuth.getInstance().getCurrentUser().getUid());
         dataBaseManagement.databaseReference.addValueEventListener(new ValueEventListener() {
             @Override

@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import edu.temple.project_post_it.R;
-import edu.temple.project_post_it.dataBaseManagement;
+import edu.temple.project_post_it.databaseManagement;
 import edu.temple.project_post_it.post.Post;
 import edu.temple.project_post_it.user.User;
 import edu.temple.project_post_it.user_navigation;
@@ -41,7 +41,7 @@ public class PostCreationFragment extends Fragment implements AdapterView.OnItem
     Button createPostButton;
     LatLng latLng;
     FirebaseUser currentUser;
-    dataBaseManagement dataBaseManagement;
+    databaseManagement dataBaseManagement;
     Spinner groupingSelectorSpinner;
     String useGroupSelection = "default";
 
@@ -54,7 +54,7 @@ public class PostCreationFragment extends Fragment implements AdapterView.OnItem
                              Bundle savedInstanceState) {
 
         //Init database management
-        dataBaseManagement = new dataBaseManagement();
+        dataBaseManagement = new databaseManagement();
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_post_creation, container, false);

@@ -11,17 +11,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import edu.temple.project_post_it.R;
-import edu.temple.project_post_it.dataBaseManagement;
+import edu.temple.project_post_it.databaseManagement;
 
 
 public class MyGroupRecyclerViewAdapter extends RecyclerView.Adapter<MyGroupRecyclerViewAdapter.ViewHolder> {
 
     public List<String> groupList = null;
-    public dataBaseManagement dataBaseManagement;
+    public databaseManagement dataBaseManagement;
 
     public MyGroupRecyclerViewAdapter(List<String> groupList) {
         this.groupList = groupList;
-        dataBaseManagement = new dataBaseManagement();
+        dataBaseManagement = new databaseManagement();
     }
 
     @Override
