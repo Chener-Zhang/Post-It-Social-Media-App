@@ -11,6 +11,10 @@ import java.io.File;
 public class ImagePost extends Post{
     String imageFilePath;
     String imageFileName;
+
+    public ImagePost(){
+
+    }
     public ImagePost(String Post_ID, boolean Privacy, int type, String imageFilePath, String imageFileName) {
         super(Post_ID, Privacy, type);
         this.imageFilePath = imageFilePath;

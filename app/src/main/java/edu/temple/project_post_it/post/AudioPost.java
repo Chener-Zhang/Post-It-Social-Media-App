@@ -11,6 +11,10 @@ public class AudioPost extends Post {
     String audioFilePath;
     String audioFileName;
 
+    public AudioPost(){
+
+    }
+
     public AudioPost(String Post_ID, boolean Privacy, int type, String audioFilePath, String audioFileName) {
         super(Post_ID, Privacy, type);
         this.audioFilePath = audioFilePath;

@@ -16,23 +16,32 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
+
+import java.io.File;
 
 import edu.temple.project_post_it.R;
 import edu.temple.project_post_it.dataBaseManagement;
+import edu.temple.project_post_it.post.AudioPost;
+import edu.temple.project_post_it.post.ImagePost;
 import edu.temple.project_post_it.post.Post;
 
 public class ImagePostViewFragment extends Fragment {
 
     private static final String POST_ID = "Post_ID";
     private String post_ID;
-    private Post currentPost;
+    private ImagePost currentPost;
     TextView titleView;
     TextView descriptionView;
     ImageView imageView;
@@ -71,9 +80,29 @@ public class ImagePostViewFragment extends Fragment {
         postReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                currentPost = snapshot.getValue(Post.class);
+                currentPost = snapshot.getValue(ImagePost.class);
                 titleView.setText(currentPost.getTitle());
                 descriptionView.setText(currentPost.getText());
+
+                File file = new File(currentPost.getImageFilePath());
+                if (!(file.exists())){
+                    StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
+                    String userID =  FirebaseAuth.getInstance().getCurrentUser().getUid();
+                    StorageReference usersRef = mStorageRef.child("Users/" + userID);
+                    final StorageReference saveRef = usersRef.child(currentPost.getImageFileName());
+                    saveRef.getFile(file).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.v("ERROR:", "Error getting file from storage!");
+                        }
+                    }).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                            Log.v("Success:", "Photo obtained from storage");
+                        }
+                    });
+                }
+                Picasso.get().load(file).into(imageView);
             }
 
             @Override
