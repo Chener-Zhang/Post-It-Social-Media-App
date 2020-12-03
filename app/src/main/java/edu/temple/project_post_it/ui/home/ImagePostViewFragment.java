@@ -75,7 +75,6 @@ public class ImagePostViewFragment extends Fragment {
         imageView = view.findViewById(R.id.imageView);
         descriptionView = view.findViewById(R.id.descriptionEditText);
         context = this.getContext();
-
         postReference = FirebaseDatabase.getInstance().getReference("Members/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/" + "user_posts/" + post_ID);
         postReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -98,7 +97,7 @@ public class ImagePostViewFragment extends Fragment {
                     }).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                            Log.v("Success:", "Photo obtained from storage");
+                            Log.v("Success:", "Audio obtained from storage!");
                         }
                     });
                 }

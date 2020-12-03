@@ -1,6 +1,8 @@
 package edu.temple.project_post_it.ui.home;
 
 import android.content.Context;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,29 +14,42 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.io.File;
 
 import edu.temple.project_post_it.R;
 import edu.temple.project_post_it.dataBaseManagement;
+import edu.temple.project_post_it.post.AudioPost;
 import edu.temple.project_post_it.post.Post;
 
 public class AudioPostViewFragment extends Fragment {
 
     private static final String POST_ID = "Post_ID";
     private String post_ID;
-    private Post currentPost;
+    private AudioPost currentPost;
     TextView titleView;
     TextView descriptionView;
     Button editPostButton;
     Button returnButton;
+    Button startButton;
+    Button pauseButton;
+    MediaPlayer mediaPlayer;
+    SeekBar seekBar;
     edu.temple.project_post_it.dataBaseManagement dataBaseManagement;
     DatabaseReference postReference;
     Context context;
@@ -57,7 +72,7 @@ public class AudioPostViewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_audio_post_view, container, false);
+        final View view = inflater.inflate(R.layout.fragment_audio_post_view, container, false);
         dataBaseManagement = new dataBaseManagement();
         titleView = view.findViewById(R.id.titleEditText);
         descriptionView = view.findViewById(R.id.descriptionEditText);
@@ -67,9 +82,30 @@ public class AudioPostViewFragment extends Fragment {
         postReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                currentPost = snapshot.getValue(Post.class);
+                currentPost = snapshot.getValue(AudioPost.class);
                 titleView.setText(currentPost.getTitle());
                 descriptionView.setText(currentPost.getText());
+
+                File file = new File(currentPost.getAudioFilePath());
+                if (!(file.exists())){
+                    StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
+                    String userID =  FirebaseAuth.getInstance().getCurrentUser().getUid();
+                    StorageReference usersRef = mStorageRef.child("Users/" + userID);
+                    final StorageReference saveRef = usersRef.child(currentPost.getAudioFileName());
+                    saveRef.getFile(file).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.v("ERROR:", "Error getting file from storage!");
+                        }
+                    }).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                            Log.v("Success:", "Audio obtained from storage!");
+                        }
+                    });
+                }
+                Uri audioURI = Uri.fromFile(file);
+                mediaPlayer = MediaPlayer.create(context, audioURI);
             }
 
             @Override
@@ -77,6 +113,8 @@ public class AudioPostViewFragment extends Fragment {
                 Log.w("TAG", "Failed to read value.", error.toException());
             }
         });
+
+
         editPostButton = view.findViewById(R.id.editPostButton);
         editPostButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,8 +127,48 @@ public class AudioPostViewFragment extends Fragment {
             }
         });
 
+        seekBar = view.findViewById(R.id.seekBar);
+        startButton = view.findViewById(R.id.startButton);
+        startButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!(mediaPlayer.isPlaying())) {
+                    startButton.setText("Stop");
+                    mediaPlayer.start();
+                } else {
+                    startButton.setText("Start");
+                    mediaPlayer.stop();
+                }
+            }
+        });
+
+        pauseButton = view.findViewById(R.id.pauseButton);
+        pauseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!(mediaPlayer.isPlaying())) {
+                    mediaPlayer.start();
+                } else {
+                    mediaPlayer.pause();
+                }
+            }
+        });
+
         returnButton = view.findViewById(R.id.returnButton);
-        returnButton.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_audioPostViewFragment_to_navigation_home));
+        returnButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mediaPlayer.stop();
+                mediaPlayer.release();
+                mediaPlayer = null;
+                if (Navigation.findNavController(view).popBackStack()){
+                    mediaPlayer.stop();
+                    mediaPlayer.release();
+                    mediaPlayer = null;
+                }
+                Navigation.findNavController(view).navigate(R.id.action_audioPostViewFragment_to_navigation_home);
+            }
+        });
         return view;
     }
 }
