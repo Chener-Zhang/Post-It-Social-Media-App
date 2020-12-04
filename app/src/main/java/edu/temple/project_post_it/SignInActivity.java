@@ -62,7 +62,7 @@ public class SignInActivity extends AppCompatActivity {
                             User user = new User();
                             user.setGroupList(new ArrayList<String>());
                             user.groupList.add("Default");
-                            dataBaseManagement.dataBaseAddUser(user);
+                            dataBaseManagement.dataBaseAddUser(user.userID);
                             databaseReference.removeEventListener(this);
                         }
                     }
