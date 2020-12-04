@@ -5,12 +5,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -18,7 +15,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -31,14 +27,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import edu.temple.project_post_it.R;
-import edu.temple.project_post_it.dataBaseManagement;
-import edu.temple.project_post_it.group.Group;
 import edu.temple.project_post_it.post.Post;
-import edu.temple.project_post_it.user.User;
 import edu.temple.project_post_it.user_navigation;
 
 
@@ -64,7 +56,6 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
         mapView = root.findViewById(R.id.mapView);
         mapView.getMapAsync(this);
         mapView.onCreate(savedInstanceState);
-
         return root;
     }
 
@@ -109,10 +100,10 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
         this.googleMap = googleMap;
         googleMap.getUiSettings().setZoomControlsEnabled(true);
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(user_navigation.loc, 15));
-        //different color to show current location
+
+        //Show User's posts
+        //Different color to show current location
         googleMap.addMarker((new MarkerOptions()).position(user_navigation.loc)).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
-
-
         FirebaseDatabase.getInstance().getReference("Members/" + user.getUid() + "/user_posts")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -127,7 +118,7 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
                                 googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                                     @Override
                                     public boolean onMarkerClick(Marker marker) {
-                                        String message = " group is  " + post.getGroupID();
+                                        String message = "My post : " + post.getTitle();
                                         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
                                         return false;
                                     }
@@ -142,6 +133,7 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
                     }
                 });
 
+        //Show same group post
         databaseReference = root.getReference().child("/Members/" + user.getUid() + "/groupList");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -163,6 +155,20 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
                                 lng = post.getLocation().getLongitude();
                                 loc = new LatLng(lat, lng);
                                 googleMap.addMarker((new MarkerOptions()).position(loc)).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
+                                googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                                    @Override
+                                    public boolean onMarkerClick(Marker marker) {
+                                        String message;
+                                        if (post.isAnonymous()) {
+                                            message = "This post is Anonymous";
+                                        } else {
+                                            message = "Post ID is " + post.getPost_ID();
+                                        }
+                                        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                                        return false;
+
+                                    }
+                                });
                             }
                         }
 

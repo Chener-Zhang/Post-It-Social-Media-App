@@ -130,17 +130,22 @@ public class PostCreationFragment extends Fragment implements AdapterView.OnItem
                 if (privacySwitch.isChecked()) {
                     isPublic = false;
                 }
-                if (anonymousSwitch.isChecked()) {
-                    isAnonymous = true;
-                }
 
+                //Post field init
                 String post_id = Calendar.getInstance().getTime().toString() + currentUser.getUid();
                 Post post = new Post(post_id, isPublic, 0);
+
+                if (anonymousSwitch.isChecked()) {
+                    isAnonymous = true;
+                    post.setGroupID("Anonymous");
+                } else {
+                    post.setGroupID(userGroupSelection);
+                }
                 post.setTitle(title);
                 post.setText(description);
                 post.setPrivacy(isPublic);
                 post.setAnonymous(isAnonymous);
-                post.setGroupID(userGroupSelection);
+
 
                 //Reset the boolean
                 isPublic = true;

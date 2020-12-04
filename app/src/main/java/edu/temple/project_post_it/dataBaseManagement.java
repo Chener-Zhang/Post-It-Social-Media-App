@@ -36,6 +36,7 @@ public class dataBaseManagement {
     public void dataBaseSaveInMembers_Uid_UserPosts(String Uid, final Post post) {
         databaseReference = root.getReference().child("Members/" + Uid);
         databaseReference.child("user_posts/" + post.getPost_ID()).setValue(post);
+
         dataBaseSaveInGroups_group_posts(post.getGroupID(), post);
         dataBaseSaveInGroup_group_users(post.getGroupID(), FirebaseAuth.getInstance().getUid());
     }
