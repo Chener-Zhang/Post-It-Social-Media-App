@@ -49,6 +49,7 @@ public class dataBaseManagement {
     }
 
     public void dataBaseSaveInGroup_group_users(String groupName, final String UID) {
+
         databaseReference = root.getReference().child("Groups/" + groupName);
         databaseReference.child("users/" + UID).setValue(UID);
 

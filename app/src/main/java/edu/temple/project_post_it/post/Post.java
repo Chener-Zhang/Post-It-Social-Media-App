@@ -1,21 +1,12 @@
 package edu.temple.project_post_it.post;
 
 
-import com.google.firebase.database.Exclude;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import static edu.temple.project_post_it.CONSTANT.GROUP_ID;
-import static edu.temple.project_post_it.CONSTANT.LOCATION;
-import static edu.temple.project_post_it.CONSTANT.POST_ID;
-import static edu.temple.project_post_it.CONSTANT.PRIVACY;
-import static edu.temple.project_post_it.CONSTANT.TEXT;
-import static edu.temple.project_post_it.CONSTANT.TYPE;
-
 public class Post {
     // privacy: true --> public, false --> private
     boolean privacy;
+    boolean anonymous;
+
+
     LatLng location;
     String Post_ID;
     String Title;
@@ -88,4 +79,11 @@ public class Post {
         this.type = type;
     }
 
+    public boolean isAnonymous() {
+        return anonymous;
+    }
+
+    public void setAnonymous(boolean anonymous) {
+        this.anonymous = anonymous;
+    }
 }
