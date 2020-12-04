@@ -37,13 +37,16 @@ public class PostCreationFragment extends Fragment implements AdapterView.OnItem
     TextView titleView, descriptionView;
     String title, description;
     CheckBox privacySwitch;
+    CheckBox anonymousSwitch;
     boolean isPublic;
+    boolean isAnonymous;
     Button createPostButton;
     LatLng latLng;
     FirebaseUser currentUser;
     databaseManagement dataBaseManagement;
     Spinner groupingSelectorSpinner;
     String useGroupSelection = "default";
+
 
     public PostCreationFragment() {
         // Required empty public constructor
@@ -66,6 +69,7 @@ public class PostCreationFragment extends Fragment implements AdapterView.OnItem
         titleView = view.findViewById(R.id.titleEditText);
         descriptionView = view.findViewById(R.id.descriptionEditText);
         privacySwitch = view.findViewById(R.id.privacyCheckBox);
+        anonymousSwitch = view.findViewById(R.id.anonymousCheckBox);
         createPostButton = view.findViewById(R.id.createPostButton);
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         groupingSelectorSpinner = view.findViewById(R.id.goupingSelectorSpinner);
@@ -137,6 +141,9 @@ public class PostCreationFragment extends Fragment implements AdapterView.OnItem
                     isPublic = false;
                 }
 
+                if (anonymousSwitch.isChecked()) {
+                    isAnonymous = true;
+                }
                 //Init the post class
 
                 String post_id = Calendar.getInstance().getTime().toString() + currentUser.getUid();
@@ -144,10 +151,12 @@ public class PostCreationFragment extends Fragment implements AdapterView.OnItem
                 post.setTitle(title);
                 post.setText(description);
                 post.setPrivacy(isPublic);
+                post.setAnonymous(isAnonymous);
                 post.setGroupID(useGroupSelection);
 
-                //Set is Public back to true
+                //Reset the boolean before the check state
                 isPublic = true;
+                isAnonymous = false;
 
                 if (latLng != null) {
                     edu.temple.project_post_it.post.LatLng location = new edu.temple.project_post_it.post.LatLng();

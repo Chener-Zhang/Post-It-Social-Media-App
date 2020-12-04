@@ -85,20 +85,27 @@ public class databaseManagement {
         }
     }
 
-    public void databaseSaveGroupPost(final Post post){
-        databaseReference = root.getReference().child("Groups/" + post.getGroupID() + "/posts/" + currentUser);
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                databaseReference.child(post.getPost_ID()).setValue(post);
-                databaseReference.removeEventListener(this);
-            }
+    public void databaseSaveGroupPost(final Post post) {
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+        if (post.isAnonymous()) {
+            databaseReference = root.getReference().child("Groups").child("Anonymous").child("posts");
+            databaseReference.push().setValue(post);
 
-            }
-        });
+        } else {
+            databaseReference = root.getReference().child("Groups/" + post.getGroupID() + "/posts/" + currentUser);
+            databaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    databaseReference.child(post.getPost_ID()).setValue(post);
+                    databaseReference.removeEventListener(this);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                }
+            });
+        }
+
     }
 
 
@@ -116,12 +123,12 @@ public class databaseManagement {
             }
         });
 
-        if(post.getPrivacy())
+        if (post.getPrivacy())
             databaseRemoveGroupData(post);
     }
 
-    public void databaseRemoveGroupData(Post post){
-        databaseReference = root.getReference().child("/Groups/" + post.getGroupID() + "/posts/" +currentUser + "/" + post.getPost_ID());
+    public void databaseRemoveGroupData(Post post) {
+        databaseReference = root.getReference().child("/Groups/" + post.getGroupID() + "/posts/" + currentUser + "/" + post.getPost_ID());
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

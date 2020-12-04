@@ -16,6 +16,9 @@ import static edu.temple.project_post_it.CONSTANT.TYPE;
 public class Post {
     // privacy: true --> public, false --> private
     boolean privacy;
+
+
+    boolean anonymous;
     LatLng location;
     String Post_ID;
     String Title;
@@ -31,6 +34,15 @@ public class Post {
         this.privacy = Privacy;
         this.type = type;
     }
+
+    public boolean isAnonymous() {
+        return anonymous;
+    }
+
+    public void setAnonymous(boolean anonymous) {
+        this.anonymous = anonymous;
+    }
+
 
     public String getTitle() {
         return Title;
