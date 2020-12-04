@@ -20,7 +20,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 import edu.temple.project_post_it.R;
-import edu.temple.project_post_it.dataBaseManagement;
+import edu.temple.project_post_it.databaseManagement;
 import edu.temple.project_post_it.post.Post;
 
 public class HomeFragment extends Fragment {
@@ -30,7 +30,7 @@ public class HomeFragment extends Fragment {
     Button audioButton;
     RecyclerView recyclerView;
     CustomAdapter customAdapter;
-    dataBaseManagement dataBaseManagement;
+    databaseManagement dataBaseManagement;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -54,7 +54,7 @@ public class HomeFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         //Implement firebase realtime databse call back function:
-        dataBaseManagement = new dataBaseManagement();
+        dataBaseManagement = new databaseManagement();
         dataBaseManagement.databaseReference = dataBaseManagement.root.getReference("Members/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/" + "user_posts");
         dataBaseManagement.databaseReference.addValueEventListener(new ValueEventListener() {
             @Override

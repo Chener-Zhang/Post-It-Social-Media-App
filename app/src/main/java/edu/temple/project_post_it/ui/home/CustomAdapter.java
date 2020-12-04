@@ -12,19 +12,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import edu.temple.project_post_it.R;
-import edu.temple.project_post_it.dataBaseManagement;
+import edu.temple.project_post_it.databaseManagement;
 import edu.temple.project_post_it.post.Post;
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
 
     public ArrayList<Post> post_list;
-    public dataBaseManagement dataBaseManagement;
+    public databaseManagement dataBaseManagement;
 
     //CustomAdapter Constructor
     public CustomAdapter(ArrayList<Post> post_list) {
         //Pass the Array list to the local adapter
         this.post_list = post_list;
-        dataBaseManagement = new dataBaseManagement();
+        dataBaseManagement = new databaseManagement();
     }
 
     @NonNull
@@ -44,7 +44,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
             @Override
             public void onClick(View v) {
                 //write the delete code here
-                String current_post = post_list.get(position).getPost_ID();
+                Post current_post = post_list.get(position);
                 dataBaseManagement.databaseRemoveData(current_post);
             }
         });

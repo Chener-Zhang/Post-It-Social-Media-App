@@ -2,7 +2,6 @@ package edu.temple.project_post_it;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,24 +9,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import edu.temple.project_post_it.post.Post;
 import edu.temple.project_post_it.user.User;
 
 
 public class SignInActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 123;
-    dataBaseManagement dataBaseManagement;
+    databaseManagement dataBaseManagement;
     DatabaseReference databaseReference;
 
 
@@ -48,7 +44,7 @@ public class SignInActivity extends AppCompatActivity {
                 RC_SIGN_IN);
 
     }
-
+//check
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -57,12 +53,16 @@ public class SignInActivity extends AppCompatActivity {
 
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
+                dataBaseManagement = new databaseManagement();
                 databaseReference = dataBaseManagement.root.getReference().child("/Members/");
                 databaseReference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if(!snapshot.hasChild(FirebaseAuth.getInstance().getUid())) {
-                            dataBaseManagement.dataBaseAddUser(FirebaseAuth.getInstance().getUid());
+                            User user = new User();
+                            user.setGroupList(new ArrayList<String>());
+                            user.groupList.add("Default");
+                            dataBaseManagement.dataBaseAddUser(user.userID);
                             databaseReference.removeEventListener(this);
                         }
                     }

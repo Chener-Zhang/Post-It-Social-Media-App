@@ -1,6 +1,7 @@
 package edu.temple.project_post_it.ui.home;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +27,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import edu.temple.project_post_it.R;
-import edu.temple.project_post_it.dataBaseManagement;
+import edu.temple.project_post_it.databaseManagement;
 import edu.temple.project_post_it.post.Post;
 import edu.temple.project_post_it.user.User;
 import edu.temple.project_post_it.user_navigation;
@@ -40,7 +41,7 @@ public class PostCreationFragment extends Fragment implements AdapterView.OnItem
     Button createPostButton;
     LatLng latLng;
     FirebaseUser currentUser;
-    dataBaseManagement dataBaseManagement;
+    databaseManagement dataBaseManagement;
     Spinner groupingSelectorSpinner;
     String useGroupSelection = "default";
 
@@ -53,7 +54,7 @@ public class PostCreationFragment extends Fragment implements AdapterView.OnItem
                              Bundle savedInstanceState) {
 
         //Init database management
-        dataBaseManagement = new dataBaseManagement();
+        dataBaseManagement = new databaseManagement();
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_post_creation, container, false);
@@ -83,21 +84,27 @@ public class PostCreationFragment extends Fragment implements AdapterView.OnItem
                 User user = snapshot.getValue(User.class);
                 groups = user.getGroupList();
 
-                ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, groups);
-                dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                groupingSelectorSpinner.setAdapter(dataAdapter);
-                groupingSelectorSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        System.out.println(groups.get(position));
-                        useGroupSelection = groups.get(position);
-                    }
+                try {
 
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
+                    ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, groups);
+                    dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    groupingSelectorSpinner.setAdapter(dataAdapter);
+                    groupingSelectorSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            System.out.println(groups.get(position));
+                            useGroupSelection = groups.get(position);
+                        }
 
-                    }
-                });
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+
+                        }
+                    });
+                } catch (Exception e) {
+                    Log.d("EXCEPTION", e.toString());
+
+                }
 
             }
 
@@ -159,7 +166,7 @@ public class PostCreationFragment extends Fragment implements AdapterView.OnItem
 
     public void savePost(Post post) {
         //This method is where the new post will be saved to the database. This method, when called, will also return the user back to the homepage.
-        this.dataBaseManagement.dataBaseSavePost(FirebaseAuth.getInstance().getUid(), post);
+        this.dataBaseManagement.databaseSavePost(FirebaseAuth.getInstance().getUid(), post);
         Toast.makeText(this.getContext(), "Post Saved!", Toast.LENGTH_SHORT).show();
     }
 

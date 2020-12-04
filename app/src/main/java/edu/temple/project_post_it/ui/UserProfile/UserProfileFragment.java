@@ -21,7 +21,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 import edu.temple.project_post_it.R;
-import edu.temple.project_post_it.dataBaseManagement;
+import edu.temple.project_post_it.databaseManagement;
 
 public class UserProfileFragment extends Fragment {
 
@@ -35,7 +35,7 @@ public class UserProfileFragment extends Fragment {
 
     //Firebase
     FirebaseUser user;
-    dataBaseManagement dataBase_management;
+    databaseManagement dataBase_management;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -50,7 +50,7 @@ public class UserProfileFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_userprofile, container, false);
 
         //Setup the database management
-        dataBase_management = new dataBaseManagement();
+        dataBase_management = new databaseManagement();
 
 
         //Set the xml element
