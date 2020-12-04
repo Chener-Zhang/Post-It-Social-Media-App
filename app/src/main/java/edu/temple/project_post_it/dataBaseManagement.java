@@ -41,8 +41,11 @@ public class dataBaseManagement {
     }
 
     public void dataBaseSaveInGroups_group_posts(String groupName, final Post post) {
-        databaseReference = root.getReference().child("Groups/" + groupName);
-        databaseReference.child("posts/" + post.getPost_ID()).setValue(post);
+        //If it public
+        if (post.getPrivacy()) {
+            databaseReference = root.getReference().child("Groups/" + groupName);
+            databaseReference.child("posts/" + post.getPost_ID()).setValue(post);
+        }
     }
 
     public void dataBaseSaveInGroup_group_users(String groupName, final String UID) {
