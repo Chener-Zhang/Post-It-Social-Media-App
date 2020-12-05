@@ -36,16 +36,21 @@ public class dataBaseManagement {
     public void dataBaseSaveInMembers_Uid_UserPosts(String Uid, final Post post) {
         databaseReference = root.getReference().child("Members/" + Uid);
         databaseReference.child("user_posts/" + post.getPost_ID()).setValue(post);
+
         dataBaseSaveInGroups_group_posts(post.getGroupID(), post);
         dataBaseSaveInGroup_group_users(post.getGroupID(), FirebaseAuth.getInstance().getUid());
     }
 
     public void dataBaseSaveInGroups_group_posts(String groupName, final Post post) {
-        databaseReference = root.getReference().child("Groups/" + groupName);
-        databaseReference.child("posts/" + post.getPost_ID()).setValue(post);
+        //If it public
+        if (post.getPrivacy()) {
+            databaseReference = root.getReference().child("Groups/" + groupName);
+            databaseReference.child("posts/" + post.getPost_ID()).setValue(post);
+        }
     }
 
     public void dataBaseSaveInGroup_group_users(String groupName, final String UID) {
+
         databaseReference = root.getReference().child("Groups/" + groupName);
         databaseReference.child("users/" + UID).setValue(UID);
 
@@ -55,7 +60,7 @@ public class dataBaseManagement {
     public void databaseRemovePostInMembers(final String post_id, final String group_id) {
         databaseReference = root.getReference("Members/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/" + "user_posts/" + post_id);
 
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 snapshot.getRef().removeValue();
@@ -147,8 +152,11 @@ public class dataBaseManagement {
 
             }
         });
+    }
 
-
+    public void databaseAddUserReplys(String reply, String UID, String postId, String groupId) {
+        databaseReference = root.getReference("Groups/" + groupId + "/posts/" + postId);
+        databaseReference.child("replysList").child(reply).setValue(UID);
     }
 
 

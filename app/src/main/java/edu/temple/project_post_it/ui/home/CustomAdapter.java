@@ -3,7 +3,9 @@ package edu.temple.project_post_it.ui.home;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,6 +20,7 @@ import edu.temple.project_post_it.post.Post;
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
 
     public ArrayList<Post> post_list;
+
     public dataBaseManagement dataBaseManagement;
 
     //CustomAdapter Constructor
@@ -49,7 +52,9 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
             }
         });
 
+
     }
+
 
     @Override
     public int getItemCount() {
@@ -60,8 +65,13 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
     public static class ViewHolder extends RecyclerView.ViewHolder {
         //Declase the item in the ViewHolder
         ImageButton delete_button;
+        Button reply_Button;
+
+        Spinner viewReplySpinner;
+
         TextView title_textView;
         TextView text_textView;
+
 
         //ViewHolder Constructor
         public ViewHolder(@NonNull View itemView) {
@@ -71,6 +81,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
             text_textView = itemView.findViewById(R.id.group_name);
             delete_button = itemView.findViewById(R.id.delete_button);
         }
+
 
         //Get title
         public TextView getTitle_textView() {
@@ -86,6 +97,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
         public ImageButton getDelete_button() {
             return delete_button;
         }
+
     }
 
 

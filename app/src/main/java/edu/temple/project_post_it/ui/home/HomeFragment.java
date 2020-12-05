@@ -78,6 +78,7 @@ public class HomeFragment extends Fragment {
                 //Init the custom adapter
                 customAdapter = new CustomAdapter(post_list);
                 recyclerView.setAdapter(customAdapter);
+//                dataBaseManagement.databaseReference.removeEventListener(this);
             }
 
             @Override
