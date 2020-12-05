@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -112,13 +111,12 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
         //different color to show current location
         googleMap.addMarker((new MarkerOptions()).position(user_navigation.loc)).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
 
-
         FirebaseDatabase.getInstance().getReference("Members/" + user.getUid() + "/user_posts")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists()) {
-                            for (final DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                 final Post post = snapshot.getValue(Post.class);
                                 lat = post.getLocation().getLatitude();
                                 lng = post.getLocation().getLongitude();
@@ -127,8 +125,7 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
                                 googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                                     @Override
                                     public boolean onMarkerClick(Marker marker) {
-                                        String message = " group is  " + post.getGroupID();
-                                        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                                        System.out.println("post id is " + post.getPost_ID());
                                         return false;
                                     }
                                 });
@@ -146,7 +143,6 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                System.out.println("auto trigger test");
                 User user = snapshot.getValue(User.class);
                 ArrayList<String> groups = user.getGroupList();
                 for (String group : groups) {
