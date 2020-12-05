@@ -127,8 +127,8 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
                                 googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                                     @Override
                                     public boolean onMarkerClick(Marker marker) {
-                                        String message = " group is  " + post.getGroupID();
-                                        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                                        String message = "Group is: " + post.getGroupID() + ", Title is: " + post.getTitle() + ", Text is: " + post.getText();
+                                        Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
                                         return false;
                                     }
                                 });
