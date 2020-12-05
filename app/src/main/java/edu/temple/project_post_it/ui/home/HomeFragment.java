@@ -18,6 +18,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import edu.temple.project_post_it.R;
 import edu.temple.project_post_it.dataBaseManagement;
@@ -66,6 +67,7 @@ public class HomeFragment extends Fragment {
                     Post post = dataSnapshot.getValue(Post.class);
                     post_list.add(post);
                 }
+                Collections.reverse(post_list);
                 //Init the custom adapter
                 customAdapter = new CustomAdapter(post_list);
                 recyclerView.setAdapter(customAdapter);
@@ -79,4 +81,5 @@ public class HomeFragment extends Fragment {
 
         return root;
     }
+
 }

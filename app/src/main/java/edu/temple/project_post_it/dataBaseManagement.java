@@ -32,7 +32,6 @@ public class dataBaseManagement {
         databaseReference.setValue(user);
     }
 
-
     public void dataBaseSaveInMembers_Uid_UserPosts(String Uid, final Post post) {
         databaseReference = root.getReference().child("Members/" + Uid);
         databaseReference.child("user_posts/" + post.getPost_ID()).setValue(post);
@@ -74,9 +73,11 @@ public class dataBaseManagement {
         });
     }
 
+
     public void databaseRemovePostInGroups(final String post_id, String group_id) {
         databaseReference = root.getReference("Groups/" + group_id);
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 snapshot.child("posts").child(post_id).getRef().removeValue();
