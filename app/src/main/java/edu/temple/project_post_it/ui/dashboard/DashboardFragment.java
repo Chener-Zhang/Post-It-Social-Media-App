@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -17,7 +16,6 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -115,14 +113,6 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
                                 lng = post.getLocation().getLongitude();
                                 loc = new LatLng(lat, lng);
                                 googleMap.addMarker((new MarkerOptions()).position(loc));
-                                googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                                    @Override
-                                    public boolean onMarkerClick(Marker marker) {
-                                        String message = "My post : " + post.getTitle();
-                                        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-                                        return false;
-                                    }
-                                });
                             }
                         }
                     }
@@ -154,21 +144,12 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
                                 lat = post.getLocation().getLatitude();
                                 lng = post.getLocation().getLongitude();
                                 loc = new LatLng(lat, lng);
-                                googleMap.addMarker((new MarkerOptions()).position(loc)).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
-                                googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                                    @Override
-                                    public boolean onMarkerClick(Marker marker) {
-                                        String message;
-                                        if (post.isAnonymous()) {
-                                            message = "This post is Anonymous";
-                                        } else {
-                                            message = "Post ID is " + post.getPost_ID();
-                                        }
-                                        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-                                        return false;
 
-                                    }
-                                });
+                                googleMap.addMarker(new MarkerOptions().position(loc)
+                                        .title(post.getTitle())
+                                        .snippet(makerDescription(post))
+                                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+
                             }
                         }
 
@@ -184,6 +165,13 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
 
             }
         });
+    }
+
+
+    public String makerDescription(Post post) {
+        String result = post.getText() + " ";
+        result += "Created by " + post.getPost_ID();
+        return result;
     }
 }
 
