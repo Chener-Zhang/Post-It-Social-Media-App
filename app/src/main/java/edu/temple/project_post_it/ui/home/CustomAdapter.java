@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -58,12 +59,14 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
                 dataBaseManagement.databaseRemovePostInMembers(current_post, post_list.get(position).getGroupID());
             }
         });
+
+
         holder.getReply_Button().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(activity);
                 alertDialog.setTitle("Reply");
-                alertDialog.setMessage("Enter text");
+
                 final EditText input = new EditText(activity);
                 alertDialog.setView(input);
 
@@ -74,20 +77,13 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
                         dataBaseManagement.databaseAddUserReplys(userInput, FirebaseAuth.getInstance().getUid(), post_list.get(position).getPost_ID());
                     }
                 });
+
+                alertDialog.setMessage("some message");
                 alertDialog.show();
-
-
-//                final Dialog dialog = new Dialog(activity);
-//                int width = (int) (activity.getResources().getDisplayMetrics().widthPixels * 0.80);
-//                int height = (int) (activity.getResources().getDisplayMetrics().heightPixels * 0.50);
-//                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//                dialog.setContentView(R.layout.replydialog);
-//                dialog.getWindow().setLayout(width, height);
-//                dialog.show();
-
 
             }
         });
+
 
 
     }
@@ -104,6 +100,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
         ImageButton delete_button;
         Button reply_Button;
 
+        Spinner viewReplySpinner;
 
         TextView title_textView;
         TextView text_textView;
@@ -117,8 +114,12 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
             text_textView = itemView.findViewById(R.id.group_name);
             delete_button = itemView.findViewById(R.id.delete_button);
             reply_Button = itemView.findViewById(R.id.reply_button);
+            viewReplySpinner = itemView.findViewById(R.id.viewReplys);
         }
 
+        public Spinner getViewReplySpinner() {
+            return viewReplySpinner;
+        }
 
         //Get title
         public TextView getTitle_textView() {
