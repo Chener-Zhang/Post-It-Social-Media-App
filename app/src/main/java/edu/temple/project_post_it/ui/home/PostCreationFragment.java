@@ -145,6 +145,7 @@ public class PostCreationFragment extends Fragment implements AdapterView.OnItem
                 post.setText(description);
                 post.setPrivacy(isPublic);
                 post.setAnonymous(isAnonymous);
+                post.setCreatedBy(FirebaseAuth.getInstance().getCurrentUser().getEmail());
 
 
                 //Reset the boolean

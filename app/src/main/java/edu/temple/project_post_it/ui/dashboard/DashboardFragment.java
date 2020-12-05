@@ -112,7 +112,12 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
                                 lat = post.getLocation().getLatitude();
                                 lng = post.getLocation().getLongitude();
                                 loc = new LatLng(lat, lng);
-                                googleMap.addMarker((new MarkerOptions()).position(loc));
+
+
+                                googleMap.addMarker(new MarkerOptions().position(loc)
+                                        .title(post.getTitle())
+                                        .snippet(makerDescription(post))).showInfoWindow();
+
                             }
                         }
                     }
@@ -148,8 +153,7 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
                                 googleMap.addMarker(new MarkerOptions().position(loc)
                                         .title(post.getTitle())
                                         .snippet(makerDescription(post))
-                                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
-
+                                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))).showInfoWindow();
                             }
                         }
 
@@ -170,7 +174,8 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
 
     public String makerDescription(Post post) {
         String result = post.getText() + " ";
-        result += "Created by " + post.getPost_ID();
+        result += "Created by " + post.getCreatedBy();
+        System.out.println(post.getCreatedBy());
         return result;
     }
 }

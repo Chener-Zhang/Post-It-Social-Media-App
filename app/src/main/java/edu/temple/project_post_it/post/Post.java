@@ -12,6 +12,17 @@ public class Post {
     String Title;
     String Text;
     String groupID = "Default";
+
+    String createdBy;
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
     int type;
 
     public Post() {
