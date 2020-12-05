@@ -29,6 +29,7 @@ public class HomeFragment extends Fragment {
     Button textButton;
     Button photoButton;
     Button audioButton;
+    Button testButton;
     RecyclerView recyclerView;
     CustomAdapter customAdapter;
     dataBaseManagement dataBaseManagement;
@@ -49,14 +50,13 @@ public class HomeFragment extends Fragment {
         photoButton = root.findViewById(R.id.photoButton);
         photoButton.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_navigation_home_to_imageCreationFragment, null));
 
-
         //Implement the recycleView
         recyclerView = root.findViewById(R.id.recyle_view_Posts);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         //Implement firebase realtime databse call back function:
         dataBaseManagement = new dataBaseManagement();
-        dataBaseManagement.databaseReference = dataBaseManagement.root.getReference("Members/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/" + "user_posts");
+        dataBaseManagement.databaseReference = dataBaseManagement.root.getReference("Members/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/user_posts");
         dataBaseManagement.databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -71,6 +71,7 @@ public class HomeFragment extends Fragment {
                 //Init the custom adapter
                 customAdapter = new CustomAdapter(post_list);
                 recyclerView.setAdapter(customAdapter);
+//                dataBaseManagement.databaseReference.removeEventListener(this);
             }
 
             @Override

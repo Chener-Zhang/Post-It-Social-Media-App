@@ -18,15 +18,12 @@ import android.widget.EditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
 import edu.temple.project_post_it.R;
 import edu.temple.project_post_it.dataBaseManagement;
-import edu.temple.project_post_it.group.Group;
-import edu.temple.project_post_it.user.User;
 
 public class GroupFragment extends Fragment {
 
@@ -40,7 +37,6 @@ public class GroupFragment extends Fragment {
     }
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -50,21 +46,26 @@ public class GroupFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         dataBaseManagement = new dataBaseManagement();
+
         dataBaseManagement.databaseReference = dataBaseManagement.root.getReference("Members/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/groupList");
         dataBaseManagement.databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                ArrayList<String> groupList = new ArrayList<>();
-//                GenericTypeIndicator<ArrayList<String>> genericTypeIndicator = new GenericTypeIndicator<ArrayList<String>>() {                };
-//                groupList = snapshot.getValue(genericTypeIndicator);
-//                groupAdapter = new MyGroupRecyclerViewAdapter(groupList);
-//                recyclerView.setAdapter(groupAdapter);
+                System.out.println(snapshot.toString());
+                ArrayList<String> arrayList = new ArrayList<String>();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    arrayList.add(dataSnapshot.getKey());
+                }
+                groupAdapter = new MyGroupRecyclerViewAdapter(arrayList);
+                recyclerView.setAdapter(groupAdapter);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
+
 
         addButton = view.findViewById(R.id.addButton);
         addGroup = view.findViewById(R.id.addGroup);
@@ -72,12 +73,12 @@ public class GroupFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.i("Button Clicked", "Clicked button");
-                if(addGroup.getText() != null) {
-                    dataBaseManagement.databaseAddGroup(addGroup.getText().toString());
+                if (!addGroup.getText().toString().isEmpty()) {
+                    dataBaseManagement.databaseAddGroupToGroups(addGroup.getText().toString());
+                    groupAdapter.notifyDataSetChanged();
                 }
             }
         });
-
 
         return view;
     }

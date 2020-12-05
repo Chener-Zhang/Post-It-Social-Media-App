@@ -20,15 +20,5 @@
             app:title="@string/show_all" />
 
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/group_edit">
-
-        <ListPreference
-            android:id="@+id/deleteGroups"
-            android:defaultValue="1"
-            android:entries="@array/reply_entries"
-            android:entryValues="@array/reply_entries"
-            android:key="@string/delete_group_key"
-            android:title="@string/delete_group" />
-    </PreferenceCategory>
 
 </PreferenceScreen>

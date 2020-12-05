@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,13 +22,14 @@ import edu.temple.project_post_it.post.Post;
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
 
-    public ArrayList<Post> post_list;
+    public ArrayList<Post> postList;
+
     public dataBaseManagement dataBaseManagement;
     String current_post;
     //CustomAdapter Constructor
-    public CustomAdapter(ArrayList<Post> post_list) {
+    public CustomAdapter(ArrayList<Post> postList) {
         //Pass the Array list to the local adapter
-        this.post_list = post_list;
+        this.postList = postList;
         dataBaseManagement = new dataBaseManagement();
     }
 
@@ -63,11 +65,13 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
             }
         });
 
+
     }
+
 
     @Override
     public int getItemCount() {
-        return post_list.size();
+        return postList.size();
     }
 
     //ViewHolder Class
@@ -75,8 +79,11 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
         //Declase the item in the ViewHolder
         ImageButton delete_button;
         Button viewButton;
+        Button reply_Button;
+        Spinner viewReplySpinner;
         TextView title_textView;
         TextView text_textView;
+
 
         //ViewHolder Constructor
         public ViewHolder(@NonNull View itemView) {
@@ -87,6 +94,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
             delete_button = itemView.findViewById(R.id.delete_button);
             viewButton = itemView.findViewById(R.id.viewEditButton);
         }
+
 
         //Get title
         public TextView getTitle_textView() {

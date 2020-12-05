@@ -166,7 +166,8 @@ public class ImageCreationFragment extends Fragment {
                 Toast.makeText(context, "Photo Saved to Firebase Storage!", Toast.LENGTH_SHORT).show();
             }
         });
-
+        dataBaseManagement.dataBaseSaveInMembers_Uid_UserPosts(FirebaseAuth.getInstance().getUid(), post);
+        Toast.makeText(this.getContext(), "Post Saved!", Toast.LENGTH_SHORT).show();
     }
 
     public void takePhoto() throws IOException {
