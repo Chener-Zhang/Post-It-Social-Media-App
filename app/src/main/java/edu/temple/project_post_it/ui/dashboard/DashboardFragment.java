@@ -101,7 +101,7 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
 
         //Show User's posts
         //Different color to show current location
-        googleMap.addMarker((new MarkerOptions()).position(user_navigation.loc)).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+        googleMap.addMarker((new MarkerOptions()).position(user_navigation.loc).title("Current Location")).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
         FirebaseDatabase.getInstance().getReference("Members/" + user.getUid() + "/user_posts")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -112,7 +112,6 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
                                 lat = post.getLocation().getLatitude();
                                 lng = post.getLocation().getLongitude();
                                 loc = new LatLng(lat, lng);
-
 
                                 googleMap.addMarker(new MarkerOptions().position(loc)
                                         .title(post.getTitle())

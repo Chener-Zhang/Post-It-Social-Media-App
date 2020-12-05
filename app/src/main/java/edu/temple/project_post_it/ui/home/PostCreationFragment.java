@@ -138,14 +138,15 @@ public class PostCreationFragment extends Fragment implements AdapterView.OnItem
                 if (anonymousSwitch.isChecked()) {
                     isAnonymous = true;
                     post.setGroupID("Anonymous");
+                    post.setCreatedBy("Anonymous");
                 } else {
                     post.setGroupID(userGroupSelection);
+                    post.setCreatedBy(FirebaseAuth.getInstance().getCurrentUser().getEmail());
                 }
                 post.setTitle(title);
                 post.setText(description);
                 post.setPrivacy(isPublic);
                 post.setAnonymous(isAnonymous);
-                post.setCreatedBy(FirebaseAuth.getInstance().getCurrentUser().getEmail());
 
 
                 //Reset the boolean
