@@ -13,8 +13,10 @@
     <string name="title_audio_creation">Post Audio</string>
     <string name="title_image_creation">Post Image</string>
     <string name="userprofile">UserProfile</string>
-
     <string name="title_activity_data_test_activity">data_test_activity</string>
+    <string name="add_group">Add Group</string>
+    <string name="reply_by">is REPLY by</string>
+    <string name="post_saved">"Post Saved!"</string>
     <!--
     This string is used for square devices and overridden by hello_world in
     values-round/strings.xml for round devices.
@@ -22,15 +24,20 @@
     <string name="hello_world">Hello Square World!</string>
     <!-- Preference Titles -->
     <string name="map_display">Map Display</string>
+    <string name="group_edit">Delete Group</string>
 
     <!-- Map Display Preferences -->
     <string name="show_group">Show Posts From Group</string>
     <string name="show_anon">Show Anonymous Posts</string>
     <string name="show_all">Show All Posts</string>
 
+    <!-- Delete Group Preferences -->
+    <string name="delete_group"> Select Group To Delete</string>
+
     <!-- Settings Keys -->
     <string name="anon_key">ANON KEY</string>
     <string name="group_key">GROUP KEY</string>
     <string name="all_key">ALL KEY</string>
+    <string name="delete_group_key"> DELETE GROUP KEY</string>
 
 </resources>
