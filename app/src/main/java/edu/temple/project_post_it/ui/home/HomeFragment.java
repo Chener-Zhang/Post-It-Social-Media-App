@@ -76,7 +76,7 @@ public class HomeFragment extends Fragment {
                     post_list.add(post);
                 }
                 //Init the custom adapter
-                customAdapter = new CustomAdapter(getActivity(), post_list);
+                customAdapter = new CustomAdapter(post_list);
                 recyclerView.setAdapter(customAdapter);
             }
 

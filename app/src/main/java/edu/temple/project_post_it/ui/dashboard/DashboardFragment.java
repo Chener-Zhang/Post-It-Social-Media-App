@@ -1,5 +1,6 @@
 package edu.temple.project_post_it.ui.dashboard;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -153,6 +155,14 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
                                         .title(post.getTitle())
                                         .snippet(makerDescription(post))
                                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))).showInfoWindow();
+                                googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                                    @Override
+                                    public boolean onMarkerClick(Marker marker) {
+                                        Intent intent = new Intent(getContext(), postDetail.class);
+                                        startActivity(intent);
+                                        return false;
+                                    }
+                                });
                             }
                         }
 
