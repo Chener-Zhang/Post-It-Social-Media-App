@@ -12,8 +12,8 @@ public class Post {
     String Title;
     String Text;
     String groupID = "Default";
-
     String createdBy;
+
 
     public String getCreatedBy() {
         return createdBy;
@@ -32,11 +32,13 @@ public class Post {
         this.Post_ID = Post_ID;
         this.privacy = Privacy;
         this.type = type;
+
     }
 
     public String getTitle() {
         return Title;
     }
+
 
     public void setTitle(String title) {
         Title = title;

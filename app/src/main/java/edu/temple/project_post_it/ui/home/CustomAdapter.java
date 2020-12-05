@@ -1,17 +1,20 @@
 package edu.temple.project_post_it.ui.home;
 
 import android.app.Activity;
-import android.app.Dialog;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
@@ -46,6 +49,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         holder.getTitle_textView().setText(post_list.get(position).getTitle());
         holder.getText_textView().setText(post_list.get(position).getText());
+
         holder.getDelete_button().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,18 +58,37 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
                 dataBaseManagement.databaseRemovePostInMembers(current_post, post_list.get(position).getGroupID());
             }
         });
-        holder.getReplyButton().setOnClickListener(new View.OnClickListener() {
+        holder.getReply_Button().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Dialog dialog = new Dialog(activity);
-                int width = (int) (activity.getResources().getDisplayMetrics().widthPixels * 0.80);
-                int height = (int) (activity.getResources().getDisplayMetrics().heightPixels * 0.50);
-                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog.setContentView(R.layout.replydialog);
-                dialog.getWindow().setLayout(width, height);
-                dialog.show();
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(activity);
+                alertDialog.setTitle("Reply");
+                alertDialog.setMessage("Enter text");
+                final EditText input = new EditText(activity);
+                alertDialog.setView(input);
+
+                alertDialog.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String userInput = input.getText().toString();
+                        dataBaseManagement.databaseAddUserReplys(userInput, FirebaseAuth.getInstance().getUid(), post_list.get(position).getPost_ID());
+                    }
+                });
+                alertDialog.show();
+
+
+//                final Dialog dialog = new Dialog(activity);
+//                int width = (int) (activity.getResources().getDisplayMetrics().widthPixels * 0.80);
+//                int height = (int) (activity.getResources().getDisplayMetrics().heightPixels * 0.50);
+//                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//                dialog.setContentView(R.layout.replydialog);
+//                dialog.getWindow().setLayout(width, height);
+//                dialog.show();
+
+
             }
         });
+
 
     }
 
@@ -79,7 +102,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
     public static class ViewHolder extends RecyclerView.ViewHolder {
         //Declase the item in the ViewHolder
         ImageButton delete_button;
-        Button replyButton;
+        Button reply_Button;
+
 
         TextView title_textView;
         TextView text_textView;
@@ -92,8 +116,9 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
             title_textView = itemView.findViewById(R.id.post_title);
             text_textView = itemView.findViewById(R.id.group_name);
             delete_button = itemView.findViewById(R.id.delete_button);
-            replyButton = itemView.findViewById(R.id.reply_button);
+            reply_Button = itemView.findViewById(R.id.reply_button);
         }
+
 
         //Get title
         public TextView getTitle_textView() {
@@ -110,8 +135,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
             return delete_button;
         }
 
-        public Button getReplyButton() {
-            return replyButton;
+        public Button getReply_Button() {
+            return reply_Button;
         }
     }
 
