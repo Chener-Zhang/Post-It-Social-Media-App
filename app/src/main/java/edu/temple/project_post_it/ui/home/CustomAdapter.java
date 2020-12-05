@@ -19,14 +19,14 @@ import edu.temple.project_post_it.post.Post;
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
 
-    public ArrayList<Post> post_list;
+    public ArrayList<Post> postList;
 
     public dataBaseManagement dataBaseManagement;
 
     //CustomAdapter Constructor
-    public CustomAdapter(ArrayList<Post> post_list) {
+    public CustomAdapter(ArrayList<Post> postList) {
         //Pass the Array list to the local adapter
-        this.post_list = post_list;
+        this.postList = postList;
         dataBaseManagement = new dataBaseManagement();
     }
 
@@ -41,14 +41,14 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
-        holder.getTitle_textView().setText(post_list.get(position).getTitle());
-        holder.getText_textView().setText(post_list.get(position).getText());
+        holder.getTitle_textView().setText(postList.get(position).getTitle());
+        holder.getText_textView().setText(postList.get(position).getText());
         holder.getDelete_button().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //write the delete code here
-                String current_post = post_list.get(position).getPost_ID();
-                dataBaseManagement.databaseRemovePostInMembers(current_post, post_list.get(position).getGroupID());
+                String current_post = postList.get(position).getPost_ID();
+                dataBaseManagement.databaseRemovePostInMembers(current_post, postList.get(position).getGroupID());
             }
         });
 
@@ -58,7 +58,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
 
     @Override
     public int getItemCount() {
-        return post_list.size();
+        return postList.size();
     }
 
     //ViewHolder Class

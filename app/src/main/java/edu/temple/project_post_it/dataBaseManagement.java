@@ -58,7 +58,7 @@ public class dataBaseManagement {
 
 
     public void databaseRemovePostInMembers(final String post_id, final String group_id) {
-        databaseReference = root.getReference("Members/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/" + "user_posts/" + post_id);
+        databaseReference = root.getReference("Members/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/user_posts/" + post_id);
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -154,9 +154,9 @@ public class dataBaseManagement {
         });
     }
 
-    public void databaseAddUserReplys(String reply, String UID, String postId, String groupId) {
+    public void databaseAddUserReplies(String reply, String UID, String postId, String groupId) {
         databaseReference = root.getReference("Groups/" + groupId + "/posts/" + postId);
-        databaseReference.child("replysList").child(reply).setValue(UID);
+        databaseReference.child("repliesList").child(reply).setValue(UID);
     }
 
 

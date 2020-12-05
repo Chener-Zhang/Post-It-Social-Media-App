@@ -6,8 +6,6 @@ import edu.temple.project_post_it.post.Post;
 
 public class User {
     public String userID;
-    public ArrayList<Post> postList;
-    public ArrayList<String> groupList;
 
     public User() {
 

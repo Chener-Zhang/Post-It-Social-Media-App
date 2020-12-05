@@ -25,6 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import edu.temple.project_post_it.CONSTANT;
 import edu.temple.project_post_it.R;
 import edu.temple.project_post_it.dataBaseManagement;
 import edu.temple.project_post_it.post.Post;
@@ -137,8 +138,7 @@ public class PostCreationFragment extends Fragment implements AdapterView.OnItem
 
                 if (anonymousSwitch.isChecked()) {
                     isAnonymous = true;
-                    post.setGroupID("Anonymous");
-                    post.setCreatedBy("Anonymous");
+                    post.setGroupID(CONSTANT.ANONYMOUS);
                 } else {
                     post.setGroupID(userGroupSelection);
                     post.setCreatedBy(FirebaseAuth.getInstance().getCurrentUser().getEmail());
@@ -171,7 +171,7 @@ public class PostCreationFragment extends Fragment implements AdapterView.OnItem
     public void savePost(Post post) {
         //This method is where the new post will be saved to the database. This method, when called, will also return the user back to the homepage.
         this.dataBaseManagement.dataBaseSaveInMembers_Uid_UserPosts(FirebaseAuth.getInstance().getUid(), post);
-        Toast.makeText(this.getContext(), "Post Saved!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this.getContext(), getString(R.string.post_saved), Toast.LENGTH_SHORT).show();
     }
 
     @Override

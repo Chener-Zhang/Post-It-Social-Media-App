@@ -6,7 +6,6 @@ public class Post {
     boolean privacy;
     boolean anonymous;
 
-
     LatLng location;
     String Post_ID;
     String Title;

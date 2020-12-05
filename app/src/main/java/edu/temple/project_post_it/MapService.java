@@ -45,13 +45,13 @@ public class MapService extends Service {
         PendingIntent pi = PendingIntent.getActivity(MapService.this, 0, notificationIntent, 0);
 
         NotificationManager nm = getSystemService(NotificationManager.class);
-        NotificationChannel channel = new NotificationChannel("MapService", "Tracing Notifications", NotificationManager.IMPORTANCE_HIGH);
+        NotificationChannel channel = new NotificationChannel(CONSTANT.NOTIFICATION_ID, CONSTANT.NOTIFICATION_TEXT, NotificationManager.IMPORTANCE_HIGH);
         nm.createNotificationChannel(channel);
 
-        Notification notification = new NotificationCompat.Builder(this, "MapService")
+        Notification notification = new NotificationCompat.Builder(this, CONSTANT.NOTIFICATION_ID)
                 .setSmallIcon(R.drawable.ic_launcher_background)
-                .setContentTitle("Post-It")
-                .setContentText("Currently Tracing location")
+                .setContentTitle(CONSTANT.CONTEXT_TITLE)
+                .setContentText(CONSTANT.CONTEXT_TEXT)
                 .setContentIntent(pi)
                 .build();
 

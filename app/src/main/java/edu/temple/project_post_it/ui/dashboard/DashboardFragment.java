@@ -31,6 +31,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import edu.temple.project_post_it.CONSTANT;
 import edu.temple.project_post_it.R;
 import edu.temple.project_post_it.post.Post;
 import edu.temple.project_post_it.user_navigation;
@@ -131,9 +132,8 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
+
         //Show same group post
-
-
     void showAnonPosts(){
         databaseReference = root.getReference().child("/Groups/Anonymous/posts");
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -154,8 +154,8 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
                         @Override
                         public boolean onMarkerClick(Marker marker) {
                             Intent intent = new Intent(getContext(), postDetail.class);
-                            intent.putExtra("postID", marker.getTitle());
-                            intent.putExtra("groupId", marker.getSnippet());
+                            intent.putExtra(CONSTANT.POST_ID, marker.getTitle());
+                            intent.putExtra(CONSTANT.GROUP_ID, marker.getSnippet());
                             startActivity(intent);
                             return false;
                         }
@@ -201,8 +201,8 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
                                         @Override
                                         public boolean onMarkerClick(Marker marker) {
                                             Intent intent = new Intent(getContext(), postDetail.class);
-                                            intent.putExtra("postID", marker.getTitle());
-                                            intent.putExtra("groupId", marker.getSnippet());
+                                            intent.putExtra(CONSTANT.POST_ID, marker.getTitle());
+                                            intent.putExtra(CONSTANT.GROUP_ID, marker.getSnippet());
                                             startActivity(intent);
                                             return false;
                                         }
