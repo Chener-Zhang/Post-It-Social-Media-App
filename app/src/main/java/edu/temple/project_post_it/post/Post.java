@@ -2,7 +2,7 @@ package edu.temple.project_post_it.post;
 
 
 public class Post {
-    // privacy: true --> public, false --> private
+    // privacy: true --> private, false --> public
     boolean privacy;
     boolean anonymous;
 

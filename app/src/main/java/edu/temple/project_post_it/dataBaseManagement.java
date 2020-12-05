@@ -43,7 +43,7 @@ public class dataBaseManagement {
 
     public void dataBaseSaveInGroups_group_posts(String groupName, final Post post) {
         //If it public
-        if (post.getPrivacy()) {
+        if (!post.getPrivacy()) {
             databaseReference = root.getReference().child("Groups/" + groupName);
             databaseReference.child("posts/" + post.getPost_ID()).setValue(post);
         }

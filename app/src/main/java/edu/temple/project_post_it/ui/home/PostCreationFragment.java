@@ -36,7 +36,7 @@ public class PostCreationFragment extends Fragment implements AdapterView.OnItem
     String title, description;
     CheckBox privacySwitch;
     CheckBox anonymousSwitch;
-    boolean isPublic;
+    boolean isPrivate;
     boolean isAnonymous;
     Button createPostButton;
     LatLng latLng;
@@ -62,7 +62,7 @@ public class PostCreationFragment extends Fragment implements AdapterView.OnItem
         //Init the xml elements
         title = "Untitled";
         description = "No Description";
-        isPublic = true;
+        isPrivate = true;
         titleView = view.findViewById(R.id.titleEditText);
         descriptionView = view.findViewById(R.id.descriptionEditText);
         privacySwitch = view.findViewById(R.id.privacyCheckBox);
@@ -128,12 +128,12 @@ public class PostCreationFragment extends Fragment implements AdapterView.OnItem
                     description = descriptionTest;
                 }
                 if (privacySwitch.isChecked()) {
-                    isPublic = false;
+                    isPrivate = true;
                 }
 
                 //Post field init
                 String post_id = Calendar.getInstance().getTime().toString() + currentUser.getUid();
-                Post post = new Post(post_id, isPublic, 0);
+                Post post = new Post(post_id, isPrivate, 0);
 
                 if (anonymousSwitch.isChecked()) {
                     isAnonymous = true;
@@ -145,12 +145,12 @@ public class PostCreationFragment extends Fragment implements AdapterView.OnItem
                 }
                 post.setTitle(title);
                 post.setText(description);
-                post.setPrivacy(isPublic);
+                post.setPrivacy(isPrivate);
                 post.setAnonymous(isAnonymous);
 
 
                 //Reset the boolean
-                isPublic = true;
+                isPrivate = false;
                 isAnonymous = false;
 
                 if (latLng != null) {
