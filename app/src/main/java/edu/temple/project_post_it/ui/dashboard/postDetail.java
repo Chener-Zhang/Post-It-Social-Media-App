@@ -58,7 +58,20 @@ public class postDetail extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         //Do with the elements
-        userPostDetail.setText(postId);
+
+        db.databaseReference = db.root.getReference("Groups/" + groupId + "/posts/" + postId + "/text");
+        db.databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                userPostDetail.setText(snapshot.getValue().toString());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
         replyButon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
