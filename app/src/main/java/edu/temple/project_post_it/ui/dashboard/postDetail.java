@@ -1,10 +1,10 @@
 package edu.temple.project_post_it.ui.dashboard;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,7 +21,6 @@ import com.google.firebase.database.ValueEventListener;
 import edu.temple.project_post_it.R;
 import edu.temple.project_post_it.dataBaseManagement;
 
-import android.widget.ListView;
 
 import java.util.ArrayList;
 
@@ -29,7 +28,8 @@ public class postDetail extends AppCompatActivity {
 
     String postId;
     String groupId;
-    TextView userPostDetail;
+    TextView userPostTitle;
+    TextView userPostText;
     EditText replyEditText;
     Button replyButon;
     dataBaseManagement db;
@@ -49,7 +49,8 @@ public class postDetail extends AppCompatActivity {
         db = new dataBaseManagement();
 
         //Init the elements
-        userPostDetail = findViewById(R.id.userPostDetail);
+        userPostTitle = findViewById(R.id.userPostDetail);
+        userPostText = findViewById(R.id.userPostTitle);
         replyEditText = findViewById(R.id.replyEditText);
         replyButon = findViewById(R.id.replyButton);
 
@@ -59,11 +60,14 @@ public class postDetail extends AppCompatActivity {
 
         //Do with the elements
 
-        db.databaseReference = db.root.getReference("Groups/" + groupId + "/posts/" + postId + "/text");
-        db.databaseReference.addValueEventListener(new ValueEventListener() {
+        db.databaseReference = db.root.getReference("Groups/" + groupId + "/posts/" + postId);
+        db.databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                userPostDetail.setText(snapshot.getValue().toString());
+                String title = String.valueOf(snapshot.child("title").getValue());
+                String text = String.valueOf(snapshot.child("text").getValue());
+                userPostTitle.setText(title);
+                userPostText.setText(text);
             }
 
             @Override
