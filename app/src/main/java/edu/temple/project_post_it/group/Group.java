@@ -3,29 +3,20 @@ package edu.temple.project_post_it.group;
 import java.util.ArrayList;
 
 import edu.temple.project_post_it.post.Post;
-import edu.temple.project_post_it.user.User;
+
 
 public class Group {
-    ArrayList<User> userArrayList;
-    ArrayList<Post> postArrayList;
+    String groupName;
+
 
     public Group() {
 
     }
-
-    public void setUserArrayList(ArrayList<User> userArrayList) {
-        this.userArrayList = userArrayList;
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
     }
 
-    public void setPostArrayList(ArrayList<Post> postArrayList) {
-        this.postArrayList = postArrayList;
+    public String getGroupName() {
+        return groupName;
     }
-
-    public void grouping_post() {
-    }
-
-    public void grouping_user() {
-    }
-    
-
 }
