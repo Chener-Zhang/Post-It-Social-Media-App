@@ -63,7 +63,7 @@ public class PostCreationFragment extends Fragment implements AdapterView.OnItem
         //Init the xml elements
         title = "Untitled";
         description = "No Description";
-        isPrivate = true;
+        isPrivate = false;
         titleView = view.findViewById(R.id.titleEditText);
         descriptionView = view.findViewById(R.id.descriptionEditText);
         privacySwitch = view.findViewById(R.id.privacyCheckBox);
