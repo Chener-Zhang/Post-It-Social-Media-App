@@ -65,7 +65,7 @@ public class HomeFragment extends Fragment {
         //Implement firebase realtime databse call back function:
         dataBaseManagement = new dataBaseManagement();
         dataBaseManagement.databaseReference = dataBaseManagement.root.getReference("Members/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/" + "user_posts");
-        dataBaseManagement.databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        dataBaseManagement.databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 //Init the ArrayList of post
@@ -78,6 +78,7 @@ public class HomeFragment extends Fragment {
                 //Init the custom adapter
                 customAdapter = new CustomAdapter(post_list);
                 recyclerView.setAdapter(customAdapter);
+//                dataBaseManagement.databaseReference.removeEventListener(this);
             }
 
             @Override

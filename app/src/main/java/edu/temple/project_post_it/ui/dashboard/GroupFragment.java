@@ -48,7 +48,7 @@ public class GroupFragment extends Fragment {
         dataBaseManagement = new dataBaseManagement();
 
         dataBaseManagement.databaseReference = dataBaseManagement.root.getReference("Members/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/groupList");
-        dataBaseManagement.databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        dataBaseManagement.databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 System.out.println(snapshot.toString());
@@ -59,6 +59,7 @@ public class GroupFragment extends Fragment {
                 groupAdapter = new MyGroupRecyclerViewAdapter(arrayList);
                 recyclerView.setAdapter(groupAdapter);
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
