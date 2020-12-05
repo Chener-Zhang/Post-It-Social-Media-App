@@ -154,8 +154,8 @@ public class dataBaseManagement {
         });
     }
 
-    public void databaseAddUserReplys(String reply, String UID, String postId) {
-        databaseReference = root.getReference("Members/" + FirebaseAuth.getInstance().getUid() + "/user_posts/" + postId);
+    public void databaseAddUserReplys(String reply, String UID, String postId, String groupId) {
+        databaseReference = root.getReference("Groups/" + groupId + "/posts/" + postId);
         databaseReference.child("replysList").child(reply).setValue(UID);
     }
 

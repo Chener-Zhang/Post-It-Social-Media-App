@@ -116,8 +116,17 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
                                 loc = new LatLng(lat, lng);
 
                                 googleMap.addMarker(new MarkerOptions().position(loc)
-                                        .title(post.getTitle())
-                                        .snippet(makerDescription(post))).showInfoWindow();
+                                        .title(post.getPost_ID())
+                                        .snippet(post.getGroupID()));
+                                googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                                    @Override
+                                    public boolean onMarkerClick(Marker marker) {
+                                        Intent intent = new Intent(getContext(), postDetail.class);
+                                        intent.putExtra("postID", marker.getTitle());
+                                        startActivity(intent);
+                                        return false;
+                                    }
+                                });
 
                             }
                         }
@@ -152,13 +161,16 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
                                 loc = new LatLng(lat, lng);
 
                                 googleMap.addMarker(new MarkerOptions().position(loc)
-                                        .title(post.getTitle())
-                                        .snippet(makerDescription(post))
-                                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))).showInfoWindow();
+                                        .title(post.getPost_ID())
+                                        .snippet(post.getGroupID())
+                                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+
                                 googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                                     @Override
                                     public boolean onMarkerClick(Marker marker) {
                                         Intent intent = new Intent(getContext(), postDetail.class);
+                                        intent.putExtra("postID", marker.getTitle());
+                                        intent.putExtra("groupId",marker.getSnippet());
                                         startActivity(intent);
                                         return false;
                                     }
@@ -181,11 +193,5 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
     }
 
 
-    public String makerDescription(Post post) {
-        String result = post.getText() + " ";
-        result += "Created by " + post.getCreatedBy();
-        System.out.println(post.getCreatedBy());
-        return result;
-    }
 }
 
