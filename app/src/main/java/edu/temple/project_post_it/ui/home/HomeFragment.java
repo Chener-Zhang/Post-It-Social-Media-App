@@ -28,6 +28,7 @@ public class HomeFragment extends Fragment {
     Button textButton;
     Button photoButton;
     Button audioButton;
+    Button testButton;
     RecyclerView recyclerView;
     CustomAdapter customAdapter;
     dataBaseManagement dataBaseManagement;
@@ -47,6 +48,14 @@ public class HomeFragment extends Fragment {
 
         photoButton = root.findViewById(R.id.photoButton);
         photoButton.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_navigation_home_to_imageCreationFragment, null));
+
+        testButton = root.findViewById(R.id.testbutton);
+        testButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
 
         //Implement the recycleView

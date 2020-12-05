@@ -24,7 +24,6 @@ import java.util.ArrayList;
 
 import edu.temple.project_post_it.R;
 import edu.temple.project_post_it.dataBaseManagement;
-import edu.temple.project_post_it.user.User;
 
 public class GroupFragment extends Fragment {
 
@@ -33,7 +32,7 @@ public class GroupFragment extends Fragment {
     RecyclerView recyclerView;
     Button addButton;
     EditText addGroup;
-    
+
     public GroupFragment() {
     }
 
@@ -42,27 +41,31 @@ public class GroupFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_groups, container, false);
-    
+
         recyclerView = view.findViewById(R.id.groupListView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-    
+
         dataBaseManagement = new dataBaseManagement();
-        dataBaseManagement.databaseReference = dataBaseManagement.root.getReference("Members/" + FirebaseAuth.getInstance().getCurrentUser().getUid());
-        dataBaseManagement.databaseReference.addValueEventListener(new ValueEventListener() {
+
+        dataBaseManagement.databaseReference = dataBaseManagement.root.getReference("Members/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/groupList");
+        dataBaseManagement.databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                ArrayList<String> groupList;
-                User user = snapshot.getValue(User.class);
-                groupList = user.getGroupList();
-                groupAdapter = new MyGroupRecyclerViewAdapter(groupList);
+                System.out.println(snapshot.toString());
+                ArrayList<String> arrayList = new ArrayList<String>();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    arrayList.add(dataSnapshot.getKey());
+                }
+                groupAdapter = new MyGroupRecyclerViewAdapter(arrayList);
                 recyclerView.setAdapter(groupAdapter);
             }
-    
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
-    
+
+
         addButton = view.findViewById(R.id.addButton);
         addGroup = view.findViewById(R.id.addGroup);
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -70,17 +73,15 @@ public class GroupFragment extends Fragment {
             public void onClick(View v) {
                 Log.i("Button Clicked", "Clicked button");
                 if (!addGroup.getText().toString().isEmpty()) {
-                    dataBaseManagement.databaseAddGroup(addGroup.getText().toString());
-    
+                    dataBaseManagement.databaseAddGroupToGroups(addGroup.getText().toString());
                     groupAdapter.notifyDataSetChanged();
-
-                } else {
-
-
+                }
+            }
+        });
 
         return view;
     }
-    
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

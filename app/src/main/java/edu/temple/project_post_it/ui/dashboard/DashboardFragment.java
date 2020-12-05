@@ -5,12 +5,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -18,10 +14,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -31,14 +25,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import edu.temple.project_post_it.R;
-import edu.temple.project_post_it.dataBaseManagement;
-import edu.temple.project_post_it.group.Group;
 import edu.temple.project_post_it.post.Post;
-import edu.temple.project_post_it.user.User;
 import edu.temple.project_post_it.user_navigation;
 
 
@@ -64,7 +54,6 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
         mapView = root.findViewById(R.id.mapView);
         mapView.getMapAsync(this);
         mapView.onCreate(savedInstanceState);
-
         return root;
     }
 
@@ -109,10 +98,10 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
         this.googleMap = googleMap;
         googleMap.getUiSettings().setZoomControlsEnabled(true);
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(user_navigation.loc, 15));
-        //different color to show current location
-        googleMap.addMarker((new MarkerOptions()).position(user_navigation.loc)).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
 
-
+        //Show User's posts
+        //Different color to show current location
+        googleMap.addMarker((new MarkerOptions()).position(user_navigation.loc).title("Current Location")).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
         FirebaseDatabase.getInstance().getReference("Members/" + user.getUid() + "/user_posts")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -123,15 +112,11 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
                                 lat = post.getLocation().getLatitude();
                                 lng = post.getLocation().getLongitude();
                                 loc = new LatLng(lat, lng);
-                                googleMap.addMarker((new MarkerOptions()).position(loc));
-                                googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                                    @Override
-                                    public boolean onMarkerClick(Marker marker) {
-                                        String message = " group is  " + post.getGroupID();
-                                        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-                                        return false;
-                                    }
-                                });
+
+                                googleMap.addMarker(new MarkerOptions().position(loc)
+                                        .title(post.getTitle())
+                                        .snippet(makerDescription(post))).showInfoWindow();
+
                             }
                         }
                     }
@@ -142,32 +127,37 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
                     }
                 });
 
-        databaseReference = root.getReference().child("/Members/" + user.getUid());
+        //Show same group post
+        databaseReference = root.getReference().child("/Members/" + user.getUid() + "/groupList");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                System.out.println("auto trigger test");
-                User user = snapshot.getValue(User.class);
-                ArrayList<String> groups = user.getGroupList();
+                ArrayList<String> groups = new ArrayList<String>();
+
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    groups.add(dataSnapshot.getKey());
+                }
+
                 for (String group : groups) {
                     databaseReference = root.getReference().child("/Groups/" + group + "/posts");
-                    databaseReference.addValueEventListener(new ValueEventListener() {
+                    databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.exists()) {
-                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                    final Post post = snapshot.getValue(Post.class);
-                                    lat = post.getLocation().getLatitude();
-                                    lng = post.getLocation().getLongitude();
-                                    loc = new LatLng(lat, lng);
-                                    googleMap.addMarker((new MarkerOptions()).position(loc)).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
-                                }
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                                final Post post = dataSnapshot.getValue(Post.class);
+                                lat = post.getLocation().getLatitude();
+                                lng = post.getLocation().getLongitude();
+                                loc = new LatLng(lat, lng);
+
+                                googleMap.addMarker(new MarkerOptions().position(loc)
+                                        .title(post.getTitle())
+                                        .snippet(makerDescription(post))
+                                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))).showInfoWindow();
                             }
                         }
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
-
                         }
                     });
                 }
@@ -178,6 +168,14 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
 
             }
         });
+    }
+
+
+    public String makerDescription(Post post) {
+        String result = post.getText() + " ";
+        result += "Created by " + post.getCreatedBy();
+        System.out.println(post.getCreatedBy());
+        return result;
     }
 }
 

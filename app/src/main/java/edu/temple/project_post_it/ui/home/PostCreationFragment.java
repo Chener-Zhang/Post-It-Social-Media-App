@@ -28,7 +28,6 @@ import java.util.Calendar;
 import edu.temple.project_post_it.R;
 import edu.temple.project_post_it.dataBaseManagement;
 import edu.temple.project_post_it.post.Post;
-import edu.temple.project_post_it.user.User;
 import edu.temple.project_post_it.user_navigation;
 
 public class PostCreationFragment extends Fragment implements AdapterView.OnItemSelectedListener {
@@ -36,13 +35,15 @@ public class PostCreationFragment extends Fragment implements AdapterView.OnItem
     TextView titleView, descriptionView;
     String title, description;
     CheckBox privacySwitch;
+    CheckBox anonymousSwitch;
     boolean isPublic;
+    boolean isAnonymous;
     Button createPostButton;
     LatLng latLng;
     FirebaseUser currentUser;
     dataBaseManagement dataBaseManagement;
     Spinner groupingSelectorSpinner;
-    String useGroupSelection = "default";
+    String userGroupSelection = "Default";
 
     public PostCreationFragment() {
         // Required empty public constructor
@@ -65,39 +66,39 @@ public class PostCreationFragment extends Fragment implements AdapterView.OnItem
         titleView = view.findViewById(R.id.titleEditText);
         descriptionView = view.findViewById(R.id.descriptionEditText);
         privacySwitch = view.findViewById(R.id.privacyCheckBox);
+        anonymousSwitch = view.findViewById(R.id.anonymousCheckBox);
         createPostButton = view.findViewById(R.id.createPostButton);
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         groupingSelectorSpinner = view.findViewById(R.id.goupingSelectorSpinner);
 
 
         //Set up spinner
-        dataBaseManagement.databaseReference = dataBaseManagement.root.getReference("Members/" + FirebaseAuth.getInstance().getCurrentUser().getUid());
-
+        dataBaseManagement.databaseReference = dataBaseManagement.root.getReference("Members/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/groupList");
         dataBaseManagement.databaseReference.addValueEventListener(new ValueEventListener() {
-
-
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                final ArrayList<String> groups = new ArrayList<String>();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    groups.add(dataSnapshot.getKey());
+                }
+                try {
+                    ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, groups);
+                    dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    groupingSelectorSpinner.setAdapter(dataAdapter);
+                    groupingSelectorSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            userGroupSelection = groups.get(position);
+                        }
 
-                final ArrayList<String> groups;
-                User user = snapshot.getValue(User.class);
-                groups = user.getGroupList();
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
 
-                ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, groups);
-                dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                groupingSelectorSpinner.setAdapter(dataAdapter);
-                groupingSelectorSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        System.out.println(groups.get(position));
-                        useGroupSelection = groups.get(position);
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-
-                    }
-                });
+                        }
+                    });
+                } catch (Exception e) {
+                    System.out.println(e.toString());
+                }
 
             }
 
@@ -130,17 +131,27 @@ public class PostCreationFragment extends Fragment implements AdapterView.OnItem
                     isPublic = false;
                 }
 
-                //Init the post class
-
+                //Post field init
                 String post_id = Calendar.getInstance().getTime().toString() + currentUser.getUid();
                 Post post = new Post(post_id, isPublic, 0);
+
+                if (anonymousSwitch.isChecked()) {
+                    isAnonymous = true;
+                    post.setGroupID("Anonymous");
+                    post.setCreatedBy("Anonymous");
+                } else {
+                    post.setGroupID(userGroupSelection);
+                    post.setCreatedBy(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+                }
                 post.setTitle(title);
                 post.setText(description);
                 post.setPrivacy(isPublic);
-                post.setGroupID(useGroupSelection);
+                post.setAnonymous(isAnonymous);
 
-                //Set is Public back to true
+
+                //Reset the boolean
                 isPublic = true;
+                isAnonymous = false;
 
                 if (latLng != null) {
                     edu.temple.project_post_it.post.LatLng location = new edu.temple.project_post_it.post.LatLng();
@@ -159,7 +170,7 @@ public class PostCreationFragment extends Fragment implements AdapterView.OnItem
 
     public void savePost(Post post) {
         //This method is where the new post will be saved to the database. This method, when called, will also return the user back to the homepage.
-        this.dataBaseManagement.dataBaseSavePost(FirebaseAuth.getInstance().getUid(), post);
+        this.dataBaseManagement.dataBaseSaveInMembers_Uid_UserPosts(FirebaseAuth.getInstance().getUid(), post);
         Toast.makeText(this.getContext(), "Post Saved!", Toast.LENGTH_SHORT).show();
     }
 
