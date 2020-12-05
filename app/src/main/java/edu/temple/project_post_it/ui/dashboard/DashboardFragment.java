@@ -1,6 +1,7 @@
 package edu.temple.project_post_it.ui.dashboard;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -42,6 +44,8 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
     DatabaseReference databaseReference;
     double lat, lng;
     LatLng loc;
+    SharedPreferences preferences;
+    boolean anon, group, all;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -56,6 +60,12 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
         mapView = root.findViewById(R.id.mapView);
         mapView.getMapAsync(this);
         mapView.onCreate(savedInstanceState);
+
+        preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        anon = preferences.getBoolean(getString(R.string.anon_key), false);
+        group = preferences.getBoolean(getString(R.string.group_key), false);
+        all = preferences.getBoolean(getString(R.string.all_key), false);
+
         return root;
     }
 
@@ -104,6 +114,117 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
         //Show User's posts
         //Different color to show current location
         googleMap.addMarker((new MarkerOptions()).position(user_navigation.loc).title("Current Location")).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+
+        if(all) {
+            showPrivatePosts();
+            showGroupPosts();
+            showAnonPosts();
+        } else{
+            showPrivatePosts();
+
+            if(group)
+                showGroupPosts();
+
+            if(anon)
+                showAnonPosts();
+        }
+
+    }
+
+        //Show same group post
+
+
+    void showAnonPosts(){
+        databaseReference = root.getReference().child("/Groups/Anonymous/posts");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    final Post post = dataSnapshot.getValue(Post.class);
+                    lat = post.getLocation().getLatitude();
+                    lng = post.getLocation().getLongitude();
+                    loc = new LatLng(lat, lng);
+
+                    googleMap.addMarker(new MarkerOptions().position(loc)
+                            .title(post.getPost_ID())
+                            .snippet(post.getGroupID())
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
+
+                    googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                        @Override
+                        public boolean onMarkerClick(Marker marker) {
+                            Intent intent = new Intent(getContext(), postDetail.class);
+                            intent.putExtra("postID", marker.getTitle());
+                            intent.putExtra("groupId", marker.getSnippet());
+                            startActivity(intent);
+                            return false;
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+
+    }
+
+    void showGroupPosts(){
+            databaseReference = root.getReference().child("/Members/" + user.getUid() + "/groupList");
+            databaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    ArrayList<String> groups = new ArrayList<String>();
+
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        groups.add(dataSnapshot.getKey());
+                    }
+
+                    for (String group : groups) {
+                        databaseReference = root.getReference().child("/Groups/" + group + "/posts");
+                        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                                    final Post post = dataSnapshot.getValue(Post.class);
+                                    lat = post.getLocation().getLatitude();
+                                    lng = post.getLocation().getLongitude();
+                                    loc = new LatLng(lat, lng);
+
+                                    googleMap.addMarker(new MarkerOptions().position(loc)
+                                            .title(post.getPost_ID())
+                                            .snippet(post.getGroupID())
+                                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+
+                                    googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                                        @Override
+                                        public boolean onMarkerClick(Marker marker) {
+                                            Intent intent = new Intent(getContext(), postDetail.class);
+                                            intent.putExtra("postID", marker.getTitle());
+                                            intent.putExtra("groupId", marker.getSnippet());
+                                            startActivity(intent);
+                                            return false;
+                                        }
+                                    });
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                            }
+                        });
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
+
+    void showPrivatePosts(){
         FirebaseDatabase.getInstance().getReference("Members/" + user.getUid() + "/user_posts")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -140,58 +261,6 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
                     }
                 });
 
-        //Show same group post
-        databaseReference = root.getReference().child("/Members/" + user.getUid() + "/groupList");
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                ArrayList<String> groups = new ArrayList<String>();
-
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    groups.add(dataSnapshot.getKey());
-                }
-
-                for (String group : groups) {
-                    databaseReference = root.getReference().child("/Groups/" + group + "/posts");
-                    databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                                final Post post = dataSnapshot.getValue(Post.class);
-                                lat = post.getLocation().getLatitude();
-                                lng = post.getLocation().getLongitude();
-                                loc = new LatLng(lat, lng);
-
-                                googleMap.addMarker(new MarkerOptions().position(loc)
-                                        .title(post.getPost_ID())
-                                        .snippet(post.getGroupID())
-                                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
-
-                                googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                                    @Override
-                                    public boolean onMarkerClick(Marker marker) {
-                                        Intent intent = new Intent(getContext(), postDetail.class);
-                                        intent.putExtra("postID", marker.getTitle());
-                                        intent.putExtra("groupId", marker.getSnippet());
-                                        startActivity(intent);
-                                        return false;
-                                    }
-                                });
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
     }
 
 

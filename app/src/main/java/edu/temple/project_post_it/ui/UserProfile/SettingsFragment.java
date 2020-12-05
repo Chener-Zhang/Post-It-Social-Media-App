@@ -55,24 +55,33 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
                 .unregisterOnSharedPreferenceChangeListener(this);
     }
 
-    //clean up with some test code but preferences saved, need to implement flags in database
+    //clean up with some test code but preferences saved, need to implement flags in map markers
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         switch (key) {
             case "ANON KEY":
-                if (anon.isChecked()) {
+                if (anon.isChecked())
                     Toast.makeText(getActivity(), "Showing Anonymous Posts", Toast.LENGTH_SHORT).show();
-                }
+
+                if(all.isChecked())
+                    anon.setChecked(true);
+
                 break;
             case "GROUP KEY":
-                if (group.isChecked()) {
+                if (group.isChecked())
                     Toast.makeText(getActivity(), "Showing Group Posts", Toast.LENGTH_SHORT).show();
-                }
+
+                if(all.isChecked())
+                    group.setChecked(true);
+
                 break;
             case "ALL KEY":
                 if (all.isChecked()) {
+                    group.setChecked(true);
+                    anon.setChecked(true);
                     Toast.makeText(getActivity(), "Showing All Posts", Toast.LENGTH_SHORT).show();
                 }
+
                 break;
         }
 
