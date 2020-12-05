@@ -11,23 +11,37 @@
 
         <TextView
             android:id="@+id/post_title"
-            android:layout_width="176dp"
+            android:layout_width="142dp"
             android:layout_height="match_parent"
             android:text="Title"
             android:textSize="30dp" />
 
         <TextView
             android:id="@+id/group_name"
-            android:layout_width="173dp"
+            android:layout_width="139dp"
             android:layout_height="match_parent"
             android:text="Test"
-            android:textSize="15dp" />
+            android:textSize="15sp" />
 
-        <ImageButton
-            android:id="@+id/delete_button"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="32dp"
-            android:background="@drawable/ic_baseline_delete_outline_24" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/reply_button"
+                android:layout_width="match_parent"
+                android:layout_height="61dp"
+                android:text="Reply"
+                android:textSize="10dp" />
+
+            <ImageButton
+                android:id="@+id/delete_button"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/ic_baseline_delete_outline_24" />
+        </LinearLayout>
+
 
     </LinearLayout>
 

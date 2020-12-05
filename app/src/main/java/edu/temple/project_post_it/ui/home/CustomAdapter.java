@@ -1,8 +1,12 @@
 package edu.temple.project_post_it.ui.home;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -18,12 +22,14 @@ import edu.temple.project_post_it.post.Post;
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
 
     public ArrayList<Post> post_list;
+    private final Activity activity;
     public dataBaseManagement dataBaseManagement;
 
     //CustomAdapter Constructor
-    public CustomAdapter(ArrayList<Post> post_list) {
+    public CustomAdapter(Activity activity, ArrayList<Post> post_list) {
         //Pass the Array list to the local adapter
         this.post_list = post_list;
+        this.activity = activity;
         dataBaseManagement = new dataBaseManagement();
     }
 
@@ -48,8 +54,21 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
                 dataBaseManagement.databaseRemovePostInMembers(current_post, post_list.get(position).getGroupID());
             }
         });
+        holder.getReplyButton().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Dialog dialog = new Dialog(activity);
+                int width = (int) (activity.getResources().getDisplayMetrics().widthPixels * 0.80);
+                int height = (int) (activity.getResources().getDisplayMetrics().heightPixels * 0.50);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.replydialog);
+                dialog.getWindow().setLayout(width, height);
+                dialog.show();
+            }
+        });
 
     }
+
 
     @Override
     public int getItemCount() {
@@ -60,8 +79,11 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
     public static class ViewHolder extends RecyclerView.ViewHolder {
         //Declase the item in the ViewHolder
         ImageButton delete_button;
+        Button replyButton;
+
         TextView title_textView;
         TextView text_textView;
+
 
         //ViewHolder Constructor
         public ViewHolder(@NonNull View itemView) {
@@ -70,6 +92,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
             title_textView = itemView.findViewById(R.id.post_title);
             text_textView = itemView.findViewById(R.id.group_name);
             delete_button = itemView.findViewById(R.id.delete_button);
+            replyButton = itemView.findViewById(R.id.reply_button);
         }
 
         //Get title
@@ -85,6 +108,10 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
         //Set delete button
         public ImageButton getDelete_button() {
             return delete_button;
+        }
+
+        public Button getReplyButton() {
+            return replyButton;
         }
     }
 
