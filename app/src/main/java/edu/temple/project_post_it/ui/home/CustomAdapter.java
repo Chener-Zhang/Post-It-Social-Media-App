@@ -44,28 +44,16 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
-        holder.getTitle_textView().setText(post_list.get(position).getTitle());
-        holder.getText_textView().setText(post_list.get(position).getText());
-        Post post = post_list.get(position);
-        current_post = post_list.get(position).getPost_ID();
-        Bundle args = new Bundle();
-        args.putString("Post_ID", current_post);
-        int type = post.getType();
-        if (type == 1){
-            holder.getView_Button().setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_navigation_home_to_imagePostViewFragment, args));
-        } else if (type == 2){
-            holder.getView_Button().setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_navigation_home_to_audioPostViewFragment, args));
-        } else {
-            holder.getView_Button().setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_navigation_home_to_textPostViewFragment, args));
-        }
+        holder.getTitle_textView().setText(postList.get(position).getTitle());
+        holder.getText_textView().setText(postList.get(position).getText());
         holder.getDelete_button().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dataBaseManagement.databaseRemoveData(current_post);
+                //write the delete code here
+                String current_post = postList.get(position).getPost_ID();
+                dataBaseManagement.databaseRemovePostInMembers(current_post, postList.get(position).getGroupID());
             }
         });
-
-
     }
 
 
