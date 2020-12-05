@@ -109,6 +109,8 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists()) {
+
+
                             for (final DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                 final Post post = snapshot.getValue(Post.class);
                                 lat = post.getLocation().getLatitude();
@@ -170,7 +172,7 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
                                     public boolean onMarkerClick(Marker marker) {
                                         Intent intent = new Intent(getContext(), postDetail.class);
                                         intent.putExtra("postID", marker.getTitle());
-                                        intent.putExtra("groupId",marker.getSnippet());
+                                        intent.putExtra("groupId", marker.getSnippet());
                                         startActivity(intent);
                                         return false;
                                     }
