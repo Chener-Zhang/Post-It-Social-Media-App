@@ -3,6 +3,8 @@ package edu.temple.project_post_it.ui.UserProfile;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -13,17 +15,23 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import edu.temple.project_post_it.R;
 import edu.temple.project_post_it.dataBaseManagement;
@@ -38,6 +46,10 @@ public class UserProfileFragment extends Fragment {
     //Upload Profile Image
     public Button uploadButton;
     public ImageView profileImage;
+    public Uri imageUri;
+    public FirebaseStorage firebaseStorage;
+    public StorageReference storageReference;
+
     //Setting
     public Button settingsButton;
 
@@ -52,7 +64,6 @@ public class UserProfileFragment extends Fragment {
     //Firebase
     FirebaseUser user;
     dataBaseManagement dataBase_management;
-    Uri imageUri;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -68,6 +79,9 @@ public class UserProfileFragment extends Fragment {
         //Setup the database management
         dataBase_management = new dataBaseManagement();
 
+        //Setup the firebase storage
+        firebaseStorage = FirebaseStorage.getInstance();
+        storageReference = firebaseStorage.getReference();
 
         //Set the xml element
         sign_out_button = root.findViewById(R.id.logout_button);
@@ -78,7 +92,7 @@ public class UserProfileFragment extends Fragment {
 
         //Set the Uid
         set_UID();
-
+        downloadFireStorage();
         //Sign out button click listener
         sign_out_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,8 +105,9 @@ public class UserProfileFragment extends Fragment {
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                uploadImage();
+                uploadImage();
             }
+
         });
 
         settingsButton.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_navigation_userprofile_to_settingsFragment, null));
@@ -129,6 +144,46 @@ public class UserProfileFragment extends Fragment {
         startActivityForResult(gallery, PICK_IMAGE);
     }
 
+    public void uploadFireStorage() {
+        storageReference = storageReference.getRoot();
+        storageReference = storageReference.child("UserProfileImages/" + FirebaseAuth.getInstance().getUid());
+        storageReference.putFile(imageUri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        // Get a URL to the uploaded content
+                        Toast.makeText(getContext(), "Image Upload Success", Toast.LENGTH_LONG).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        Toast.makeText(getContext(), "Fail to Upload Image", Toast.LENGTH_LONG).show();
+
+                        // Handle unsuccessful uploads
+                        // ...
+                    }
+                });
+    }
+
+    public void downloadFireStorage() {
+        storageReference = storageReference.getRoot();
+        storageReference = storageReference.child("UserProfileImages/" + FirebaseAuth.getInstance().getUid());
+        long MAXBYTES = 1024 * 1024;
+        storageReference.getBytes(MAXBYTES).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                profileImage.setImageBitmap(bitmap);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -137,9 +192,11 @@ public class UserProfileFragment extends Fragment {
                 System.out.println("code goes here");
                 imageUri = data.getData();
                 profileImage.setImageURI(imageUri);
+                uploadFireStorage();
             }
         }
     }
+
 
     public interface OnDataPass_UserProfileFragment {
         void sign_out();
