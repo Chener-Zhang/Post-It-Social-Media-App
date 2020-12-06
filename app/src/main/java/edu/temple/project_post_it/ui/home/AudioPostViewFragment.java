@@ -218,11 +218,6 @@ public class AudioPostViewFragment extends Fragment {
         return view;
     }
 
-    private void updateProgress() {
-        int progress = mediaPlayer.getCurrentPosition();
-        seekBar.setProgress(progress);
-    }
-
     @Override
     public void onPause() {
         super.onPause();
