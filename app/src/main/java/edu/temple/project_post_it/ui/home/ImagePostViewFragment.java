@@ -2,11 +2,6 @@ package edu.temple.project_post_it.ui.home;
 
 import android.content.Context;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +10,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -33,9 +32,8 @@ import java.io.File;
 
 import edu.temple.project_post_it.R;
 import edu.temple.project_post_it.dataBaseManagement;
-import edu.temple.project_post_it.post.AudioPost;
 import edu.temple.project_post_it.post.ImagePost;
-import edu.temple.project_post_it.post.Post;
+
 
 public class ImagePostViewFragment extends Fragment {
 
