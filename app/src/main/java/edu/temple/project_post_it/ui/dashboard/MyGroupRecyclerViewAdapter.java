@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import edu.temple.project_post_it.R;
 import edu.temple.project_post_it.dataBaseManagement;
-import edu.temple.project_post_it.group.Group;
 
 import java.util.List;
 
@@ -39,11 +38,12 @@ public class MyGroupRecyclerViewAdapter extends RecyclerView.Adapter<MyGroupRecy
             @Override
             public void onClick(View v) {
                 //write the delete code here
-                 String selectedGroup = groupList.get(position);
-                 dataBaseManagement.databaseRemoveData(selectedGroup);
-                 }
-                 });
-                 }
+                String selectedGroup = groupList.get(position);
+                dataBaseManagement.databaseRemoveGroupData(selectedGroup);
+
+            }
+        });
+    }
 
     @Override
     public int getItemCount() {
@@ -51,13 +51,13 @@ public class MyGroupRecyclerViewAdapter extends RecyclerView.Adapter<MyGroupRecy
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        ImageButton deleteGroup;
         TextView groupName;
+        ImageButton deleteButton;
 
         public ViewHolder(View view) {
             super(view);
             groupName = view.findViewById(R.id.groupName);
-            deleteGroup = view.findViewById(R.id.deleteGroups);
+            deleteButton = view.findViewById(R.id.deleteButton);
         }
 
         public TextView get_group_name() {
@@ -65,7 +65,7 @@ public class MyGroupRecyclerViewAdapter extends RecyclerView.Adapter<MyGroupRecy
         }
 
         public ImageButton get_delete_button() {
-            return deleteGroup;
+            return deleteButton;
         }
     }
 
