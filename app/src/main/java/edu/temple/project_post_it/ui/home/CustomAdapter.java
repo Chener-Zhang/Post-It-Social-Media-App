@@ -46,6 +46,18 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         holder.getTitle_textView().setText(postList.get(position).getTitle());
         holder.getText_textView().setText(postList.get(position).getText());
+        Post post = postList.get(position);
+        current_post = postList.get(position).getPost_ID();
+        Bundle args = new Bundle();
+        args.putString("Post_ID", current_post);
+        int type = post.getType();
+        if (type == 1){
+            holder.getView_Button().setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_navigation_home_to_imagePostViewFragment, args));
+        } else if (type == 2){
+            holder.getView_Button().setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_navigation_home_to_audioPostViewFragment, args));
+        } else {
+            holder.getView_Button().setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_navigation_home_to_textPostViewFragment, args));
+        }
         holder.getDelete_button().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
