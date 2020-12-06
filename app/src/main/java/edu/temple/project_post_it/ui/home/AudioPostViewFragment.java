@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,7 +33,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
+import java.io.IOException;
 
+import edu.temple.project_post_it.MainActivity;
 import edu.temple.project_post_it.R;
 import edu.temple.project_post_it.dataBaseManagement;
 import edu.temple.project_post_it.post.AudioPost;
@@ -53,6 +57,8 @@ public class AudioPostViewFragment extends Fragment {
     edu.temple.project_post_it.dataBaseManagement dataBaseManagement;
     DatabaseReference postReference;
     Context context;
+    boolean updateProgress;
+    private Handler progressHandler;
 
     public AudioPostViewFragment() {
         // Required empty public constructor
@@ -76,6 +82,27 @@ public class AudioPostViewFragment extends Fragment {
         dataBaseManagement = new dataBaseManagement();
         titleView = view.findViewById(R.id.titleEditText);
         descriptionView = view.findViewById(R.id.descriptionEditText);
+        seekBar = view.findViewById(R.id.seekBar);
+        updateProgress = false;
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (mediaPlayer.isPlaying() && fromUser == true){
+                    mediaPlayer.seekTo(progress * 1000);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
         context = this.getContext();
 
         postReference = FirebaseDatabase.getInstance().getReference("Members/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/" + "user_posts/" + post_ID);
@@ -106,6 +133,25 @@ public class AudioPostViewFragment extends Fragment {
                 }
                 Uri audioURI = Uri.fromFile(file);
                 mediaPlayer = MediaPlayer.create(context, audioURI);
+                mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mp) {
+                        startButton.setText("Start");
+                    }
+                });
+                seekBar.setMax(mediaPlayer.getDuration() / 1000);
+                progressHandler = new Handler(Looper.myLooper());
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (mediaPlayer != null) {
+                            int progress = mediaPlayer.getCurrentPosition() / 1000;
+                            seekBar.setProgress(progress);
+                            progressHandler.postDelayed(this, 1000);
+                        }
+                    }
+
+                });
             }
 
             @Override
@@ -138,6 +184,11 @@ public class AudioPostViewFragment extends Fragment {
                 } else {
                     startButton.setText("Start");
                     mediaPlayer.stop();
+                    try {
+                        mediaPlayer.prepare();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
@@ -158,17 +209,27 @@ public class AudioPostViewFragment extends Fragment {
         returnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Navigation.findNavController(view).navigate(R.id.action_audioPostViewFragment_to_navigation_home);
                 mediaPlayer.stop();
                 mediaPlayer.release();
                 mediaPlayer = null;
-                if (Navigation.findNavController(view).popBackStack()){
-                    mediaPlayer.stop();
-                    mediaPlayer.release();
-                    mediaPlayer = null;
-                }
-                Navigation.findNavController(view).navigate(R.id.action_audioPostViewFragment_to_navigation_home);
             }
         });
         return view;
+    }
+
+    private void updateProgress() {
+        int progress = mediaPlayer.getCurrentPosition();
+        seekBar.setProgress(progress);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
     }
 }
