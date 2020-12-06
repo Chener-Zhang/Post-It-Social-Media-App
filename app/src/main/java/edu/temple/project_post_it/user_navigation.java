@@ -93,6 +93,8 @@ public class user_navigation extends AppCompatActivity implements UserProfileFra
             mapServiceIntent = new Intent(this, MapService.class);
             startService(mapServiceIntent);
         }
+
+
         
     }
 

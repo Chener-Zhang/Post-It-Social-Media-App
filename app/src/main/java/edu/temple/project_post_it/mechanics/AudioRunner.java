@@ -1,9 +1,13 @@
 package edu.temple.project_post_it.mechanics;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.pm.PackageManager;
 import android.media.MediaRecorder;
 import android.os.Environment;
 import android.util.Log;
+
+import androidx.core.app.ActivityCompat;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,6 +18,7 @@ public class AudioRunner {
     MediaRecorder recorder;
     boolean isRecording;
     String currentAudioPath;
+    String audioFileName;
     Activity activity;
 
     public AudioRunner(Activity activity){
@@ -23,10 +28,10 @@ public class AudioRunner {
 
     public File createAudioFile() throws IOException {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "MP3_" + timeStamp + "_";
+        audioFileName = "MP3_" + timeStamp + "_";
         File storageDir = activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File audio = File.createTempFile(
-                imageFileName,
+                audioFileName,
                 ".mp3",
                 storageDir
         );
@@ -35,6 +40,7 @@ public class AudioRunner {
     }
 
     public void startRecording() {
+
         recorder = new MediaRecorder();
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
@@ -60,6 +66,10 @@ public class AudioRunner {
 
     public String getCurrentAudioPath() {
         return currentAudioPath;
+    }
+
+    public String getAudioFileName() {
+        return audioFileName;
     }
 
     public boolean isRecording() {

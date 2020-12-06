@@ -12,13 +12,22 @@
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_navigation_home_to_postCreationFragment"
-            app:destination="@id/textPostCreationLayout" />
+            app:destination="@id/textCreationFragment" />
         <action
             android:id="@+id/action_navigation_home_to_imageCreationFragment"
             app:destination="@id/imageCreationFragment" />
         <action
             android:id="@+id/action_navigation_home_to_audioCreationFragment"
             app:destination="@id/audioCreationFragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_textPostViewFragment"
+            app:destination="@id/textPostViewFragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_imagePostViewFragment"
+            app:destination="@id/imagePostViewFragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_audioPostViewFragment"
+            app:destination="@id/audioPostViewFragment" />
     </fragment>
 
     <fragment
@@ -37,22 +46,58 @@
             app:destination="@id/settingsFragment" />
     </fragment>
     <fragment
-        android:id="@+id/textPostCreationLayout"
+        android:id="@+id/textCreationFragment"
         android:name="edu.temple.project_post_it.ui.home.PostCreationFragment"
         android:label="@string/title_post_creation"
-        tools:layout="@layout/fragment_post_creation" />
+        tools:layout="@layout/fragment_post_creation" >
+        <action
+            android:id="@+id/action_textCreationFragment_to_navigation_home"
+            app:destination="@id/navigation_home" />
+    </fragment>
     <fragment
         android:id="@+id/imageCreationFragment"
         android:name="edu.temple.project_post_it.ui.home.ImageCreationFragment"
         android:label="fragment_image_creation"
-        tools:layout="@layout/fragment_image_creation" />
+        tools:layout="@layout/fragment_image_creation" >
+        <action
+            android:id="@+id/action_imageCreationFragment_to_navigation_home"
+            app:destination="@id/navigation_home" />
+    </fragment>
     <fragment
         android:id="@+id/audioCreationFragment"
         android:name="edu.temple.project_post_it.ui.home.AudioCreationFragment"
         android:label="fragment_audio_creation"
-        tools:layout="@layout/fragment_audio_creation" />
+        tools:layout="@layout/fragment_audio_creation" >
+        <action
+            android:id="@+id/action_audioCreationFragment_to_navigation_home"
+            app:destination="@id/navigation_home" />
+    </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="edu.temple.project_post_it.ui.UserProfile.SettingsFragment"
         android:label="SettingsFragment" />
+    <fragment
+        android:id="@+id/textPostViewFragment"
+        android:name="edu.temple.project_post_it.ui.home.TextPostViewFragment"
+        android:label="TextPostViewFragment" >
+        <action
+            android:id="@+id/action_textPostViewFragment_to_navigation_home"
+            app:destination="@id/navigation_home" />
+    </fragment>
+    <fragment
+        android:id="@+id/imagePostViewFragment"
+        android:name="edu.temple.project_post_it.ui.home.ImagePostViewFragment"
+        android:label="ImagePostViewFragment" >
+        <action
+            android:id="@+id/action_imagePostViewFragment_to_navigation_home"
+            app:destination="@id/navigation_home" />
+    </fragment>
+    <fragment
+        android:id="@+id/audioPostViewFragment"
+        android:name="edu.temple.project_post_it.ui.home.AudioPostViewFragment"
+        android:label="AudioPostViewFragment" >
+        <action
+            android:id="@+id/action_audioPostViewFragment_to_navigation_home"
+            app:destination="@id/navigation_home" />
+    </fragment>
 </navigation>

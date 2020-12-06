@@ -67,8 +67,8 @@ public class PostCreationFragment extends Fragment implements AdapterView.OnItem
         titleView = view.findViewById(R.id.titleEditText);
         descriptionView = view.findViewById(R.id.descriptionEditText);
         privacySwitch = view.findViewById(R.id.privacyCheckBox);
+        createPostButton = view.findViewById(R.id.editPostButton);
         anonymousSwitch = view.findViewById(R.id.anonymousCheckBox);
-        createPostButton = view.findViewById(R.id.createPostButton);
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         groupingSelectorSpinner = view.findViewById(R.id.goupingSelectorSpinner);
 
