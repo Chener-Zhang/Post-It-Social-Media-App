@@ -181,15 +181,20 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
 
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         groups.add(dataSnapshot.getKey());
+                        Log.i("groups", dataSnapshot.getKey());
                     }
+
+                    Log.i("groups", groups.toString());
 
                     for (String group : groups) {
                         databaseReference = root.getReference().child("/Groups/" + group + "/posts");
+                        Log.i("groups", "/Groups/" + group + "/posts");
                         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                                     final Post post = dataSnapshot.getValue(Post.class);
+                                    Log.i("groups", post.getText());
                                     lat = post.getLocation().getLatitude();
                                     lng = post.getLocation().getLongitude();
                                     loc = new LatLng(lat, lng);
