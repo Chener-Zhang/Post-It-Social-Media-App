@@ -76,6 +76,7 @@ public class GroupFragment extends Fragment {
                 if (!addGroup.getText().toString().isEmpty()) {
                     dataBaseManagement.databaseAddGroupToGroups(addGroup.getText().toString());
                     groupAdapter.notifyDataSetChanged();
+                    addGroup.getText().clear();
                 }
             }
         });

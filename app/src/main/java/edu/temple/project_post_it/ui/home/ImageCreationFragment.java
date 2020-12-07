@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,7 +46,7 @@ import static android.app.Activity.RESULT_OK;
 public class ImageCreationFragment extends Fragment {
 
     private static final String MODE = "MODE";
-    TextView titleView, descriptionView;
+    EditText titleView, descriptionView;
     String title, description;
     CheckBox privacySwitch;
     boolean isPublic;
@@ -137,6 +138,8 @@ public class ImageCreationFragment extends Fragment {
                         post.setLocation(location);
                     }
                     savePost(post);
+                    titleView.getText().clear();
+                    descriptionView.getText().clear();
                 }
 
             }
