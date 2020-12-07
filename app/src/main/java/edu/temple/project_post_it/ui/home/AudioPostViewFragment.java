@@ -110,48 +110,50 @@ public class AudioPostViewFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 currentPost = snapshot.getValue(AudioPost.class);
-                titleView.setText(currentPost.getTitle());
-                descriptionView.setText(currentPost.getText());
+                if (currentPost != null) {
+                    titleView.setText(currentPost.getTitle());
+                    descriptionView.setText(currentPost.getText());
 
-                File file = new File(currentPost.getAudioFilePath());
-                if (!(file.exists())){
-                    StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
-                    String userID =  FirebaseAuth.getInstance().getCurrentUser().getUid();
-                    StorageReference usersRef = mStorageRef.child("Users/" + userID);
-                    final StorageReference saveRef = usersRef.child(currentPost.getAudioFileName());
-                    saveRef.getFile(file).addOnFailureListener(new OnFailureListener() {
+                    File file = new File(currentPost.getAudioFilePath());
+                    if (!(file.exists())) {
+                        StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
+                        String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                        StorageReference usersRef = mStorageRef.child("Users/" + userID);
+                        final StorageReference saveRef = usersRef.child(currentPost.getAudioFileName());
+                        saveRef.getFile(file).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.v("ERROR:", "Error getting file from storage!");
+                            }
+                        }).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                Log.v("Success:", "Audio obtained from storage!");
+                            }
+                        });
+                    }
+                    Uri audioURI = Uri.fromFile(file);
+                    mediaPlayer = MediaPlayer.create(context, audioURI);
+                    mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                         @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.v("ERROR:", "Error getting file from storage!");
-                        }
-                    }).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                            Log.v("Success:", "Audio obtained from storage!");
+                        public void onCompletion(MediaPlayer mp) {
+                            startButton.setText("Start");
                         }
                     });
-                }
-                Uri audioURI = Uri.fromFile(file);
-                mediaPlayer = MediaPlayer.create(context, audioURI);
-                mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                    @Override
-                    public void onCompletion(MediaPlayer mp) {
-                        startButton.setText("Start");
-                    }
-                });
-                seekBar.setMax(mediaPlayer.getDuration() / 1000);
-                progressHandler = new Handler(Looper.myLooper());
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (mediaPlayer != null) {
-                            int progress = mediaPlayer.getCurrentPosition() / 1000;
-                            seekBar.setProgress(progress);
-                            progressHandler.postDelayed(this, 1000);
+                    seekBar.setMax(mediaPlayer.getDuration() / 1000);
+                    progressHandler = new Handler(Looper.myLooper());
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (mediaPlayer != null) {
+                                int progress = mediaPlayer.getCurrentPosition() / 1000;
+                                seekBar.setProgress(progress);
+                                progressHandler.postDelayed(this, 1000);
+                            }
                         }
-                    }
 
-                });
+                    });
+                }
             }
 
             @Override

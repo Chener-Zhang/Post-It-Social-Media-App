@@ -78,28 +78,30 @@ public class ImagePostViewFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 currentPost = snapshot.getValue(ImagePost.class);
-                titleView.setText(currentPost.getTitle());
-                descriptionView.setText(currentPost.getText());
+                if (currentPost != null) {
+                    titleView.setText(currentPost.getTitle());
+                    descriptionView.setText(currentPost.getText());
 
-                File file = new File(currentPost.getImageFilePath());
-                if (!(file.exists())){
-                    StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
-                    String userID =  FirebaseAuth.getInstance().getCurrentUser().getUid();
-                    StorageReference usersRef = mStorageRef.child("Users/" + userID);
-                    final StorageReference saveRef = usersRef.child(currentPost.getImageFileName());
-                    saveRef.getFile(file).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.v("ERROR:", "Error getting file from storage!");
-                        }
-                    }).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                            Log.v("Success:", "Audio obtained from storage!");
-                        }
-                    });
+                    File file = new File(currentPost.getImageFilePath());
+                    if (!(file.exists())) {
+                        StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
+                        String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                        StorageReference usersRef = mStorageRef.child("Users/" + userID);
+                        final StorageReference saveRef = usersRef.child(currentPost.getImageFileName());
+                        saveRef.getFile(file).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.v("ERROR:", "Error getting file from storage!");
+                            }
+                        }).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                Log.v("Success:", "Audio obtained from storage!");
+                            }
+                        });
+                    }
+                    Picasso.get().load(file).into(imageView);
                 }
-                Picasso.get().load(file).into(imageView);
             }
 
             @Override

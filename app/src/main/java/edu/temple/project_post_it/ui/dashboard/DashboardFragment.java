@@ -114,7 +114,7 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
 
         //Show User's posts
         //Different color to show current location
-        googleMap.addMarker((new MarkerOptions()).position(user_navigation.loc).title("Current Location")).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+        googleMap.addMarker((new MarkerOptions()).position(user_navigation.loc).title("Current Location").flat(true)).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
 
         if(all) {
             showPrivatePosts();
@@ -153,10 +153,12 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
                     googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                         @Override
                         public boolean onMarkerClick(Marker marker) {
-                            Intent intent = new Intent(getContext(), postDetail.class);
-                            intent.putExtra(CONSTANT.POST_ID, marker.getTitle());
-                            intent.putExtra(CONSTANT.GROUP_ID, marker.getSnippet());
-                            startActivity(intent);
+                            if(!marker.isFlat()) {
+                                Intent intent = new Intent(getContext(), postDetail.class);
+                                intent.putExtra(CONSTANT.POST_ID, marker.getTitle());
+                                intent.putExtra(CONSTANT.GROUP_ID, marker.getSnippet());
+                                startActivity(intent);
+                            }
                             return false;
                         }
                     });
@@ -200,10 +202,12 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
                                     googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                                         @Override
                                         public boolean onMarkerClick(Marker marker) {
-                                            Intent intent = new Intent(getContext(), postDetail.class);
-                                            intent.putExtra(CONSTANT.POST_ID, marker.getTitle());
-                                            intent.putExtra(CONSTANT.GROUP_ID, marker.getSnippet());
-                                            startActivity(intent);
+                                            if(!marker.isFlat()) {
+                                                Intent intent = new Intent(getContext(), postDetail.class);
+                                                intent.putExtra(CONSTANT.POST_ID, marker.getTitle());
+                                                intent.putExtra(CONSTANT.GROUP_ID, marker.getSnippet());
+                                                startActivity(intent);
+                                            }
                                             return false;
                                         }
                                     });
@@ -238,19 +242,8 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
 
                                 googleMap.addMarker(new MarkerOptions().position(loc)
                                         .title(post.getPost_ID())
-                                        .snippet(post.getGroupID()));
-
-                                googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                                    @Override
-                                    public boolean onMarkerClick(Marker marker) {
-                                        Intent intent = new Intent(getContext(), postDetail.class);
-                                        intent.putExtra(CONSTANT.POST_ID, marker.getTitle());
-                                        intent.putExtra(CONSTANT.GROUP_ID, marker.getSnippet());
-                                        startActivity(intent);
-                                        return false;
-                                    }
-                                });
-
+                                        .snippet(post.getGroupID())
+                                .flat(true));
                             }
                         }
                     }

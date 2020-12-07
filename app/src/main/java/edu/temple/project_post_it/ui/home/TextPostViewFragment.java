@@ -69,8 +69,10 @@ public class TextPostViewFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 currentPost = snapshot.getValue(Post.class);
-                titleView.setText(currentPost.getTitle());
-                descriptionView.setText(currentPost.getText());
+                if (currentPost != null) {
+                    titleView.setText(currentPost.getTitle());
+                    descriptionView.setText(currentPost.getText());
+                }
             }
 
             @Override
