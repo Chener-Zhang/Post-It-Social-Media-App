@@ -57,6 +57,28 @@ public class DatabaseAndStorageTests {
         assertEquals("edu.temple.project_post_it", appContext.getPackageName());
     }
 
+    @Test
+    public void currentUserExistCheck() {
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        //Current user group list
+        final String FirebaseCurrentUser = FirebaseAuth.getInstance().getUid();
+        final String LocalcurrentUserUid = "nJ7IhP9NJ6VqEb7A9ghTumtO9Op1";
+        final DatabaseReference userRef = database.getReference("Members");
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                assertEquals(FirebaseCurrentUser, LocalcurrentUserUid);
+                assertEquals(true, snapshot.hasChild(LocalcurrentUserUid));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
     // Asserts that it is possible to create and then receive text posts on the database
     @Test
     public void createAndGetTextPost(){
@@ -146,10 +168,6 @@ public class DatabaseAndStorageTests {
             }
         });
     }
-
-
-
-
 
 
 }
