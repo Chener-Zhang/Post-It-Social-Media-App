@@ -81,6 +81,7 @@ public class postDetail extends AppCompatActivity {
             public void onClick(View v) {
                 String userInput = replyEditText.getText().toString();
                 db.databaseAddUserReplies(userInput, FirebaseAuth.getInstance().getUid(), postId, groupId);
+                replyEditText.getText().clear();
             }
         });
 
@@ -90,7 +91,7 @@ public class postDetail extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 ArrayList<String> replies = new ArrayList<String>();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    String format = dataSnapshot.getKey() + getString(R.string.reply_by) + dataSnapshot.getValue();
+                    String format = dataSnapshot.getKey() + " " + getString(R.string.reply_by) + " "+ dataSnapshot.getValue();
                     System.out.println(format);
                     replies.add(format);
                 }

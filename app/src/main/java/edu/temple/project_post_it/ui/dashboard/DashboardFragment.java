@@ -114,7 +114,7 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
 
         //Show User's posts
         //Different color to show current location
-        googleMap.addMarker((new MarkerOptions()).position(user_navigation.loc).title("Current Location")).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+        googleMap.addMarker((new MarkerOptions()).position(user_navigation.loc).title("Current Location").flat(true)).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
 
         if(all) {
             showPrivatePosts();
@@ -153,10 +153,12 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
                     googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                         @Override
                         public boolean onMarkerClick(Marker marker) {
-                            Intent intent = new Intent(getContext(), postDetail.class);
-                            intent.putExtra(CONSTANT.POST_ID, marker.getTitle());
-                            intent.putExtra(CONSTANT.GROUP_ID, marker.getSnippet());
-                            startActivity(intent);
+                            if(!marker.isFlat()) {
+                                Intent intent = new Intent(getContext(), postDetail.class);
+                                intent.putExtra(CONSTANT.POST_ID, marker.getTitle());
+                                intent.putExtra(CONSTANT.GROUP_ID, marker.getSnippet());
+                                startActivity(intent);
+                            }
                             return false;
                         }
                     });
@@ -179,15 +181,20 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
 
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         groups.add(dataSnapshot.getKey());
+                        Log.i("groups", dataSnapshot.getKey());
                     }
+
+                    Log.i("groups", groups.toString());
 
                     for (String group : groups) {
                         databaseReference = root.getReference().child("/Groups/" + group + "/posts");
+                        Log.i("groups", "/Groups/" + group + "/posts");
                         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                                     final Post post = dataSnapshot.getValue(Post.class);
+                                    Log.i("groups", post.getText());
                                     lat = post.getLocation().getLatitude();
                                     lng = post.getLocation().getLongitude();
                                     loc = new LatLng(lat, lng);
@@ -200,10 +207,12 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
                                     googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                                         @Override
                                         public boolean onMarkerClick(Marker marker) {
-                                            Intent intent = new Intent(getContext(), postDetail.class);
-                                            intent.putExtra(CONSTANT.POST_ID, marker.getTitle());
-                                            intent.putExtra(CONSTANT.GROUP_ID, marker.getSnippet());
-                                            startActivity(intent);
+                                            if(!marker.isFlat()) {
+                                                Intent intent = new Intent(getContext(), postDetail.class);
+                                                intent.putExtra(CONSTANT.POST_ID, marker.getTitle());
+                                                intent.putExtra(CONSTANT.GROUP_ID, marker.getSnippet());
+                                                startActivity(intent);
+                                            }
                                             return false;
                                         }
                                     });
@@ -230,8 +239,6 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists()) {
-
-
                             for (final DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                 final Post post = snapshot.getValue(Post.class);
                                 lat = post.getLocation().getLatitude();
@@ -240,17 +247,8 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
 
                                 googleMap.addMarker(new MarkerOptions().position(loc)
                                         .title(post.getPost_ID())
-                                        .snippet(post.getGroupID()));
-                                googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                                    @Override
-                                    public boolean onMarkerClick(Marker marker) {
-                                        Intent intent = new Intent(getContext(), postDetail.class);
-                                        intent.putExtra("postID", marker.getTitle());
-                                        startActivity(intent);
-                                        return false;
-                                    }
-                                });
-
+                                        .snippet(post.getGroupID())
+                                .flat(true));
                             }
                         }
                     }

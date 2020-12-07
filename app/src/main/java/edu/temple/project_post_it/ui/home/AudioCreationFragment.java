@@ -1,20 +1,32 @@
 package edu.temple.project_post_it.ui.home;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
 
@@ -33,7 +45,7 @@ import edu.temple.project_post_it.user_navigation;
 public class AudioCreationFragment extends Fragment {
 
     private static final String MODE = "MODE";
-    TextView titleView, descriptionView;
+    EditText titleView, descriptionView;
     String title, description;
     CheckBox privacySwitch;
     boolean isPublic;
@@ -42,6 +54,11 @@ public class AudioCreationFragment extends Fragment {
     FirebaseUser currentUser;
     AudioRunner audioRunner;
     dataBaseManagement dataBaseManagement;
+
+    String currentAudioPath;
+    private StorageReference mStorageRef;
+    private StorageReference savedAudioLocation;
+    String audioFileName;
 
     public AudioCreationFragment() {
         // Required empty public constructor
@@ -61,13 +78,14 @@ public class AudioCreationFragment extends Fragment {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_audio_creation, container, false);
         dataBaseManagement = new dataBaseManagement();
+        mStorageRef = FirebaseStorage.getInstance().getReference();
         title = "Untitled";
         description = "No Description";
         isPublic = true;
         titleView = view.findViewById(R.id.titleEditText);
         descriptionView = view.findViewById(R.id.descriptionEditText);
         privacySwitch = view.findViewById(R.id.privacyCheckBox);
-        createPostButton = view.findViewById(R.id.createPostButton);
+        createPostButton = view.findViewById(R.id.editPostButton);
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         audioRunner = new AudioRunner(getActivity());
         if (user_navigation.loc != null){
@@ -78,18 +96,29 @@ public class AudioCreationFragment extends Fragment {
         recordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!(audioRunner.isRecording())){
-                    recordButton.setText("Stop Recording");
-                    try {
-                        audioRunner.createAudioFile();
-                        audioRunner.startRecording();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                if (getActivity().checkSelfPermission(Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED)
+                    requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO}, 2);
+                else {
+                    if (!(audioRunner.isRecording())) {
+                        recordButton.setText("Stop Recording");
+                        try {
+                            audioRunner.createAudioFile();
+                            audioRunner.startRecording();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
 
-                } else {
-                    recordButton.setText("Record");
-                    audioRunner.stopRecording();
+                    } else {
+                        recordButton.setText("Record");
+                        audioRunner.stopRecording();
+                        final Context context = getContext();
+                        Toast.makeText(context, "Audio Recorded!", Toast.LENGTH_SHORT).show();
+                        currentAudioPath = audioRunner.getCurrentAudioPath();
+                        audioFileName = audioRunner.getAudioFileName();
+
+
+
+                    }
                 }
             }
         });
@@ -100,8 +129,7 @@ public class AudioCreationFragment extends Fragment {
         createPostButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String audioPath = audioRunner.getCurrentAudioPath();
-                if (audioPath == null) {
+                if (currentAudioPath == null) {
                     Toast.makeText(view.getContext(), "You must record something first!", Toast.LENGTH_SHORT).show();
                 } else {
                     String titleTest = titleView.getText().toString();
@@ -117,7 +145,7 @@ public class AudioCreationFragment extends Fragment {
                     }
 
                     String post_id = Calendar.getInstance().getTime().toString() + currentUser.getUid();
-                    Post post = new AudioPost(post_id, isPublic, 2, audioPath);
+                    Post post = new AudioPost(post_id, isPublic, 2, currentAudioPath, audioFileName);
                     post.setTitle(title);
                     post.setText(description);
                     if (latLng != null) {
@@ -127,11 +155,12 @@ public class AudioCreationFragment extends Fragment {
                         post.setLocation(location);
                     }
                     savePost(post);
+                    titleView.getText().clear();
+                    descriptionView.getText().clear();
 
                 }
             }
         });
-
 
 
         return view;
@@ -141,6 +170,24 @@ public class AudioCreationFragment extends Fragment {
         //This method is where the new post will be saved to the database. This method, when called, will also return the user back to the homepage.
         dataBaseManagement.dataBaseSaveInMembers_Uid_UserPosts(FirebaseAuth.getInstance().getUid(), post);
         Toast.makeText(this.getContext(), "Post Saved!", Toast.LENGTH_SHORT).show();
+
+        final Context context = getContext();
+        Uri file = Uri.fromFile(new File(currentAudioPath));
+        String userID =  FirebaseAuth.getInstance().getCurrentUser().getUid();
+        StorageReference usersRef = mStorageRef.child("Users/" + userID);
+        final StorageReference saveRef = usersRef.child(audioFileName);
+        saveRef.putFile(file).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(context, "Error: Audio Not Saved to Firebase Storage!", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Toast.makeText(context, "Audio Saved to Firebase Storage!", Toast.LENGTH_SHORT).show();
+                savedAudioLocation = saveRef;
+            }
+        });
 
     }
 

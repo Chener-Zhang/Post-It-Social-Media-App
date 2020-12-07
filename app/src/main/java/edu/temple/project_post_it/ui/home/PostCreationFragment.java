@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,7 +34,7 @@ import edu.temple.project_post_it.user_navigation;
 
 public class PostCreationFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
-    TextView titleView, descriptionView;
+    EditText titleView, descriptionView;
     String title, description;
     CheckBox privacySwitch;
     CheckBox anonymousSwitch;
@@ -67,8 +68,8 @@ public class PostCreationFragment extends Fragment implements AdapterView.OnItem
         titleView = view.findViewById(R.id.titleEditText);
         descriptionView = view.findViewById(R.id.descriptionEditText);
         privacySwitch = view.findViewById(R.id.privacyCheckBox);
+        createPostButton = view.findViewById(R.id.editPostButton);
         anonymousSwitch = view.findViewById(R.id.anonymousCheckBox);
-        createPostButton = view.findViewById(R.id.createPostButton);
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         groupingSelectorSpinner = view.findViewById(R.id.goupingSelectorSpinner);
 
@@ -160,6 +161,8 @@ public class PostCreationFragment extends Fragment implements AdapterView.OnItem
                     post.setLocation(location);
                 }
                 savePost(post);
+                titleView.getText().clear();
+                descriptionView.getText().clear();
 
             }
         });
