@@ -145,23 +145,25 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
                     lng = post.getLocation().getLongitude();
                     loc = new LatLng(lat, lng);
 
-                    googleMap.addMarker(new MarkerOptions().position(loc)
-                            .title(post.getPost_ID())
-                            .snippet(post.getGroupID())
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
+                    if (post.getGroupID().equals(CONSTANT.ANONYMOUS)) {
+                        googleMap.addMarker(new MarkerOptions().position(loc)
+                                .title(post.getPost_ID())
+                                .snippet(post.getGroupID())
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
 
-                    googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                        @Override
-                        public boolean onMarkerClick(Marker marker) {
-                            if(!marker.isFlat()) {
-                                Intent intent = new Intent(getContext(), postDetail.class);
-                                intent.putExtra(CONSTANT.POST_ID, marker.getTitle());
-                                intent.putExtra(CONSTANT.GROUP_ID, marker.getSnippet());
-                                startActivity(intent);
+                        googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                            @Override
+                            public boolean onMarkerClick(Marker marker) {
+                                if (!marker.isFlat()) {
+                                    Intent intent = new Intent(getContext(), postDetail.class);
+                                    intent.putExtra(CONSTANT.POST_ID, marker.getTitle());
+                                    intent.putExtra(CONSTANT.GROUP_ID, marker.getSnippet());
+                                    startActivity(intent);
+                                }
+                                return false;
                             }
-                            return false;
-                        }
-                    });
+                        });
+                    }
                 }
             }
 
@@ -199,23 +201,25 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
                                     lng = post.getLocation().getLongitude();
                                     loc = new LatLng(lat, lng);
 
-                                    googleMap.addMarker(new MarkerOptions().position(loc)
-                                            .title(post.getPost_ID())
-                                            .snippet(post.getGroupID())
-                                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+                                    if (!post.getPrivacy() && !post.getGroupID().equals(CONSTANT.ANONYMOUS)) {
+                                        googleMap.addMarker(new MarkerOptions().position(loc)
+                                                .title(post.getPost_ID())
+                                                .snippet(post.getGroupID())
+                                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
 
-                                    googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                                        @Override
-                                        public boolean onMarkerClick(Marker marker) {
-                                            if(!marker.isFlat()) {
-                                                Intent intent = new Intent(getContext(), postDetail.class);
-                                                intent.putExtra(CONSTANT.POST_ID, marker.getTitle());
-                                                intent.putExtra(CONSTANT.GROUP_ID, marker.getSnippet());
-                                                startActivity(intent);
+                                        googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                                            @Override
+                                            public boolean onMarkerClick(Marker marker) {
+                                                if (!marker.isFlat()) {
+                                                    Intent intent = new Intent(getContext(), postDetail.class);
+                                                    intent.putExtra(CONSTANT.POST_ID, marker.getTitle());
+                                                    intent.putExtra(CONSTANT.GROUP_ID, marker.getSnippet());
+                                                    startActivity(intent);
+                                                }
+                                                return false;
                                             }
-                                            return false;
-                                        }
-                                    });
+                                        });
+                                    }
                                 }
                             }
 
@@ -245,10 +249,12 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
                                 lng = post.getLocation().getLongitude();
                                 loc = new LatLng(lat, lng);
 
-                                googleMap.addMarker(new MarkerOptions().position(loc)
-                                        .title(post.getPost_ID())
-                                        .snippet(post.getGroupID())
-                                .flat(true));
+                                if (post.getPrivacy() && !post.getGroupID().equals(CONSTANT.ANONYMOUS)) {
+                                    googleMap.addMarker(new MarkerOptions().position(loc)
+                                            .title(post.getPost_ID())
+                                            .snippet(post.getGroupID())
+                                            .flat(true));
+                                }
                             }
                         }
                     }
